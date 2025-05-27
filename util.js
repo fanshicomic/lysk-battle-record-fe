@@ -1,3 +1,6 @@
+// const API_BASE = 'https://lysk-battle-record-426168069563.asia-southeast1.run.app/';
+const API_BASE = 'http://localhost:8080/';
+
 export async function apiPost(endpoint, data) {
     const res = await fetch(`${API_BASE}${endpoint}`, {
         method: 'POST',
