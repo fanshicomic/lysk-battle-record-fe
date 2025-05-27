@@ -109,7 +109,9 @@
     background-color: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 8px; z-index: 9999;">
   </div>
 
-  <script>
+  <script type="module">
+    import { apiGet, apiPost } from './util.js';
+
     const LEVEL_TYPES = [
       { type: "光", count: 180 },
       { type: "冰", count: 180 },
@@ -120,15 +122,26 @@
     ];
 
     const DROPDOWN_VALUES = {
-      日卡: ["末夜", "逐光", "拥雪", "永恒", "神殿", "深海", "深渊", "掠心", "寂路", "远空", "其他"],
-      搭档: ["光猎", "逐光骑士", "九黎司命", "永恒先知", "潮汐之神", "深海潜行者", "深渊主宰", "无尽掠夺者", "终极兵器X-02", "远空执舰官", "其他"],
+      搭档: ["沈星回", "黎深", "祁煜", "秦彻", "夏以昼"],
+      搭档身份: [],
+      日卡: [],
       阶数: ["I", "II", "III", "IV"],
       武器: ["专武", "重剑", "单手剑", "法杖", "手枪"],
-      对谱: ["顺谱", "对六", "对五", "对四", "对三", "对二", "对一", "对零"]
+      对谱: ["顺谱", "对六", "对五", "对四", "对三", "对二", "对一", "对零"],
+      沈星回搭档: ["光猎", "逐光骑士", "遥远少年", "Evol特警", "深空猎人"],
+      黎深搭档: ["九黎司命", "永恒先知", "极地军医", "黎明抹杀者", "临空医生"],
+      祁煜搭档: ["潮汐之神", "深海潜行者", "画坛新锐", "海妖魅影", "艺术家"],
+      秦彻搭档: ["深渊主宰", "无尽掠夺者", "异界来客"],
+      夏以昼搭档: ["终极兵器X-02", "远空执舰官", "深空飞行员"],
+      沈星回日卡: ["末夜", "逐光", "睱日", "弦光", "心情", "匿光"],
+      黎深日卡: ["拥雪", "永恒", "夜色", "静谧", "心情", "深林"],
+      祁煜日卡: ["神殿", "深海", "点染", "斑斓", "心情", "碧海"],
+      秦彻日卡: ["深渊", "掠心", "锋尖", "戮夜"],
+      夏以昼日卡: ["寂路", "远空", "长昼", "离途"],
     };
 
     const PANEL_KEYS = [
-      "攻击", "生命", "防御", "对谱", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "搭档", "日卡", "阶数", "武器"
+      "攻击", "生命", "防御", "对谱", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "搭档", "搭档身份", "日卡", "阶数", "武器"
     ];
 
     const levelTypeSelect = document.getElementById("level-type");
@@ -144,22 +157,6 @@
     const PAGE_SIZE = 10;
 
     const API_BASE = 'https://lysk-battle-record-426168069563.asia-southeast1.run.app/';
-
-    async function apiPost(endpoint, data) {
-      const res = await fetch(`${API_BASE}${endpoint}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-      return res.json();
-    }
-
-    async function apiGet(endpoint, params = {}) {
-      const url = new URL(`${API_BASE}${endpoint}`);
-      Object.entries(params).forEach(([key, val]) => url.searchParams.append(key, val));
-      const res = await fetch(url.toString());
-      return res.json();
-    }
 
     // 初始化关卡类型
     LEVEL_TYPES.forEach(({ type }) => {
@@ -178,6 +175,28 @@
       } else {
         partContainer.classList.add("d-none");
       }
+    }
+
+    function updatePartnerDropdown() {
+      const type = levelTypeSelect.value;
+      const partnerSelect = document.getElementById("input-搭档");
+
+      if (type === "开放") {
+        partnerSelect.innerHTML = `<option value="">--搭档--</option>` + DROPDOWN_VALUES["搭档"].map(v => `<option value="${v}">${v}</option>`).join("");
+        refreshPartnerAndSetDropdowns()
+        return
+      }
+
+      const levelPartnerMap = {
+        "光": "沈星回",
+        "冰": "黎深",
+        "火": "祁煜",
+        "能量": "秦彻",
+        "引力": "夏以昼"
+      };
+
+      partnerSelect.innerHTML = `<option value="${levelPartnerMap[type]}">${levelPartnerMap[type]}</option>`;
+      refreshPartnerAndSetDropdowns()
     }
 
     function checkIfReady() {
@@ -324,6 +343,7 @@
 
     levelTypeSelect.addEventListener("change", () => {
       validatePartDropdown();
+      updatePartnerDropdown();
       checkIfReady();
     });
 
@@ -333,6 +353,33 @@
     });
 
     levelPartSelect.addEventListener("change", checkIfReady);
+
+    function refreshPartnerAndSetDropdowns() {
+      const partnerSelect = document.getElementById("input-搭档");
+      const selectedPartner = partnerSelect.value;
+
+      let partnerOptions = DROPDOWN_VALUES["搭档身份"];
+      let setOptions = DROPDOWN_VALUES["日卡"];
+
+      if (selectedPartner) {
+        const partnerKey = `${selectedPartner}搭档`;
+        partnerOptions = DROPDOWN_VALUES[partnerKey]
+
+        const setKey = `${selectedPartner}日卡`;
+        setOptions = DROPDOWN_VALUES[setKey];
+      }
+
+      const partnerStyleSelect = document.getElementById("input-搭档身份");
+      partnerStyleSelect.innerHTML = `<option value="">--搭档身份--</option>` + partnerOptions.map(v => `<option value="${v}">${v}</option>`).join("");
+
+      const setSelect = document.getElementById("input-日卡");
+      setSelect.innerHTML = `<option value="">--日卡--</option>` + setOptions.map(v => `<option value="${v}">${v}</option>`).join("");
+    }
+
+    const partnerSelect = document.getElementById("input-搭档");
+    partnerSelect.addEventListener("change", () => {
+      refreshPartnerAndSetDropdowns()
+    })
   </script>
 </body>
 </html>
