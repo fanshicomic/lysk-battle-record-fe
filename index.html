@@ -299,8 +299,14 @@
     }
 
     // 获取记录
-    document.getElementById("fetch-records").addEventListener("click", () => {
+    const fetchBtn = document.getElementById("fetch-records");
+    fetchBtn.addEventListener("click", () => {
+      if (fetchBtn.disabled) return;
+      fetchBtn.disabled = true;
       showRecords();
+      setTimeout(() => {
+        fetchBtn.disabled = false;
+      }, 3000);
     });
 
     // 显示上传表单
@@ -311,6 +317,9 @@
 
     // 提交记录
     submitButton.addEventListener("click", () => {
+      if (submitButton.disabled) return;
+      submitButton.disabled = true;
+
       const type = levelTypeSelect.value;
       const number = parseInt(levelNumberInput.value);
       const selected = LEVEL_TYPES.find(l => l.type === type);
@@ -335,6 +344,10 @@
           }
         })
         .catch(err => alert('请求失败: ' + err.message));
+
+      setTimeout(() => {
+        submitButton.disabled = false;
+      }, 3000);
     });
 
     levelTypeSelect.addEventListener("change", () => {
