@@ -141,7 +141,7 @@
     };
 
     const PANEL_KEYS = [
-      "攻击", "生命", "防御", "对谱", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "搭档", "搭档身份", "日卡", "阶数", "武器"
+      "攻击", "防御", "生命", "对谱", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "搭档", "搭档身份", "日卡", "阶数", "武器"
     ];
 
     const levelTypeSelect = document.getElementById("level-type");
@@ -255,7 +255,10 @@
       const offset = (page - 1) * PAGE_SIZE;
 
       apiGet('records', { type, level, offset })
-      .then(list => {
+      .then(result => {
+        let cnt = result.total
+        let list = result.records || [];
+
         recordsDiv.innerHTML = list.map(r => {
           const panelRows = PANEL_KEYS.map((k, i) => {
             const content = `<strong>${k}:</strong> ${r[k] || "-"}`;
@@ -266,24 +269,19 @@
           return `<div class="record">${panelRows}</div>`;
         }).join("") || "暂无记录";
 
-        apiGet('record-count', { type, level })
-          .then(res => {
-            const count = res["count"]
-            const totalPages = Math.ceil(count / PAGE_SIZE);
-            const paginationDiv = document.getElementById("pagination");
-            paginationDiv.innerHTML = "";
-            console.log(count, totalPages)
+        const totalPages = Math.ceil(cnt / PAGE_SIZE);
+        const paginationDiv = document.getElementById("pagination");
+        paginationDiv.innerHTML = "";
 
-            if (totalPages > 1) {
-              for (let i = 1; i <= totalPages; i++) {
-                const btn = document.createElement("button");
-                btn.className = `btn btn-sm mx-1 ${i === page ? "btn-primary" : "btn-outline-primary"}`;
-                btn.textContent = i;
-                btn.addEventListener("click", () => showRecords(i));
-                paginationDiv.appendChild(btn);
-              }
-            }
-          });
+        if (totalPages > 1) {
+          for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement("button");
+            btn.className = `btn btn-sm mx-1 ${i === page ? "btn-primary" : "btn-outline-primary"}`;
+            btn.textContent = i;
+            btn.addEventListener("click", () => showRecords(i));
+            paginationDiv.appendChild(btn);
+          }
+        }
       })
       .catch(err => {
         console.error("获取失败", err);
