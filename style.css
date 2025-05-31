@@ -1,0 +1,67 @@
+.sun {
+  background-color: #8F85D8;
+  opacity: 0.3;
+  position: absolute;
+  top: -1050px;
+  left: -300px;
+  width: 2200px;
+  height: 1200px;
+  border-radius: 50%;
+  animation-name: sunrise2;
+  animation-duration: 10s;
+  animation-timing-function: linear;
+  animation-delay: 1s;
+  animation-iteration-count: infinite;
+}
+
+.sun2 {
+  background-color: #8E6385;
+  opacity: 0.3;
+  position: absolute;
+  top: -1050px;
+  left: -1200px;
+  width: 2200px;
+  height: 1200px;
+  border-radius: 50%;
+  animation-name: sunrise2;
+  animation-duration: 14s;
+  animation-timing-function: linear;
+  animation-delay: 2s;
+  animation-iteration-count: infinite;
+}
+
+.sun3 {
+  background-color: #5F4B8B;
+  opacity: 0.3;
+  position: absolute;
+  top: -1050px;
+  left: -600px;
+  width: 2200px;
+  height: 1200px;
+  border-radius: 50%;
+  animation-name: sunrise2;
+  animation-duration: 12s;
+  animation-timing-function: linear;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes sunrise2 {
+  0% {
+    transform: translate(0px, 0px);
+  }
+  25% {
+    transform: translate(150px, 50px);
+  }
+  50% {
+    transform: translate(300px, 10px);
+  }
+  75% {
+    transform: translate(150px, 50px);
+  }
+  100% {
+    transform: translate(0px, 0px);
+  }
+}
+
+/*# sourceMappingURL=style.css.map */
