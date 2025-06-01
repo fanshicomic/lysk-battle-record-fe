@@ -1,8 +1,7 @@
-const API_BASE = 'https://lysk-battle-record-426168069563.asia-southeast1.run.app/';
-// const API_BASE = 'http://localhost:8080/';
+import * as constants from './constants.js';
 
 export async function apiPost(endpoint, data) {
-    const res = await fetch(`${API_BASE}${endpoint}`, {
+    const res = await fetch(`${constants.API_BASE}${endpoint}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
@@ -11,7 +10,7 @@ export async function apiPost(endpoint, data) {
 }
 
 export async function apiGet(endpoint, params = {}) {
-    const url = new URL(`${API_BASE}${endpoint}`);
+    const url = new URL(`${constants.API_BASE}${endpoint}`);
     Object.entries(params).forEach(([key, val]) => url.searchParams.append(key, val));
     const res = await fetch(url.toString());
     return res.json();

@@ -21,6 +21,13 @@
       text-align: center;
     }
 
+    .toast {
+      position: absolute;
+      top: 350px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
     .form-label {
       margin-top: 10px;
       font-size: 1rem;
@@ -92,51 +99,36 @@
 <div id="records" class= "d-none"></div>
 <div id="pagination" class="mt-3 d-flex justify-content-center"></div>
 
-<div id="toast" style="display:none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%);
-    background-color: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 8px; z-index: 9999;">
+<h2 id="latest-records-title" class="mt-5">最新面板记录</h2>
+<div id="latest-records"></div>
+
+<div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="toast-header">
+    <strong class="me-auto" id="toast-header"></strong>
+    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+  <div class="toast-body" id="toast-body"></div>
 </div>
 
 <script type="module">
   import { apiGet, apiPost } from './util.js';
-
-  const LEVEL_TYPES = [
-    "A4", "B4", "C4"
-  ];
-
-  const DROPDOWN_VALUES = {
-    搭档: ["沈星回", "黎深", "祁煜", "秦彻", "夏以昼"],
-    搭档身份: [],
-    日卡: [],
-    阶数: ["I", "II", "III", "IV"],
-    武器: ["专武", "重剑", "单手剑", "法杖", "手枪"],
-    对谱: ["顺谱", "对六", "对五", "对四", "对三", "对二", "对一", "对零"],
-    沈星回搭档: ["光猎", "逐光骑士", "遥远少年", "Evol特警", "深空猎人"],
-    黎深搭档: ["九黎司命", "永恒先知", "极地军医", "黎明抹杀者", "临空医生"],
-    祁煜搭档: ["潮汐之神", "深海潜行者", "画坛新锐", "海妖魅影", "艺术家"],
-    秦彻搭档: ["深渊主宰", "无尽掠夺者", "异界来客"],
-    夏以昼搭档: ["终极兵器X-02", "远空执舰官", "深空飞行员"],
-    沈星回日卡: ["末夜", "逐光", "睱日", "弦光", "心情", "匿光"],
-    黎深日卡: ["拥雪", "永恒", "夜色", "静谧", "心情", "深林"],
-    祁煜日卡: ["神殿", "深海", "点染", "斑斓", "心情", "碧海"],
-    秦彻日卡: ["深渊", "掠心", "锋尖", "戮夜"],
-    夏以昼日卡: ["寂路", "远空", "长昼", "离途"],
-  };
-
-  const PANEL_KEYS = [
-    "攻击", "防御", "生命", "对谱", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "搭档", "搭档身份", "日卡", "阶数", "武器"
-  ];
-
-  const DISPLAY_PANEL_KEYS = [
-    "攻击", "防御", "生命", "对谱", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "搭档身份", "日卡", "阶数", "武器"
-  ];
+  import * as constants from './constants.js';
 
   const levelSelect = document.getElementById("level");
   const panelInputsDiv = document.getElementById("panel-inputs");
+  const latestRecordsDiv = document.getElementById("latest-records");
+  const latestRecordsTitle = document.getElementById("latest-records-title")
   const recordsDiv = document.getElementById("records");
   const submitButton = document.getElementById("submit");
   const recordsTitle = document.getElementById("records-title")
 
   const PAGE_SIZE = 10;
+
+  const LEVEL_TYPES = [ "A4", "B4", "C4" ]
+
+  const LATEST_DISPLAY_PANEL_KEYS = [
+    "关卡", "攻击", "防御", "生命", "对谱", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "搭档身份", "日卡", "阶数", "武器"
+  ];
 
   // 初始化关卡类型
   LEVEL_TYPES.forEach((key) => {
@@ -146,22 +138,24 @@
     levelSelect.appendChild(option);
   });
 
+  showLatestRecords();
+
   function updatePartnerDropdown() {
     const partnerSelect = document.getElementById("input-搭档");
 
-    partnerSelect.innerHTML = `<option value="">--搭档--</option>` + DROPDOWN_VALUES["搭档"].map(v => `<option value="${v}">${v}</option>`).join("");
+    partnerSelect.innerHTML = `<option value="">--搭档--</option>` + constants.DROPDOWN_VALUES["搭档"].map(v => `<option value="${v}">${v}</option>`).join("");
     refreshPartnerAndSetDropdowns();
   }
 
   // 填充输入表单
-  PANEL_KEYS.forEach(key => {
+  constants.PANEL_KEYS.forEach(key => {
     const wrapper = document.createElement("div");
     wrapper.className = "col-md-4";
-    if (DROPDOWN_VALUES[key]) {
+    if (constants.DROPDOWN_VALUES[key]) {
       const select = document.createElement("select");
       select.id = `input-${key}`;
       select.className = "form-select";
-      select.innerHTML = `<option value="">--${key}--</option>` + DROPDOWN_VALUES[key].map(v => `<option value="${v}">${v}</option>`).join("");
+      select.innerHTML = `<option value="">--${key}--</option>` + constants.DROPDOWN_VALUES[key].map(v => `<option value="${v}">${v}</option>`).join("");
       wrapper.appendChild(select);
     } else {
       const input = document.createElement("input");
@@ -176,7 +170,7 @@
 
   function getFormData() {
     const data = {};
-    PANEL_KEYS.forEach(key => {
+    constants.PANEL_KEYS.forEach(key => {
       data[key] = document.getElementById(`input-${key}`).value.trim();
     });
     data["时间"]= new Date().toISOString();
@@ -184,6 +178,7 @@
   }
 
   function showRecords(page = 1) {
+    hideLatestRecords();
     recordsTitle.classList.remove("d-none");
     recordsDiv.classList.remove("d-none");
 
@@ -197,10 +192,10 @@
               let list = result.records || [];
 
               recordsDiv.innerHTML = list.map(r => {
-                const panelRows = DISPLAY_PANEL_KEYS.map((k, i) => {
+                const panelRows = constants.DISPLAY_PANEL_KEYS.map((k, i) => {
                   const content = `<strong>${k}:</strong> ${r[k] || "-"}`;
                   const col = `<div class="col-md-3">${content}</div>`;
-                  return (i % 4 === 0 ? '<div class="row mb-1">' : '') + col + (i % 4 === 3 || i === DISPLAY_PANEL_KEYS.length - 1 ? '</div>' : '');
+                  return (i % 4 === 0 ? '<div class="row mb-1">' : '') + col + (i % 4 === 3 || i === constants.DISPLAY_PANEL_KEYS.length - 1 ? '</div>' : '');
                 }).join("");
                 // return `<div class="record">${panelRows}<div class="text-muted small mt-2">${r.时间 || ""}</div></div>`;
                 return `<div class="record">${panelRows}</div>`;
@@ -226,13 +221,42 @@
             });
   }
 
-  function showToast(message, duration = 3000) {
+  function showLatestRecords() {
+    apiGet('latest-championships-records', {})
+            .then(result => {
+              let list = result.records || [];
+
+              latestRecordsDiv.innerHTML = list.map(r => {
+                const panelRows = LATEST_DISPLAY_PANEL_KEYS.map((k, i) => {
+                  const content = `<strong>${k}:</strong> ${r[k] || "-"}`;
+                  const col = `<div class="col-md-3">${content}</div>`;
+                  return (i % 4 === 0 ? '<div class="row mb-1">' : '') + col + (i % 4 === 3 || i === LATEST_DISPLAY_PANEL_KEYS.length - 1 ? '</div>' : '');
+                }).join("");
+                return `<div class="record">${panelRows}</div>`;
+              }).join("") || "暂无记录";
+            })
+            .catch(err => {
+              console.error("获取失败", err);
+              alert("获取失败：" + err.message);
+            });
+  }
+
+  function hideLatestRecords() {
+    latestRecordsTitle.classList.add("d-none");
+    latestRecordsDiv.classList.add("d-none");
+  }
+
+  function showToast(title, message, duration = 3000) {
     const toast = document.getElementById("toast");
-    toast.innerText = message;
     toast.style.display = "block";
     setTimeout(() => {
       toast.style.display = "none";
     }, duration);
+
+    const toastTitle = document.getElementById("toast-header");
+    const toastBody = document.getElementById("toast-body");
+    toastTitle.innerText = title;
+    toastBody.innerText = message;
   }
 
   // 获取记录
@@ -248,6 +272,7 @@
 
   // 显示上传表单
   document.getElementById("start-upload").addEventListener("click", () => {
+    hideLatestRecords();
     panelInputsDiv.classList.remove("d-none");
     submitButton.classList.remove("d-none");
   });
@@ -264,15 +289,15 @@
     apiPost('championships-record', record)
             .then(response => {
               if (response.status === 'OK') {
-                showToast("上传成功！");
+                showToast("上传成功", "Thanks♪(･ω･)ﾉ感谢您的使用！", 3000);
                 panelInputsDiv.classList.add("d-none");
                 submitButton.classList.add("d-none");
                 showRecords(); // 可选刷新记录
               } else {
-                alert('提交失败: ' + response.error);
+                showToast("上传失败", response.error, 3000);
               }
             })
-            .catch(err => alert('请求失败: ' + err.message));
+            .catch(err => showToast("上传失败", err.message, 3000));
 
     setTimeout(() => {
       submitButton.disabled = false;
@@ -287,15 +312,15 @@
     const partnerSelect = document.getElementById("input-搭档");
     const selectedPartner = partnerSelect.value;
 
-    let partnerOptions = DROPDOWN_VALUES["搭档身份"];
-    let setOptions = DROPDOWN_VALUES["日卡"];
+    let partnerOptions = constants.DROPDOWN_VALUES["搭档身份"];
+    let setOptions = constants.DROPDOWN_VALUES["日卡"];
 
     if (selectedPartner) {
       const partnerKey = `${selectedPartner}搭档`;
-      partnerOptions = DROPDOWN_VALUES[partnerKey]
+      partnerOptions = constants.DROPDOWN_VALUES[partnerKey]
 
       const setKey = `${selectedPartner}日卡`;
-      setOptions = DROPDOWN_VALUES[setKey];
+      setOptions = constants.DROPDOWN_VALUES[setKey];
     }
 
     const partnerStyleSelect = document.getElementById("input-搭档身份");
