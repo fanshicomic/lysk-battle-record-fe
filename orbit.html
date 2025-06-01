@@ -145,6 +145,10 @@
     "攻击", "防御", "生命", "对谱", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "搭档", "搭档身份", "日卡", "阶数", "武器"
   ];
 
+  const DISPLAY_PANEL_KEYS = [
+    "攻击", "防御", "生命", "对谱", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "搭档身份", "日卡", "阶数", "武器"
+  ];
+
   const levelTypeSelect = document.getElementById("level-type");
   const levelNumberInput = document.getElementById("level-number");
   const levelPartSelect = document.getElementById("level-part");
@@ -257,38 +261,38 @@
     const offset = (page - 1) * PAGE_SIZE;
 
     apiGet('records', { type, level, offset })
-            .then(result => {
-              let cnt = result.total
-              let list = result.records || [];
+    .then(result => {
+      let cnt = result.total
+      let list = result.records || [];
 
-              recordsDiv.innerHTML = list.map(r => {
-                const panelRows = PANEL_KEYS.map((k, i) => {
-                  const content = `<strong>${k}:</strong> ${r[k] || "-"}`;
-                  const col = `<div class="col-md-3">${content}</div>`;
-                  return (i % 4 === 0 ? '<div class="row mb-1">' : '') + col + (i % 4 === 3 || i === PANEL_KEYS.length - 1 ? '</div>' : '');
-                }).join("");
-                // return `<div class="record">${panelRows}<div class="text-muted small mt-2">${r.时间 || ""}</div></div>`;
-                return `<div class="record">${panelRows}</div>`;
-              }).join("") || "暂无记录";
+      recordsDiv.innerHTML = list.map(r => {
+        const panelRows = DISPLAY_PANEL_KEYS.map((k, i) => {
+          const content = `<strong>${k}:</strong> ${r[k] || "-"}`;
+          const col = `<div class="col-md-3">${content}</div>`;
+          return (i % 4 === 0 ? '<div class="row mb-1">' : '') + col + (i % 4 === 3 || i === DISPLAY_PANEL_KEYS.length - 1 ? '</div>' : '');
+        }).join("");
+        // return `<div class="record">${panelRows}<div class="text-muted small mt-2">${r.时间 || ""}</div></div>`;
+        return `<div class="record">${panelRows}</div>`;
+      }).join("") || "暂无记录";
 
-              const totalPages = Math.ceil(cnt / PAGE_SIZE);
-              const paginationDiv = document.getElementById("pagination");
-              paginationDiv.innerHTML = "";
+      const totalPages = Math.ceil(cnt / PAGE_SIZE);
+      const paginationDiv = document.getElementById("pagination");
+      paginationDiv.innerHTML = "";
 
-              if (totalPages > 1) {
-                for (let i = 1; i <= totalPages; i++) {
-                  const btn = document.createElement("button");
-                  btn.className = `btn btn-sm mx-1 ${i === page ? "btn-primary" : "btn-outline-primary"}`;
-                  btn.textContent = i;
-                  btn.addEventListener("click", () => showRecords(i));
-                  paginationDiv.appendChild(btn);
-                }
-              }
-            })
-            .catch(err => {
-              console.error("获取失败", err);
-              alert("获取失败：" + err.message);
-            });
+      if (totalPages > 1) {
+        for (let i = 1; i <= totalPages; i++) {
+          const btn = document.createElement("button");
+          btn.className = `btn btn-sm mx-1 ${i === page ? "btn-primary" : "btn-outline-primary"}`;
+          btn.textContent = i;
+          btn.addEventListener("click", () => showRecords(i));
+          paginationDiv.appendChild(btn);
+        }
+      }
+    })
+    .catch(err => {
+      console.error("获取失败", err);
+      alert("获取失败：" + err.message);
+    });
   }
 
   function showToast(message, duration = 3000) {
@@ -335,17 +339,17 @@
     const record = { 关卡: type, 关数: levelNumber, ...data };
 
     apiPost('record', record)
-            .then(response => {
-              if (response.status === 'OK') {
-                showToast("上传成功！");
-                panelInputsDiv.classList.add("d-none");
-                submitButton.classList.add("d-none");
-                showRecords(); // 可选刷新记录
-              } else {
-                alert('提交失败: ' + response.error);
-              }
-            })
-            .catch(err => alert('请求失败: ' + err.message));
+    .then(response => {
+      if (response.status === 'OK') {
+        showToast("上传成功！");
+        panelInputsDiv.classList.add("d-none");
+        submitButton.classList.add("d-none");
+        showRecords(); // 可选刷新记录
+      } else {
+        alert('提交失败: ' + response.error);
+      }
+    })
+    .catch(err => alert('请求失败: ' + err.message));
 
     setTimeout(() => {
       submitButton.disabled = false;
