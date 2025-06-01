@@ -1,7 +1,7 @@
 @mixin moving-sphere($color, $top, $left, $delay, $duration) {
     background-color: $color;
     opacity: 0.3;
-    position: absolute;
+    position: fixed;
     top: $top;
     left: $left;
     width: 2200px;
