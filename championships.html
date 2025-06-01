@@ -191,7 +191,7 @@
 
     const offset = (page - 1) * PAGE_SIZE;
 
-    apiGet('records', { level, offset })
+    apiGet('championships-records', { level, offset })
             .then(result => {
               let cnt = result.total
               let list = result.records || [];
@@ -261,7 +261,7 @@
     const data = getFormData();
     const record = { 关卡: level, ...data };
 
-    apiPost('record', record)
+    apiPost('championships-record', record)
             .then(response => {
               if (response.status === 'OK') {
                 showToast("上传成功！");

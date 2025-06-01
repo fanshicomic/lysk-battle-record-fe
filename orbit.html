@@ -102,9 +102,13 @@
 <button id="submit" class="btn btn-primary w-100 d-none">提交记录</button>
 
 <!-- 展示记录 -->
-<h2 id="records-title" class="mt-5 d-none">面板记录</h2>
-<div id="records" class= "d-none"></div>
+<h2 id="records-title" class="mt-5 d-none">关卡面板记录</h2>
+<div id="records" class="d-none"></div>
 <div id="pagination" class="mt-3 d-flex justify-content-center"></div>
+
+<!-- 展示最新记录 -->
+<h2 id="latest-records-title" class="mt-5">最新面板记录</h2>
+<div id="latest-records"></div>
 
 <div id="toast" style="display:none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%);
     background-color: rgba(0,0,0,0.8); color: white; padding: 10px 20px; border-radius: 8px; z-index: 9999;">
@@ -149,12 +153,18 @@
     "攻击", "防御", "生命", "对谱", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "搭档身份", "日卡", "阶数", "武器"
   ];
 
+  const LATEST_DISPLAY_PANEL_KEYS = [
+    "关卡", "关数", "攻击", "防御", "生命", "对谱", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "搭档身份", "日卡", "阶数", "武器"
+  ];
+
   const levelTypeSelect = document.getElementById("level-type");
   const levelNumberInput = document.getElementById("level-number");
   const levelPartSelect = document.getElementById("level-part");
   const partContainer = document.getElementById("part-container");
   const panelInputsDiv = document.getElementById("panel-inputs");
   const recordsDiv = document.getElementById("records");
+  const latestRecordsDiv = document.getElementById("latest-records");
+  const latestRecordsTitle = document.getElementById("latest-records-title")
   const submitButton = document.getElementById("submit");
   const actionButtons = document.getElementById("action-buttons");
   const recordsTitle = document.getElementById("records-title")
@@ -168,6 +178,8 @@
     option.textContent = type;
     levelTypeSelect.appendChild(option);
   });
+
+  showLatestRecords();
 
   function validatePartDropdown() {
     const type = levelTypeSelect.value;
@@ -252,6 +264,7 @@
   }
 
   function showRecords(page = 1) {
+    hideLatestRecords();
     recordsTitle.classList.remove("d-none");
     recordsDiv.classList.remove("d-none");
 
@@ -260,7 +273,7 @@
 
     const offset = (page - 1) * PAGE_SIZE;
 
-    apiGet('records', { type, level, offset })
+    apiGet('orbit-records', { type, level, offset })
     .then(result => {
       let cnt = result.total
       let list = result.records || [];
@@ -295,6 +308,31 @@
     });
   }
 
+  function showLatestRecords() {
+    apiGet('latest-orbit-records', {})
+            .then(result => {
+              let list = result.records || [];
+
+              latestRecordsDiv.innerHTML = list.map(r => {
+                const panelRows = LATEST_DISPLAY_PANEL_KEYS.map((k, i) => {
+                  const content = `<strong>${k}:</strong> ${r[k] || "-"}`;
+                  const col = `<div class="col-md-3">${content}</div>`;
+                  return (i % 4 === 0 ? '<div class="row mb-1">' : '') + col + (i % 4 === 3 || i === LATEST_DISPLAY_PANEL_KEYS.length - 1 ? '</div>' : '');
+                }).join("");
+                return `<div class="record">${panelRows}</div>`;
+              }).join("") || "暂无记录";
+            })
+            .catch(err => {
+              console.error("获取失败", err);
+              alert("获取失败：" + err.message);
+            });
+  }
+
+  function hideLatestRecords() {
+    latestRecordsTitle.classList.add("d-none");
+    latestRecordsDiv.classList.add("d-none");
+  }
+
   function showToast(message, duration = 3000) {
     const toast = document.getElementById("toast");
     toast.innerText = message;
@@ -317,6 +355,7 @@
 
   // 显示上传表单
   document.getElementById("start-upload").addEventListener("click", () => {
+    hideLatestRecords();
     panelInputsDiv.classList.remove("d-none");
     submitButton.classList.remove("d-none");
   });
@@ -338,7 +377,7 @@
     const data = getFormData();
     const record = { 关卡: type, 关数: levelNumber, ...data };
 
-    apiPost('record', record)
+    apiPost('orbit-record', record)
     .then(response => {
       if (response.status === 'OK') {
         showToast("上传成功！");
