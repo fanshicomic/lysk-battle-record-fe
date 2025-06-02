@@ -134,8 +134,16 @@
 
   const LEVEL_TYPES = [ "A4", "B4", "C4" ]
 
+  const PANEL_KEYS = [
+    "生命", "攻击", "防御", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "对谱", "搭档", "搭档身份", "日卡", "阶数", "武器", "加成"
+  ];
+
+  const DISPLAY_PANEL_KEYS = [
+    "攻击", "防御", "生命", "对谱", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "搭档身份", "日卡", "阶数", "武器", "加成"
+  ];
+
   const LATEST_DISPLAY_PANEL_KEYS = [
-    "关卡", "攻击", "防御", "生命", "对谱", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "搭档身份", "日卡", "阶数", "武器"
+    "关卡", "攻击", "防御", "生命", "对谱", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "搭档身份", "日卡", "阶数", "武器", "加成"
   ];
 
   // 初始化关卡类型
@@ -156,7 +164,7 @@
   }
 
   // 填充输入表单
-  constants.PANEL_KEYS.forEach(key => {
+  PANEL_KEYS.forEach(key => {
     const wrapper = document.createElement("div");
     wrapper.className = "col-md-4";
     if (constants.DROPDOWN_VALUES[key]) {
@@ -178,7 +186,7 @@
 
   function getFormData() {
     const data = {};
-    constants.PANEL_KEYS.forEach(key => {
+    PANEL_KEYS.forEach(key => {
       data[key] = document.getElementById(`input-${key}`).value.trim();
     });
     data["时间"]= new Date().toISOString();
@@ -200,10 +208,10 @@
               let list = result.records || [];
 
               recordsDiv.innerHTML = list.map(r => {
-                const panelRows = constants.DISPLAY_PANEL_KEYS.map((k, i) => {
+                const panelRows = DISPLAY_PANEL_KEYS.map((k, i) => {
                   const content = `<strong>${k}:</strong> ${r[k] || "-"}`;
                   const col = `<div class="col-md-3">${content}</div>`;
-                  return (i % 4 === 0 ? '<div class="row mb-1">' : '') + col + (i % 4 === 3 || i === constants.DISPLAY_PANEL_KEYS.length - 1 ? '</div>' : '');
+                  return (i % 4 === 0 ? '<div class="row mb-1">' : '') + col + (i % 4 === 3 || i === DISPLAY_PANEL_KEYS.length - 1 ? '</div>' : '');
                 }).join("");
                 // return `<div class="record">${panelRows}<div class="text-muted small mt-2">${r.时间 || ""}</div></div>`;
                 return `<div class="record">${panelRows}</div>`;
