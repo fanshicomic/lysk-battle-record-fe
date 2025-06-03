@@ -102,6 +102,9 @@
 </div>
 
 <script>
+  // wake up the server
+  apiGet('ping', {})
+
   const container = document.querySelector('.blobs');
   const blobCount = 10;
   for (let i = 0; i < blobCount; i++) {
