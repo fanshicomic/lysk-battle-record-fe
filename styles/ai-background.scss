@@ -1,0 +1,71 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #123;
+  overflow: hidden;
+}
+
+.blobs {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.blob {
+  position: absolute;
+  width: 30vmin;
+  height: 30vmin;
+  border-radius: 50%;
+  filter: blur(50px);
+  mix-blend-mode: screen;
+}
+
+// 生成多个光球，每个球有不同的动画
+@for $i from 1 through 10 {
+  @keyframes float-#{$i} {
+    0% {
+      transform: translate(0, 0) scale(1) rotate(0deg);
+    }
+    100% {
+      transform: translate(
+                      #{random(60) - 30}vw,   // -30vw ~ +30vw
+                      #{random(60) - 30}vh    // -30vh ~ +30vh
+      )
+      scale(#{1 + random() * 0.3});
+    }
+  }
+
+  .blob:nth-child(#{$i}) {
+    $top: -10 + random(110);
+    $left: -10 + random(110);
+
+    $h1: random(360);
+    $h2: random(360);
+    $duration: 10 + random(30);
+
+    top: $top * 1%;
+    left: $left * 1%;
+    background: radial-gradient(
+                    circle,
+                    hsla(random() * 360, 100%, 50%, 0.8),
+                    hsla(random() * 360, 100%, 50%, 0.6),
+                    transparent 70%
+    );
+
+    animation: float #{$duration}s infinite ease-in-out alternate;
+    $origin-x: -50 + random(100); // e.g. -50vw ~ +50vw
+    $origin-y: -50 + random(100); // e.g. -50vh ~ +50vh
+    transform-origin: #{$origin-x}vw #{$origin-y}vh;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translateX(-20px) scale(1) rotate(0deg);
+  }
+  100% {
+    transform: translateX(20px) scale(1.3) rotate(360deg);
+  }
+}
