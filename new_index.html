@@ -101,7 +101,8 @@
   </a>
 </div>
 
-<script>
+<script type="module">
+  import { apiGet, apiPost } from './util.js';
   // wake up the server
   apiGet('ping', {})
 
