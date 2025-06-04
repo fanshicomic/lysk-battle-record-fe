@@ -9,10 +9,33 @@
   <link rel="stylesheet" type="text/css" href="./styles/ai-background.css" />
   <link rel="stylesheet" type="text/css" href="./styles/hologram.css" />
   <style>
+    #hr-section {
+      width: 60vw;
+      margin-left: 20vw;
+      text-align: right;
+    }
+
     hr {
+      width: 100%;
       color: white;
+      margin-bottom: .3em;
+    }
+
+    #title {
+      text-align: center;
+      color: white;
+      margin-top: 8vh;
+      font-size: xx-large;
+      padding: 10px;
       width: 70vw;
       margin-left: 15vw;
+    }
+
+    #sub-title {
+      width: 100%;
+      color: white;
+      font-size: x-small;
+      opacity: .25;
     }
 
     body {
@@ -30,7 +53,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-top: 9vh;
+      margin-top: 7vh;
     }
 
     .btn {
@@ -62,16 +85,6 @@
       justify-content: center;
       height: 40px;
     }
-
-    #title {
-      text-align: center;
-      color: white;
-      margin-top: 8vh;
-      font-size: x-large;
-      padding: 10px;
-      width: 70vw;
-      margin-left: 15vw;
-    }
   </style>
 </head>
 <body>
@@ -79,7 +92,10 @@
 </div>
 <div class="main-content">
   <h1 id="title">深空面板助手</h1>
-  <hr />
+  <div id="hr-section">
+    <hr />
+    <p id="sub-title">Deepspace Battle Helper V1.1</p>
+  </div>
   <a href="orbit.html" style="text-decoration: none; color: inherit;">
     <div class="button-section">
       <button class="btn hologram">
