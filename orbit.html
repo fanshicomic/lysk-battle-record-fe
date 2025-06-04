@@ -1,435 +1,504 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>深空面板助手</title>
-  <link rel="icon" type="image/x-icon" href="./images/favicon.jpg">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      padding: 20px;
-      max-width: 700px;
-      margin: auto;
-      background-color: #f9f9f9;
-      font-size: 16px;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>深空面板助手</title>
+    <link rel="icon" type="image/x-icon" href="./images/favicon.jpg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./styles/common.css" />
+    <link rel="stylesheet" type="text/css" href="./styles/custom-select.css" />
+    <style>
+        body {
+            height: 100vh;
+            color: white;
+            background: linear-gradient(0deg, #23314c, #45324c);
+        }
 
-    h1, h2 {
-      margin-bottom: 20px;
-      font-size: 1.5rem;
-      text-align: center;
-    }
+        h1, h2 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+        }
 
-    .toast {
-      position: absolute;
-      top: 350px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
+        .main-content {
+            overflow: scroll;
+        }
 
-    .form-label {
-      margin-top: 10px;
-      font-size: 1rem;
-    }
+        .content-wrapper {
+            width: 70vw;
+            max-width: 350px;
+            min-width: 250px;
+            margin: 0 auto
+        }
 
-    .record {
-      border-left: 4px solid #0d6efd;
-      background: #fff;
-      padding: 15px;
-      margin-top: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      font-size: 0.95rem;
-    }
+        .mb-3 {
+            margin-top: 30px;
+        }
 
-    .form-control::placeholder {
-      color: #aaa;
-    }
+        .form-label {
+            margin-top: 10px;
+            font-size: 1rem;
+        }
 
-    .btn {
-      font-size: 0.95rem;
-    }
+        .record {
+            border-left: 4px solid #0d6efd;
+            background: #fff;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            font-size: 0.95rem;
+        }
 
-    @media (max-width: 576px) {
-      .col-md-4, .col-md-3 {
-        flex: 0 0 100%;
-        max-width: 50%;
-      }
+        .form-control::placeholder {
+            color: #aaa;
+        }
 
-      h1, h2 {
-        font-size: 1.25rem;
-      }
+        .btn {
+            font-size: 0.95rem;
+        }
 
-      .btn {
-        width: 100%;
-        margin-top: 5px;
-      }
+        .record, .form-control, .form-select, .btn {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
 
-      #action-buttons .btn {
-        width: 48%;
-      }
-    }
-  </style>
+        .btn-primary {
+            background-color: rgba(128, 90, 213, 0.3);
+            border-color: rgba(128, 90, 213, 0.4);
+            color: #2e2e2e;
+        }
+
+        .btn-outline-primary {
+            border-color: rgba(128, 90, 213, 0.4);
+            color: #2e2e2e;
+        }
+    </style>
 </head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-V32YDXY183"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
-  gtag('config', 'G-V32YDXY183');
+    gtag('config', 'G-V32YDXY183');
 </script>
 <body>
-<h1>轨道面板查询</h1>
+<div class="main-content">
+    <div class="content-wrapper">
+        <a href="./index.html" style="text-decoration: none; color: inherit;">
+            <label class="back-button"><img class="back-icon" src="./images/back.PNG" /></label>
+        </a>
+        <h1>轨道面板查询</h1>
 
-<!-- 基础输入 -->
-<div class="mb-3">
-  <label for="level-type" class="form-label">选择关卡类型：</label>
-  <select id="level-type" class="form-select">
-    <option value="">--请选择--</option>
-  </select>
-</div>
+        <!-- 基础输入 -->
+        <div class="mb-3">
+            <!--      <select id="level-type" class="form-select">-->
+            <!--        <option value="">&#45;&#45;请选择关卡类型&#45;&#45;</option>-->
+            <!--      </select>-->
+            <div class="custom-select">
+                <div id="level-type" class="selected">--请选择关卡类型--</div>
+                <ul class="options">
+                    <li>光</li>
+                    <li>冰</li>
+                    <li>火</li>
+                    <li>能量</li>
+                    <li>引力</li>
+                    <li>开放</li>
+                </ul>
+            </div>
+        </div>
 
-<div class="mb-3">
-  <label for="level-number" class="form-label">输入关卡编号：</label>
-  <input id="level-number" type="number" class="form-control" placeholder="请输入关卡编号" min="1">
-</div>
+        <div class="mb-3">
+            <input id="level-number" type="number" class="form-control" placeholder="请输入关卡编号" min="1">
+        </div>
 
-<!-- 上下段 -->
-<div class="mb-3 d-none" id="part-container">
-  <label for="level-part" class="form-label">选择段：</label>
-  <select id="level-part" class="form-select">
-    <option value="上">上</option>
-    <option value="下">下</option>
-  </select>
-</div>
+        <!-- 上下段 -->
+        <div class="mb-3 d-none" id="part-container">
+            <label for="level-part" class="form-label">选择段：</label>
+            <select id="level-part" class="form-select">
+                <option value="上">上</option>
+                <option value="下">下</option>
+            </select>
+        </div>
 
-<!-- 动作按钮 -->
-<div id="action-buttons" class="mb-3 d-none">
-  <button id="fetch-records" class="btn btn-outline-primary me-2">获取面板记录</button>
-  <button id="start-upload" class="btn btn-outline-success">上传面板记录</button>
-</div>
+        <!-- 动作按钮 -->
+        <div id="action-buttons" class="mb-3 d-none">
+            <button id="fetch-records" class="btn btn-outline-primary me-2">获取面板记录</button>
+            <button id="start-upload" class="btn btn-outline-success">上传面板记录</button>
+        </div>
 
-<!-- 动态面板输入 -->
-<div id="panel-inputs" class="row g-2 mb-3 d-none"></div>
-<button id="submit" class="btn btn-primary w-100 d-none">提交记录</button>
+        <!-- 动态面板输入 -->
+        <div id="panel-inputs" class="row g-2 mb-3 d-none"></div>
+        <button id="submit" class="btn btn-primary w-100 d-none">提交记录</button>
 
-<!-- 展示记录 -->
-<h2 id="records-title" class="mt-5 d-none">关卡面板记录</h2>
-<div id="records" class="d-none"></div>
-<div id="pagination" class="mt-3 d-flex justify-content-center"></div>
+        <!-- 展示记录 -->
+        <h2 id="records-title" class="mt-5 d-none">关卡面板记录</h2>
+        <div id="records" class="d-none"></div>
+        <div id="pagination" class="mt-3 d-flex justify-content-center"></div>
 
-<!-- 展示最新记录 -->
-<h2 id="latest-records-title" class="mt-5">最新面板记录</h2>
-<div id="latest-records"></div>
+        <!-- 展示最新记录 -->
+        <h2 id="latest-records-title" class="mt-5">最新面板记录</h2>
+        <div id="latest-records"></div>
 
-<div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-  <div class="toast-header">
-    <strong class="me-auto" id="toast-header"></strong>
-    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-  </div>
-  <div class="toast-body" id="toast-body"></div>
+        <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <strong class="me-auto" id="toast-header"></strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body" id="toast-body"></div>
+        </div>
+    </div>
 </div>
 
 <script type="module">
-  import { apiGet, apiPost } from './util.js';
-  import * as constants from './constants.js';
+    import { apiGet, apiPost } from './util.js';
+    import * as constants from './constants.js';
 
-  const levelTypeSelect = document.getElementById("level-type");
-  const levelNumberInput = document.getElementById("level-number");
-  const levelPartSelect = document.getElementById("level-part");
-  const partContainer = document.getElementById("part-container");
-  const panelInputsDiv = document.getElementById("panel-inputs");
-  const recordsDiv = document.getElementById("records");
-  const latestRecordsDiv = document.getElementById("latest-records");
-  const latestRecordsTitle = document.getElementById("latest-records-title")
-  const submitButton = document.getElementById("submit");
-  const actionButtons = document.getElementById("action-buttons");
-  const recordsTitle = document.getElementById("records-title")
+    const levelTypeSelect = document.getElementById("level-type");
+    const levelNumberInput = document.getElementById("level-number");
+    const levelPartSelect = document.getElementById("level-part");
+    const partContainer = document.getElementById("part-container");
+    const panelInputsDiv = document.getElementById("panel-inputs");
+    const recordsDiv = document.getElementById("records");
+    const latestRecordsDiv = document.getElementById("latest-records");
+    const latestRecordsTitle = document.getElementById("latest-records-title")
+    const submitButton = document.getElementById("submit");
+    const actionButtons = document.getElementById("action-buttons");
+    const recordsTitle = document.getElementById("records-title")
 
-  const PAGE_SIZE = 10;
+    const PAGE_SIZE = 10;
 
-  const PANEL_KEYS = [
-    "生命", "攻击", "防御", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "对谱", "对谱加成", "搭档", "搭档身份", "日卡", "阶数", "武器"
-  ];
+    const PANEL_KEYS = [
+        "生命", "攻击", "防御", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "对谱", "对谱加成", "搭档", "搭档身份", "日卡", "阶数", "武器"
+    ];
 
-  const DISPLAY_PANEL_KEYS = [
-    "攻击", "防御", "生命", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "对谱", "对谱加成", "搭档身份", "日卡", "阶数", "武器"
-  ];
+    const DISPLAY_PANEL_KEYS = [
+        "攻击", "防御", "生命", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "对谱", "对谱加成", "搭档身份", "日卡", "阶数", "武器"
+    ];
 
-  const LATEST_DISPLAY_PANEL_KEYS = [
-    "关卡", "关数", "攻击", "防御", "生命", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "对谱", "对谱加成", "搭档身份", "日卡", "阶数", "武器"
-  ];
+    const LATEST_DISPLAY_PANEL_KEYS = [
+        "关卡", "关数", "攻击", "防御", "生命", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "对谱", "对谱加成", "搭档身份", "日卡", "阶数", "武器"
+    ];
 
-  // 初始化关卡类型
-  constants.LEVEL_TYPES.forEach(({ type }) => {
-    const option = document.createElement("option");
-    option.value = type;
-    option.textContent = type;
-    levelTypeSelect.appendChild(option);
-  });
+    // 初始化关卡类型
+    // constants.LEVEL_TYPES.forEach(({ type }) => {
+    //   const option = document.createElement("option");
+    //   option.value = type;
+    //   option.textContent = type;
+    //   levelTypeSelect.appendChild(option);
+    // });
 
-  showLatestRecords();
+    showLatestRecords();
 
-  function validatePartDropdown() {
-    const type = levelTypeSelect.value;
-    const number = parseInt(levelNumberInput.value);
-    const selected = constants.LEVEL_TYPES.find(l => l.type === type);
-    if (selected && number && number % 10 === 0 && number >= 1 && number <= selected.count) {
-      partContainer.classList.remove("d-none");
-    } else {
-      partContainer.classList.add("d-none");
-    }
-  }
-
-  function updatePartnerDropdown() {
-    const type = levelTypeSelect.value;
-    const partnerSelect = document.getElementById("input-搭档");
-
-    if (type === "开放") {
-      partnerSelect.innerHTML = `<option value="">--搭档--</option>` + constants.DROPDOWN_VALUES["搭档"].map(v => `<option value="${v}">${v}</option>`).join("");
-      refreshPartnerAndSetDropdowns()
-      return
-    }
-
-    const levelPartnerMap = {
-      "光": "沈星回",
-      "冰": "黎深",
-      "火": "祁煜",
-      "能量": "秦彻",
-      "引力": "夏以昼"
-    };
-
-    partnerSelect.innerHTML = `<option value="${levelPartnerMap[type]}">${levelPartnerMap[type]}</option>`;
-    refreshPartnerAndSetDropdowns()
-  }
-
-  function checkIfReady() {
-    const type = levelTypeSelect.value;
-    const number = parseInt(levelNumberInput.value);
-    const selected = constants.LEVEL_TYPES.find(l => l.type === type);
-    if (type && number && selected && number >= 1 && number <= selected.count) {
-      actionButtons.classList.remove("d-none");
-    } else {
-      actionButtons.classList.add("d-none");
-    }
-  }
-
-  // 填充输入表单
-  PANEL_KEYS.forEach(key => {
-    const wrapper = document.createElement("div");
-    wrapper.className = "col-md-4";
-    if (constants.DROPDOWN_VALUES[key]) {
-      const select = document.createElement("select");
-      select.id = `input-${key}`;
-      select.className = "form-select";
-      select.innerHTML = `<option value="">--${key}--</option>` + constants.DROPDOWN_VALUES[key].map(v => `<option value="${v}">${v}</option>`).join("");
-      wrapper.appendChild(select);
-    } else {
-      const input = document.createElement("input");
-      input.placeholder = key;
-      input.type = "number"
-      input.id = `input-${key}`;
-      input.className = "form-control";
-      wrapper.appendChild(input);
-    }
-    panelInputsDiv.appendChild(wrapper);
-  });
-
-  function getFormData() {
-    const data = {};
-    PANEL_KEYS.forEach(key => {
-      data[key] = document.getElementById(`input-${key}`).value.trim();
-    });
-    data["时间"]= new Date().toISOString();
-    return data;
-  }
-
-  function getLevelNumber() {
-    const number = parseInt(levelNumberInput.value);
-    if (number % 10 === 0 && !partContainer.classList.contains("d-none")) {
-      return `${number}_${levelPartSelect.value}`;
-    }
-    return number;
-  }
-
-  function showRecords(page = 1) {
-    hideLatestRecords();
-    recordsTitle.classList.remove("d-none");
-    recordsDiv.classList.remove("d-none");
-
-    const type = levelTypeSelect.value;
-    const level = getLevelNumber();
-
-    const offset = (page - 1) * PAGE_SIZE;
-
-    apiGet('orbit-records', { type, level, offset })
-    .then(result => {
-      let cnt = result.total
-      let list = result.records || [];
-
-      recordsDiv.innerHTML = list.map(r => {
-        const panelRows = DISPLAY_PANEL_KEYS.map((k, i) => {
-          const content = `<strong>${k}:</strong> ${r[k] || "-"}`;
-          const col = `<div class="col-md-3">${content}</div>`;
-          return (i % 4 === 0 ? '<div class="row mb-1">' : '') + col + (i % 4 === 3 || i === DISPLAY_PANEL_KEYS.length - 1 ? '</div>' : '');
-        }).join("");
-        // return `<div class="record">${panelRows}<div class="text-muted small mt-2">${r.时间 || ""}</div></div>`;
-        return `<div class="record">${panelRows}</div>`;
-      }).join("") || "暂无记录";
-
-      const totalPages = Math.ceil(cnt / PAGE_SIZE);
-      const paginationDiv = document.getElementById("pagination");
-      paginationDiv.innerHTML = "";
-
-      if (totalPages > 1) {
-        for (let i = 1; i <= totalPages; i++) {
-          const btn = document.createElement("button");
-          btn.className = `btn btn-sm mx-1 ${i === page ? "btn-primary" : "btn-outline-primary"}`;
-          btn.textContent = i;
-          btn.addEventListener("click", () => showRecords(i));
-          paginationDiv.appendChild(btn);
+    function validatePartDropdown() {
+        const type = levelTypeSelect.value;
+        const number = parseInt(levelNumberInput.value);
+        const selected = constants.LEVEL_TYPES.find(l => l.type === type);
+        if (selected && number && number % 10 === 0 && number >= 1 && number <= selected.count) {
+            partContainer.classList.remove("d-none");
+        } else {
+            partContainer.classList.add("d-none");
         }
-      }
-    })
-    .catch(err => {
-      console.error("获取失败", err);
-      alert("获取失败：" + err.message);
+    }
+
+    function updatePartnerDropdown() {
+        const type = levelTypeSelect.innerHTML;
+        const partnerSelect = document.getElementById("input-搭档");
+
+        if (type === "开放") {
+            partnerSelect.innerHTML = `<option value="">--搭档--</option>` + constants.DROPDOWN_VALUES["搭档"].map(v => `<option value="${v}">${v}</option>`).join("");
+            refreshPartnerAndSetDropdowns()
+            return
+        }
+
+        const levelPartnerMap = {
+            "光": "沈星回",
+            "冰": "黎深",
+            "火": "祁煜",
+            "能量": "秦彻",
+            "引力": "夏以昼"
+        };
+
+        partnerSelect.innerHTML = `<option value="${levelPartnerMap[type]}">${levelPartnerMap[type]}</option>`;
+        refreshPartnerAndSetDropdowns()
+    }
+
+    function checkIfReady() {
+        const type = levelTypeSelect.innerHTML;
+        const number = parseInt(levelNumberInput.value);
+        const selected = constants.LEVEL_TYPES.find(l => l.type === type);
+        if (type && number && selected && number >= 1 && number <= selected.count) {
+            actionButtons.classList.remove("d-none");
+        } else {
+            actionButtons.classList.add("d-none");
+        }
+    }
+
+    // 填充输入表单
+    PANEL_KEYS.forEach(key => {
+        const wrapper = document.createElement("div");
+        wrapper.className = "col-md-4";
+        if (constants.DROPDOWN_VALUES[key]) {
+            const select = document.createElement("select");
+            select.id = `input-${key}`;
+            select.className = "form-select";
+            select.innerHTML = `<option value="">--${key}--</option>` + constants.DROPDOWN_VALUES[key].map(v => `<option value="${v}">${v}</option>`).join("");
+            wrapper.appendChild(select);
+        } else {
+            const input = document.createElement("input");
+            input.placeholder = key;
+            input.type = "number"
+            input.id = `input-${key}`;
+            input.className = "form-control";
+            wrapper.appendChild(input);
+        }
+        panelInputsDiv.appendChild(wrapper);
     });
-  }
 
-  function showLatestRecords() {
-    apiGet('latest-orbit-records', {})
+    function getFormData() {
+        const data = {};
+        PANEL_KEYS.forEach(key => {
+            data[key] = document.getElementById(`input-${key}`).value.trim();
+        });
+        data["时间"]= new Date().toISOString();
+        return data;
+    }
+
+    function getLevelNumber() {
+        const number = parseInt(levelNumberInput.value);
+        if (number % 10 === 0 && !partContainer.classList.contains("d-none")) {
+            return `${number}_${levelPartSelect.value}`;
+        }
+        return number;
+    }
+
+    function showRecords(page = 1) {
+        hideLatestRecords();
+        recordsTitle.classList.remove("d-none");
+        recordsDiv.classList.remove("d-none");
+
+        const type = levelTypeSelect.value;
+        const level = getLevelNumber();
+
+        const offset = (page - 1) * PAGE_SIZE;
+
+        apiGet('orbit-records', { type, level, offset })
             .then(result => {
-              let list = result.records || [];
+                let cnt = result.total
+                let list = result.records || [];
 
-              latestRecordsDiv.innerHTML = list.map(r => {
-                const panelRows = LATEST_DISPLAY_PANEL_KEYS.map((k, i) => {
-                  const content = `<strong>${k}:</strong> ${r[k] || "-"}`;
-                  const col = `<div class="col-md-3">${content}</div>`;
-                  return (i % 4 === 0 ? '<div class="row mb-1">' : '') + col + (i % 4 === 3 || i === LATEST_DISPLAY_PANEL_KEYS.length - 1 ? '</div>' : '');
-                }).join("");
-                return `<div class="record">${panelRows}</div>`;
-              }).join("") || "暂无记录";
+                recordsDiv.innerHTML = list.map(r => {
+                    const panelRows = DISPLAY_PANEL_KEYS.map((k, i) => {
+                        const content = `<strong>${k}:</strong> ${r[k] || "-"}`;
+                        const col = `<div class="col-md-3">${content}</div>`;
+                        return (i % 4 === 0 ? '<div class="row mb-1">' : '') + col + (i % 4 === 3 || i === DISPLAY_PANEL_KEYS.length - 1 ? '</div>' : '');
+                    }).join("");
+                    // return `<div class="record">${panelRows}<div class="text-muted small mt-2">${r.时间 || ""}</div></div>`;
+                    return `<div class="record">${panelRows}</div>`;
+                }).join("") || "暂无记录";
+
+                const totalPages = Math.ceil(cnt / PAGE_SIZE);
+                const paginationDiv = document.getElementById("pagination");
+                paginationDiv.innerHTML = "";
+
+                if (totalPages > 1) {
+                    for (let i = 1; i <= totalPages; i++) {
+                        const btn = document.createElement("button");
+                        btn.className = `btn btn-sm mx-1 ${i === page ? "btn-primary" : "btn-outline-primary"}`;
+                        btn.textContent = i;
+                        btn.addEventListener("click", () => showRecords(i));
+                        paginationDiv.appendChild(btn);
+                    }
+                }
             })
             .catch(err => {
-              console.error("获取失败", err);
-              alert("获取失败：" + err.message);
+                console.error("获取失败", err);
+                showToast("获取失败", err.message, 5000);
             });
-  }
-
-  function hideLatestRecords() {
-    latestRecordsTitle.classList.add("d-none");
-    latestRecordsDiv.classList.add("d-none");
-  }
-
-  function showToast(title, message, duration = 3000) {
-    const toast = document.getElementById("toast");
-    toast.style.display = "block";
-    setTimeout(() => {
-      toast.style.display = "none";
-    }, duration);
-
-    const toastTitle = document.getElementById("toast-header");
-    const toastBody = document.getElementById("toast-body");
-    toastTitle.innerText = title;
-    toastBody.innerText = message;
-  }
-
-  // 获取记录
-  const fetchBtn = document.getElementById("fetch-records");
-  fetchBtn.addEventListener("click", () => {
-    if (fetchBtn.disabled) return;
-    fetchBtn.disabled = true;
-    showRecords();
-    setTimeout(() => {
-      fetchBtn.disabled = false;
-    }, 3000);
-  });
-
-  // 显示上传表单
-  document.getElementById("start-upload").addEventListener("click", () => {
-    hideLatestRecords();
-    panelInputsDiv.classList.remove("d-none");
-    submitButton.classList.remove("d-none");
-  });
-
-  // 提交记录
-  submitButton.addEventListener("click", () => {
-    if (submitButton.disabled) return;
-    submitButton.disabled = true;
-
-    const type = levelTypeSelect.value;
-    const number = parseInt(levelNumberInput.value);
-    const selected = constants.LEVEL_TYPES.find(l => l.type === type);
-
-    if (!type || !number || !selected || number < 1 || number > selected.count) {
-      return alert("请正确填写关卡类型和编号！");
     }
 
-    const levelNumber = getLevelNumber();
-    const data = getFormData();
-    const record = { 关卡: type, 关数: levelNumber, ...data };
+    function showLatestRecords() {
+        apiGet('latest-orbit-records', {})
+            .then(result => {
+                let list = result.records || [];
 
-    apiPost('orbit-record', record)
+                latestRecordsDiv.innerHTML = list.map(r => {
+                    const panelRows = LATEST_DISPLAY_PANEL_KEYS.map((k, i) => {
+                        const content = `<strong>${k}:</strong> ${r[k] || "-"}`;
+                        const col = `<div class="col-md-3">${content}</div>`;
+                        return (i % 4 === 0 ? '<div class="row mb-1">' : '') + col + (i % 4 === 3 || i === LATEST_DISPLAY_PANEL_KEYS.length - 1 ? '</div>' : '');
+                    }).join("");
+                    return `<div class="record">${panelRows}</div>`;
+                }).join("") || "暂无记录";
+            })
+            .catch(err => {
+                console.error("获取失败", err);
+                showToast("获取失败", err.message, 5000);
+            });
+    }
+
+    function hideLatestRecords() {
+        latestRecordsTitle.classList.add("d-none");
+        latestRecordsDiv.classList.add("d-none");
+    }
+
+    function showToast(title, message, duration = 3000) {
+        const toast = document.getElementById("toast");
+        toast.style.display = "block";
+        setTimeout(() => {
+            toast.style.display = "none";
+        }, duration);
+
+        const toastTitle = document.getElementById("toast-header");
+        const toastBody = document.getElementById("toast-body");
+        toastTitle.innerText = title;
+        toastBody.innerText = message;
+    }
+
+    // 获取记录
+    const fetchBtn = document.getElementById("fetch-records");
+    fetchBtn.addEventListener("click", () => {
+        if (fetchBtn.disabled) return;
+        fetchBtn.disabled = true;
+        showRecords();
+        setTimeout(() => {
+            fetchBtn.disabled = false;
+        }, 3000);
+    });
+
+    // 显示上传表单
+    document.getElementById("start-upload").addEventListener("click", () => {
+        hideLatestRecords();
+        panelInputsDiv.classList.remove("d-none");
+        submitButton.classList.remove("d-none");
+    });
+
+    // 提交记录
+    submitButton.addEventListener("click", () => {
+        if (submitButton.disabled) return;
+        submitButton.disabled = true;
+
+        const type = levelTypeSelect.value;
+        const number = parseInt(levelNumberInput.value);
+        const selected = constants.LEVEL_TYPES.find(l => l.type === type);
+
+        if (!type || !number || !selected || number < 1 || number > selected.count) {
+            showToast("请求错误", "请正确填写关卡类型和编号！", 3000);
+            return;
+        }
+
+        const levelNumber = getLevelNumber();
+        const data = getFormData();
+        const record = { 关卡: type, 关数: levelNumber, ...data };
+
+        apiPost('orbit-record', record)
             .then(response => {
-              if (response.status === 'OK') {
-                showToast("上传成功", "Thanks♪(･ω･)ﾉ感谢您的使用！", 3000);
-                panelInputsDiv.classList.add("d-none");
-                submitButton.classList.add("d-none");
-                showRecords(); // 可选刷新记录
-              } else {
-                showToast("上传失败", response.error, 3000);
-              }
+                if (response.status === 'OK') {
+                    showToast("上传成功", "Thanks♪(･ω･)ﾉ感谢您的使用！", 3000);
+                    panelInputsDiv.classList.add("d-none");
+                    submitButton.classList.add("d-none");
+                    showRecords(); // 可选刷新记录
+                } else {
+                    showToast("上传失败", response.error, 3000);
+                }
             })
             .catch(err => showToast("上传失败", err.message, 3000));
 
-    setTimeout(() => {
-      submitButton.disabled = false;
-    }, 3000);
-  });
+        setTimeout(() => {
+            submitButton.disabled = false;
+        }, 3000);
+    });
 
-  levelTypeSelect.addEventListener("change", () => {
-    validatePartDropdown();
-    updatePartnerDropdown();
-    checkIfReady();
-  });
+    // levelTypeSelect.addEventListener("change", () => {
+    //   validatePartDropdown();
+    //   updatePartnerDropdown();
+    //   checkIfReady();
+    // });
 
-  levelNumberInput.addEventListener("input", () => {
-    validatePartDropdown();
-    checkIfReady();
-  });
+    levelNumberInput.addEventListener("input", () => {
+        validatePartDropdown();
+        checkIfReady();
+    });
 
-  levelPartSelect.addEventListener("change", checkIfReady);
+    levelPartSelect.addEventListener("change", checkIfReady);
 
-  function refreshPartnerAndSetDropdowns() {
-    const partnerSelect = document.getElementById("input-搭档");
-    const selectedPartner = partnerSelect.value;
+    function refreshPartnerAndSetDropdowns() {
+        const partnerSelect = document.getElementById("input-搭档");
+        const selectedPartner = partnerSelect.value;
 
-    let partnerOptions = constants.DROPDOWN_VALUES["搭档身份"];
-    let setOptions = constants.DROPDOWN_VALUES["日卡"];
+        let partnerOptions = constants.DROPDOWN_VALUES["搭档身份"];
+        let setOptions = constants.DROPDOWN_VALUES["日卡"];
 
-    if (selectedPartner) {
-      const partnerKey = `${selectedPartner}搭档`;
-      partnerOptions = constants.DROPDOWN_VALUES[partnerKey]
+        if (selectedPartner) {
+            const partnerKey = `${selectedPartner}搭档`;
+            partnerOptions = constants.DROPDOWN_VALUES[partnerKey]
 
-      const setKey = `${selectedPartner}日卡`;
-      setOptions = constants.DROPDOWN_VALUES[setKey];
+            const setKey = `${selectedPartner}日卡`;
+            setOptions = constants.DROPDOWN_VALUES[setKey];
+        }
+
+        const partnerStyleSelect = document.getElementById("input-搭档身份");
+        partnerStyleSelect.innerHTML = `<option value="">--搭档身份--</option>` + partnerOptions.map(v => `<option value="${v}">${v}</option>`).join("");
+
+        const setSelect = document.getElementById("input-日卡");
+        setSelect.innerHTML = `<option value="">--日卡--</option>` + setOptions.map(v => `<option value="${v}">${v}</option>`).join("");
     }
 
-    const partnerStyleSelect = document.getElementById("input-搭档身份");
-    partnerStyleSelect.innerHTML = `<option value="">--搭档身份--</option>` + partnerOptions.map(v => `<option value="${v}">${v}</option>`).join("");
+    const partnerSelect = document.getElementById("input-搭档");
+    partnerSelect.addEventListener("change", () => {
+        refreshPartnerAndSetDropdowns()
+    })
 
-    const setSelect = document.getElementById("input-日卡");
-    setSelect.innerHTML = `<option value="">--日卡--</option>` + setOptions.map(v => `<option value="${v}">${v}</option>`).join("");
-  }
+    document.querySelectorAll('.btn-close').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const toast = this.closest('.toast');
+            if (toast) toast.style.display = 'none';
+        });
+    });
 
-  const partnerSelect = document.getElementById("input-搭档");
-  partnerSelect.addEventListener("change", () => {
-    refreshPartnerAndSetDropdowns()
-  })
+    const select = document.querySelector('.custom-select');
+    const selected = select.querySelector('.selected');
+    const options = select.querySelector('.options');
+
+    selected.addEventListener('click', () => {
+        select.classList.toggle('open');
+
+        if (select.classList.contains('open')) {
+            selected.style.borderBottomLeftRadius = '0';
+            selected.style.borderBottomRightRadius = '0';
+            selected.style.borderBottom = '0';
+            options.style.borderTop = '0';
+        } else {
+            selected.style.borderBottomLeftRadius = '12px';
+            selected.style.borderBottomRightRadius = '12px';
+            selected.style.borderBottom = '1px solid rgba(255, 255, 255, 0.2)';
+        }
+    });
+
+    options.addEventListener('click', (e) => {
+        if (e.target.tagName === 'LI') {
+            selected.textContent = e.target.textContent;
+            select.classList.remove('open');
+            selected.style.borderBottomLeftRadius = '12px';
+            selected.style.borderBottomRightRadius = '12px';
+            selected.style.borderBottom = '1px solid rgba(255, 255, 255, 0.2)';
+            checkIfReady();
+            validatePartDropdown();
+            updatePartnerDropdown();
+        }
+    });
 </script>
+<footer class="footer">
+    <div>Contact：小红书：900197975 / 微信: rabbitlink</div>
+</footer>
 </body>
 </html>

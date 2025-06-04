@@ -1,5 +1,5 @@
-export const API_BASE = 'https://lysk-battle-record-426168069563.asia-southeast1.run.app/';
-// export const API_BASE = 'http://localhost:8080/';
+// export const API_BASE = 'https://lysk-battle-record-426168069563.asia-southeast1.run.app/';
+export const API_BASE = 'http://localhost:8080/';
 
 export const LEVEL_TYPES = [
     { type: "光", count: 180 },

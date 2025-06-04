@@ -1,0 +1,46 @@
+.custom-select {
+    position: relative;
+    user-select: none;
+    font-family: sans-serif;
+}
+
+.selected {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.6);
+    padding: 6px;
+    text-align: center; /* 居中 */
+    cursor: pointer;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.options {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.6);
+    position: absolute;
+    width: 100%;
+    display: none;
+    z-index: 1;
+    backdrop-filter: blur(20px);
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.options li {
+    padding: 10px;
+    text-align: center; /* 居中 */
+    color: white;
+    cursor: pointer;
+}
+
+.options li:hover {
+    background-color: #555; /* 自定义高亮颜色 */
+}
+
+.custom-select.open .options {
+    display: block;
+}
