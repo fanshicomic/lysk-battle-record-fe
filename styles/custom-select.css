@@ -38,7 +38,7 @@
 }
 
 .options li:hover {
-    background-color: #555; /* 自定义高亮颜色 */
+    background-color: rgba(151, 151, 151, 0.51); /* 自定义高亮颜色 */
 }
 
 .custom-select.open .options {
