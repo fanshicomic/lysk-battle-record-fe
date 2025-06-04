@@ -10,8 +10,6 @@
   <link rel="stylesheet" type="text/css" href="./styles/hologram.css" />
   <style>
     #hr-section {
-      width: 60vw;
-      margin-left: 20vw;
       text-align: right;
     }
 
@@ -27,8 +25,6 @@
       margin-top: 8vh;
       font-size: xx-large;
       padding: 10px;
-      width: 70vw;
-      margin-left: 15vw;
     }
 
     #sub-title {
@@ -47,6 +43,14 @@
       position: fixed;
       height: 100vh;
       width: 100vw;
+      align-items: center;
+    }
+
+    .content-wrapper {
+      width: 60vw;
+      max-width: 300px;
+      min-width: 250px;
+      margin: 0 auto
     }
 
     .button-section {
@@ -54,11 +58,16 @@
       justify-content: center;
       align-items: center;
       margin-top: 7vh;
+      width: 100%;
     }
 
     .btn {
       height: 18vh;
-      width: 60vw;
+      width: 100%;
+    }
+
+    .hologram span {
+      right: -30%;
     }
 
     .icon {
@@ -91,30 +100,31 @@
 <div class="blobs">
 </div>
 <div class="main-content">
-  <h1 id="title">深空面板助手</h1>
-  <div id="hr-section">
-    <hr />
-    <p id="sub-title">Deepspace Battle Helper V1.1</p>
+  <div class="content-wrapper">
+    <h1 id="title">深空面板助手</h1>
+    <div id="hr-section">
+      <hr />
+      <p id="sub-title">Deepspace Battle Helper V1.1</p>
+    </div>
+    <a href="orbit.html" style="text-decoration: none; color: inherit;">
+      <div class="button-section">
+        <button class="btn hologram">
+          <img class="icon" src="./images/orbit.gif" />
+          <span data-text="轨道">轨道</span>
+          <!--      <div class="scan-line"></div>-->
+        </button>
+      </div>
+    </a>
+    <a href="championships.html" style="text-decoration: none; color: inherit;">
+      <div class="button-section">
+        <button class="btn hologram">
+          <img class="icon" style="top: 5px" src="./images/championships.gif" />
+          <span data-text="锦标赛">锦标赛</span>
+          <!--      <div class="scan-line"></div>-->
+        </button>
+      </div>
+    </a>
   </div>
-  <a href="orbit.html" style="text-decoration: none; color: inherit;">
-    <div class="button-section">
-      <button class="btn hologram">
-        <img class="icon" src="./images/orbit.gif" />
-        <span data-text="轨道">轨道</span>
-  <!--      <div class="scan-line"></div>-->
-      </button>
-    </div>
-  </a>
-
-  <a href="championships.html" style="text-decoration: none; color: inherit;">
-    <div class="button-section">
-      <button class="btn hologram">
-        <img class="icon" style="top: 5px" src="./images/championships.gif" />
-        <span data-text="锦标赛">锦标赛</span>
-    <!--      <div class="scan-line"></div>-->
-      </button>
-    </div>
-  </a>
 </div>
 
 <script type="module">
