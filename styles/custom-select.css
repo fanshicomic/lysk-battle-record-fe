@@ -44,3 +44,19 @@
 .custom-select.open .options {
     display: block;
 }
+
+.custom-select .options {
+    max-height: 150px; /* 设置一个合适的最大高度 */
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+/* 可选：自定义滚动条样式（Chrome, Edge） */
+.custom-select .options::-webkit-scrollbar {
+    width: 0;
+}
+
+.custom-select .options::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 3px;
+}
