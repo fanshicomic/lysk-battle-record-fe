@@ -1,4 +1,4 @@
-import { API_BASE } from "./server_host";
+import { API_BASE } from "./server_host.js";
 
 export async function apiPost(endpoint, data) {
     const res = await fetch(`${API_BASE}${endpoint}`, {
