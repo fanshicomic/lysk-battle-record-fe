@@ -36,11 +36,6 @@
             margin-top: 30px;
         }
 
-        .form-label {
-            margin-top: 10px;
-            font-size: 1rem;
-        }
-
         .record {
             border-left: 4px solid #0d6efd;
             background: #fff;
@@ -64,7 +59,7 @@
             font-size: 0.95rem;
         }
 
-        .record, .form-control, .form-select, .btn {
+        .record, .form-control, .btn {
             text-align: center;
             background: rgba(255, 255, 255, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -78,12 +73,26 @@
         .btn-primary {
             background-color: rgba(128, 90, 213, 0.3);
             border-color: rgba(128, 90, 213, 0.4);
-            color: #2e2e2e;
         }
 
-        .btn-outline-primary {
-            border-color: rgba(128, 90, 213, 0.4);
-            color: #2e2e2e;
+        .upload-fetch-btn {
+            border: 0;
+            background-color: cadetblue;
+        }
+        .upload-fetch-btn:hover,
+        .upload-fetch-btn:focus {
+            background-color: cadetblue;
+            color: inherit;
+        }
+
+        .upload-action-btn {
+            border: 0;
+            background-color: palevioletred;
+        }
+        .upload-action-btn:hover,
+        .upload-action-btn:focus {
+            background-color: palevioletred;
+            color: inherit;
         }
     </style>
 </head>
@@ -103,42 +112,43 @@
             <label class="back-button"><img class="back-icon" src="./images/back.PNG" /></label>
         </a>
         <h1>轨道面板查询</h1>
+        <hr />
 
         <!-- 基础输入 -->
-        <div class="mb-3">
-            <!--      <select id="level-type" class="form-select">-->
-            <!--        <option value="">&#45;&#45;请选择关卡类型&#45;&#45;</option>-->
-            <!--      </select>-->
-            <div class="custom-select">
-                <div id="level-type" class="selected">--请选择关卡类型--</div>
+        <div class="display-row">
+            <div class="row-half-width">
+                <div class="custom-select">
+                    <div id="level-type" class="selected">-关卡类型-</div>
+                    <ul class="options">
+                        <li>光</li>
+                        <li>冰</li>
+                        <li>火</li>
+                        <li>能量</li>
+                        <li>引力</li>
+                        <li>开放</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row-half-width">
+                <input id="level-number" type="number" class="form-control" placeholder="关卡编号" min="1">
+            </div>
+        </div>
+
+        <!-- 上下段 -->
+        <div class="d-none display-row" id="part-container">
+            <div class="custom-select row-full-width">
+                <div id="level-part" class="selected">--选择上下--</div>
                 <ul class="options">
-                    <li>光</li>
-                    <li>冰</li>
-                    <li>火</li>
-                    <li>能量</li>
-                    <li>引力</li>
-                    <li>开放</li>
+                    <li>上</li>
+                    <li>下</li>
                 </ul>
             </div>
         </div>
 
-        <div class="mb-3">
-            <input id="level-number" type="number" class="form-control" placeholder="请输入关卡编号" min="1">
-        </div>
-
-        <!-- 上下段 -->
-        <div class="mb-3 d-none" id="part-container">
-            <label for="level-part" class="form-label">选择段：</label>
-            <select id="level-part" class="form-select">
-                <option value="上">上</option>
-                <option value="下">下</option>
-            </select>
-        </div>
-
         <!-- 动作按钮 -->
-        <div id="action-buttons" class="mb-3 d-none">
-            <button id="fetch-records" class="btn btn-outline-primary me-2">获取面板记录</button>
-            <button id="start-upload" class="btn btn-outline-success">上传面板记录</button>
+        <div id="action-buttons" class="display-row d-none">
+            <button id="fetch-records" class="btn upload-fetch-btn row-half-width">获取记录</button>
+            <button id="start-upload" class="btn upload-action-btn row-half-width">上传记录</button>
         </div>
 
         <!-- 动态面板输入 -->
@@ -165,8 +175,11 @@
 </div>
 
 <script type="module">
-    import { apiGet, apiPost } from './util.js';
-    import * as constants from './constants.js';
+    import { apiGet, apiPost } from './scripts/util.js';
+    import { initCustomSelects } from './scripts/custom_select.js';
+    import * as constants from './scripts/constants.js';
+
+    initCustomSelects()
 
     const levelTypeSelect = document.getElementById("level-type");
     const levelNumberInput = document.getElementById("level-number");
@@ -194,18 +207,10 @@
         "关卡", "关数", "攻击", "防御", "生命", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "对谱", "对谱加成", "搭档身份", "日卡", "阶数", "武器"
     ];
 
-    // 初始化关卡类型
-    // constants.LEVEL_TYPES.forEach(({ type }) => {
-    //   const option = document.createElement("option");
-    //   option.value = type;
-    //   option.textContent = type;
-    //   levelTypeSelect.appendChild(option);
-    // });
-
     showLatestRecords();
 
     function validatePartDropdown() {
-        const type = levelTypeSelect.value;
+        const type = levelTypeSelect.innerHTML;
         const number = parseInt(levelNumberInput.value);
         const selected = constants.LEVEL_TYPES.find(l => l.type === type);
         if (selected && number && number % 10 === 0 && number >= 1 && number <= selected.count) {
@@ -241,6 +246,7 @@
         const type = levelTypeSelect.innerHTML;
         const number = parseInt(levelNumberInput.value);
         const selected = constants.LEVEL_TYPES.find(l => l.type === type);
+        console.log(type, number, selected);
         if (type && number && selected && number >= 1 && number <= selected.count) {
             actionButtons.classList.remove("d-none");
         } else {
@@ -291,7 +297,7 @@
         recordsTitle.classList.remove("d-none");
         recordsDiv.classList.remove("d-none");
 
-        const type = levelTypeSelect.value;
+        const type = levelTypeSelect.innerHTML;
         const level = getLevelNumber();
 
         const offset = (page - 1) * PAGE_SIZE;
@@ -392,7 +398,7 @@
         if (submitButton.disabled) return;
         submitButton.disabled = true;
 
-        const type = levelTypeSelect.value;
+        const type = levelTypeSelect.innerHTML;
         const number = parseInt(levelNumberInput.value);
         const selected = constants.LEVEL_TYPES.find(l => l.type === type);
 
@@ -423,11 +429,21 @@
         }, 3000);
     });
 
-    // levelTypeSelect.addEventListener("change", () => {
-    //   validatePartDropdown();
-    //   updatePartnerDropdown();
-    //   checkIfReady();
-    // });
+    const levelTypeObserver = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type === 'childList') {
+                console.log("triggered");
+                validatePartDropdown();
+                updatePartnerDropdown();
+                checkIfReady();
+            }
+        }
+    });
+
+    levelTypeObserver.observe(levelTypeSelect, {
+        childList: true, // 监听子节点变化（如 textContent 被替换）
+        subtree: false,  // 不递归监听子元素
+    });
 
     levelNumberInput.addEventListener("input", () => {
         validatePartDropdown();
@@ -468,38 +484,6 @@
             const toast = this.closest('.toast');
             if (toast) toast.style.display = 'none';
         });
-    });
-
-    const select = document.querySelector('.custom-select');
-    const selected = select.querySelector('.selected');
-    const options = select.querySelector('.options');
-
-    selected.addEventListener('click', () => {
-        select.classList.toggle('open');
-
-        if (select.classList.contains('open')) {
-            selected.style.borderBottomLeftRadius = '0';
-            selected.style.borderBottomRightRadius = '0';
-            selected.style.borderBottom = '0';
-            options.style.borderTop = '0';
-        } else {
-            selected.style.borderBottomLeftRadius = '12px';
-            selected.style.borderBottomRightRadius = '12px';
-            selected.style.borderBottom = '1px solid rgba(255, 255, 255, 0.2)';
-        }
-    });
-
-    options.addEventListener('click', (e) => {
-        if (e.target.tagName === 'LI') {
-            selected.textContent = e.target.textContent;
-            select.classList.remove('open');
-            selected.style.borderBottomLeftRadius = '12px';
-            selected.style.borderBottomRightRadius = '12px';
-            selected.style.borderBottom = '1px solid rgba(255, 255, 255, 0.2)';
-            checkIfReady();
-            validatePartDropdown();
-            updatePartnerDropdown();
-        }
     });
 </script>
 <footer class="footer">
