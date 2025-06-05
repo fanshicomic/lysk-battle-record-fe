@@ -13,6 +13,7 @@
             height: 100vh;
             color: white;
             background: linear-gradient(0deg, #23314c, #45324c);
+            overflow: hidden;
         }
 
         h1, h2 {
@@ -23,17 +24,18 @@
 
         .main-content {
             overflow: scroll;
+            scrollbar-width: none;
+        }
+        .main-content::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
         }
 
         .content-wrapper {
             width: 70vw;
             max-width: 350px;
             min-width: 250px;
+            min-height: 95vh;
             margin: 0 auto
-        }
-
-        .mb-3 {
-            margin-top: 30px;
         }
 
         .record {
@@ -70,11 +72,6 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
-        .btn-primary {
-            background-color: rgba(128, 90, 213, 0.3);
-            border-color: rgba(128, 90, 213, 0.4);
-        }
-
         .upload-fetch-btn {
             border: 0;
             background-color: cadetblue;
@@ -94,6 +91,21 @@
             background-color: palevioletred;
             color: inherit;
         }
+
+        .submit-btn {
+            border: 0;
+            background-color: darkslateblue;
+            margin-top: 20px;
+        }
+        .submit-btn:hover,
+        .submit-btn:focus {
+            background-color: darkslateblue;
+            color: inherit;
+        }
+
+        .footer {
+            position: initial;
+        }
     </style>
 </head>
 <!-- Google tag (gtag.js) -->
@@ -107,18 +119,18 @@
 </script>
 <body>
 <div class="main-content">
+    <a href="./index.html" style="text-decoration: none; color: inherit;">
+        <label class="back-button"><img class="back-icon" src="./images/back.PNG" /></label>
+    </a>
     <div class="content-wrapper">
-        <a href="./index.html" style="text-decoration: none; color: inherit;">
-            <label class="back-button"><img class="back-icon" src="./images/back.PNG" /></label>
-        </a>
         <h1>轨道面板查询</h1>
         <hr />
 
         <!-- 基础输入 -->
         <div class="display-row">
-            <div class="row-half-width">
+            <div class="w-50">
                 <div class="custom-select">
-                    <div id="level-type" class="selected">-关卡类型-</div>
+                    <div id="level-type" class="selected">--选择关卡--</div>
                     <ul class="options">
                         <li>光</li>
                         <li>冰</li>
@@ -129,14 +141,14 @@
                     </ul>
                 </div>
             </div>
-            <div class="row-half-width">
+            <div class="w-50">
                 <input id="level-number" type="number" class="form-control" placeholder="关卡编号" min="1">
             </div>
         </div>
 
         <!-- 上下段 -->
         <div class="d-none display-row" id="part-container">
-            <div class="custom-select row-full-width">
+            <div class="custom-select w-100">
                 <div id="level-part" class="selected">--选择上下--</div>
                 <ul class="options">
                     <li>上</li>
@@ -147,13 +159,14 @@
 
         <!-- 动作按钮 -->
         <div id="action-buttons" class="display-row d-none">
-            <button id="fetch-records" class="btn upload-fetch-btn row-half-width">获取记录</button>
-            <button id="start-upload" class="btn upload-action-btn row-half-width">上传记录</button>
+            <button id="fetch-records" class="btn upload-fetch-btn w-50">获取记录</button>
+            <button id="start-upload" class="btn upload-action-btn w-50">上传记录</button>
         </div>
 
         <!-- 动态面板输入 -->
-        <div id="panel-inputs" class="row g-2 mb-3 d-none"></div>
-        <button id="submit" class="btn btn-primary w-100 d-none">提交记录</button>
+        <hr />
+        <div id="panel-inputs" class="d-none"></div>
+        <button id="submit" class="btn submit-btn w-100 d-none">提交记录</button>
 
         <!-- 展示记录 -->
         <h2 id="records-title" class="mt-5 d-none">关卡面板记录</h2>
@@ -161,7 +174,7 @@
         <div id="pagination" class="mt-3 d-flex justify-content-center"></div>
 
         <!-- 展示最新记录 -->
-        <h2 id="latest-records-title" class="mt-5">最新面板记录</h2>
+        <h2 id="latest-records-title" class="mt-5">最新上传面板</h2>
         <div id="latest-records"></div>
 
         <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -172,14 +185,15 @@
             <div class="toast-body" id="toast-body"></div>
         </div>
     </div>
+    <footer class="footer">
+        <div>Contact：小红书：900197975 / 微信: rabbitlink</div>
+    </footer>
 </div>
 
 <script type="module">
     import { apiGet, apiPost } from './scripts/util.js';
     import { initCustomSelects } from './scripts/custom_select.js';
     import * as constants from './scripts/constants.js';
-
-    initCustomSelects()
 
     const levelTypeSelect = document.getElementById("level-type");
     const levelNumberInput = document.getElementById("level-number");
@@ -207,7 +221,169 @@
         "关卡", "关数", "攻击", "防御", "生命", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "对谱", "对谱加成", "搭档身份", "日卡", "阶数", "武器"
     ];
 
-    showLatestRecords();
+    // showLatestRecords();
+
+    let rowWrappers = [];
+    PANEL_KEYS.forEach(function(key, index) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "w-50";
+        if (constants.DROPDOWN_VALUES[key]) {
+            const customSelect = document.createElement("div");
+            customSelect.className = "custom-select";
+            customSelect.innerHTML = `
+                <div id="input-${key}" class="selected">--${key}--</div>
+                <ul class="options">
+                    ${constants.DROPDOWN_VALUES[key].map(v => `<li>${v}</li>`).join("")}
+                </ul>
+            `;
+            wrapper.appendChild(customSelect);
+        } else {
+            const input = document.createElement("input");
+            input.placeholder = key;
+            input.type = "number"
+            input.id = `input-${key}`;
+            input.className = "form-control";
+            wrapper.appendChild(input);
+        }
+        rowWrappers.push(wrapper);
+
+        // 每两个包裹进 display-row
+        if (rowWrappers.length === 2 || index === PANEL_KEYS.length - 1) {
+            const rowDiv = document.createElement("div");
+            rowDiv.className = "display-row";
+            rowWrappers.forEach(w => rowDiv.appendChild(w));
+            panelInputsDiv.appendChild(rowDiv);
+            rowWrappers = [];
+        }
+    });
+
+    initCustomSelects()
+
+    function showToast(title, message, duration = 3000) {
+        const toast = document.getElementById("toast");
+        toast.style.display = "block";
+        setTimeout(() => {
+            toast.style.display = "none";
+        }, duration);
+
+        const toastTitle = document.getElementById("toast-header");
+        const toastBody = document.getElementById("toast-body");
+        toastTitle.innerText = title;
+        toastBody.innerText = message;
+    }
+
+    // 获取记录
+    const fetchBtn = document.getElementById("fetch-records");
+    fetchBtn.addEventListener("click", () => {
+        if (fetchBtn.disabled) return;
+        fetchBtn.disabled = true;
+        console.log("获取记录...");
+        hideInputSection();
+        hideLatestRecords();
+        showRecords();
+        setTimeout(() => {
+            fetchBtn.disabled = false;
+        }, 3000);
+    });
+
+    // 显示上传表单
+    document.getElementById("start-upload").addEventListener("click", () => {
+        hideLatestRecords();
+        panelInputsDiv.classList.remove("d-none");
+        submitButton.classList.remove("d-none");
+    });
+
+    // 提交记录
+    submitButton.addEventListener("click", () => {
+        if (submitButton.disabled) return;
+        submitButton.disabled = true;
+
+        const type = levelTypeSelect.innerHTML;
+        const number = parseInt(levelNumberInput.value);
+        const selected = constants.LEVEL_TYPES.find(l => l.type === type);
+
+        if (!type || !number || !selected || number < 1 || number > selected.count) {
+            showToast("请求错误", "请正确填写关卡类型和编号！", 3000);
+            return;
+        }
+
+        const levelNumber = getLevelNumber();
+        const data = getFormData();
+        const record = { 关卡: type, 关数: levelNumber, ...data };
+
+        apiPost('orbit-record', record)
+            .then(response => {
+                if (response.status === 'OK') {
+                    showToast("上传成功", "Thanks♪(･ω･)ﾉ感谢您的使用！", 3000);
+                    panelInputsDiv.classList.add("d-none");
+                    submitButton.classList.add("d-none");
+                    showRecords(); // 可选刷新记录
+                } else {
+                    showToast("上传失败", response.error, 3000);
+                }
+            })
+            .catch(err => showToast("上传失败", err.message, 3000));
+
+        setTimeout(() => {
+            submitButton.disabled = false;
+        }, 3000);
+    });
+
+    const levelTypeObserver = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type === 'childList') {
+                validatePartDropdown();
+                updatePartnerDropdown();
+                checkIfReady();
+            }
+        }
+    });
+
+    levelTypeObserver.observe(levelTypeSelect, {
+        childList: true,
+        subtree: false,
+    });
+
+    levelNumberInput.addEventListener("input", () => {
+        validatePartDropdown();
+        checkIfReady();
+    });
+
+    levelPartSelect.addEventListener("change", checkIfReady);
+    const levelPartObserver = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type === 'childList') {
+                checkIfReady();
+            }
+        }
+    });
+
+    levelPartObserver.observe(levelPartSelect, {
+        childList: true,
+        subtree: false,
+    });
+
+    const partnerSelect = document.getElementById("input-搭档");
+    partnerSelect.addEventListener("change", checkIfReady);
+    const partnerObserver = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type === 'childList') {
+                refreshPartnerAndSetDropdowns()
+            }
+        }
+    });
+
+    partnerObserver.observe(partnerSelect, {
+        childList: true,
+        subtree: false,
+    });
+
+    document.querySelectorAll('.btn-close').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const toast = this.closest('.toast');
+            if (toast) toast.style.display = 'none';
+        });
+    });
 
     function validatePartDropdown() {
         const type = levelTypeSelect.innerHTML;
@@ -225,9 +401,11 @@
         const partnerSelect = document.getElementById("input-搭档");
 
         if (type === "开放") {
-            partnerSelect.innerHTML = `<option value="">--搭档--</option>` + constants.DROPDOWN_VALUES["搭档"].map(v => `<option value="${v}">${v}</option>`).join("");
-            refreshPartnerAndSetDropdowns()
-            return
+            partnerSelect.innerHTML = "--搭档--";
+            const partnerOptions = partnerSelect.nextElementSibling;
+            partnerOptions.innerHTML = constants.DROPDOWN_VALUES["搭档"].map(v => `<li>${v}</li>`).join("");
+            refreshPartnerAndSetDropdowns();
+            return;
         }
 
         const levelPartnerMap = {
@@ -238,47 +416,41 @@
             "引力": "夏以昼"
         };
 
-        partnerSelect.innerHTML = `<option value="${levelPartnerMap[type]}">${levelPartnerMap[type]}</option>`;
-        refreshPartnerAndSetDropdowns()
+        partnerSelect.innerHTML = levelPartnerMap[type];
+        const partnerOptions = partnerSelect.nextElementSibling;
+        partnerOptions.innerHTML = `<li>${levelPartnerMap[type]}</li>`;
+        refreshPartnerAndSetDropdowns();
     }
 
     function checkIfReady() {
         const type = levelTypeSelect.innerHTML;
         const number = parseInt(levelNumberInput.value);
         const selected = constants.LEVEL_TYPES.find(l => l.type === type);
-        console.log(type, number, selected);
-        if (type && number && selected && number >= 1 && number <= selected.count) {
-            actionButtons.classList.remove("d-none");
-        } else {
-            actionButtons.classList.add("d-none");
+        const hasValuesAndNumber = type && number && selected
+        if (hasValuesAndNumber) {
+            const isValidNumber = number >= 1 && number <= selected.count
+            if (isValidNumber) {
+                if (number % 10 !== 0) {
+                    actionButtons.classList.remove("d-none");
+                    return;
+                } else if (levelPartSelect.innerHTML === "上" || levelPartSelect.innerHTML === "下") {
+                    actionButtons.classList.remove("d-none");
+                    return;
+                }
+            }
         }
-    }
 
-    // 填充输入表单
-    PANEL_KEYS.forEach(key => {
-        const wrapper = document.createElement("div");
-        wrapper.className = "col-md-4";
-        if (constants.DROPDOWN_VALUES[key]) {
-            const select = document.createElement("select");
-            select.id = `input-${key}`;
-            select.className = "form-select";
-            select.innerHTML = `<option value="">--${key}--</option>` + constants.DROPDOWN_VALUES[key].map(v => `<option value="${v}">${v}</option>`).join("");
-            wrapper.appendChild(select);
-        } else {
-            const input = document.createElement("input");
-            input.placeholder = key;
-            input.type = "number"
-            input.id = `input-${key}`;
-            input.className = "form-control";
-            wrapper.appendChild(input);
-        }
-        panelInputsDiv.appendChild(wrapper);
-    });
+        actionButtons.classList.add("d-none");
+    }
 
     function getFormData() {
         const data = {};
         PANEL_KEYS.forEach(key => {
-            data[key] = document.getElementById(`input-${key}`).value.trim();
+            let val = document.getElementById(`input-${key}`).innerHTML.trim();
+            if (val === "") {
+                val = document.getElementById(`input-${key}`).value.trim();
+            }
+            data[key] = val;
         });
         data["时间"]= new Date().toISOString();
         return data;
@@ -293,7 +465,6 @@
     }
 
     function showRecords(page = 1) {
-        hideLatestRecords();
         recordsTitle.classList.remove("d-none");
         recordsDiv.classList.remove("d-none");
 
@@ -362,99 +533,14 @@
         latestRecordsDiv.classList.add("d-none");
     }
 
-    function showToast(title, message, duration = 3000) {
-        const toast = document.getElementById("toast");
-        toast.style.display = "block";
-        setTimeout(() => {
-            toast.style.display = "none";
-        }, duration);
-
-        const toastTitle = document.getElementById("toast-header");
-        const toastBody = document.getElementById("toast-body");
-        toastTitle.innerText = title;
-        toastBody.innerText = message;
+    function hideInputSection() {
+        panelInputsDiv.classList.add("d-none");
+        submitButton.classList.add("d-none");
     }
-
-    // 获取记录
-    const fetchBtn = document.getElementById("fetch-records");
-    fetchBtn.addEventListener("click", () => {
-        if (fetchBtn.disabled) return;
-        fetchBtn.disabled = true;
-        showRecords();
-        setTimeout(() => {
-            fetchBtn.disabled = false;
-        }, 3000);
-    });
-
-    // 显示上传表单
-    document.getElementById("start-upload").addEventListener("click", () => {
-        hideLatestRecords();
-        panelInputsDiv.classList.remove("d-none");
-        submitButton.classList.remove("d-none");
-    });
-
-    // 提交记录
-    submitButton.addEventListener("click", () => {
-        if (submitButton.disabled) return;
-        submitButton.disabled = true;
-
-        const type = levelTypeSelect.innerHTML;
-        const number = parseInt(levelNumberInput.value);
-        const selected = constants.LEVEL_TYPES.find(l => l.type === type);
-
-        if (!type || !number || !selected || number < 1 || number > selected.count) {
-            showToast("请求错误", "请正确填写关卡类型和编号！", 3000);
-            return;
-        }
-
-        const levelNumber = getLevelNumber();
-        const data = getFormData();
-        const record = { 关卡: type, 关数: levelNumber, ...data };
-
-        apiPost('orbit-record', record)
-            .then(response => {
-                if (response.status === 'OK') {
-                    showToast("上传成功", "Thanks♪(･ω･)ﾉ感谢您的使用！", 3000);
-                    panelInputsDiv.classList.add("d-none");
-                    submitButton.classList.add("d-none");
-                    showRecords(); // 可选刷新记录
-                } else {
-                    showToast("上传失败", response.error, 3000);
-                }
-            })
-            .catch(err => showToast("上传失败", err.message, 3000));
-
-        setTimeout(() => {
-            submitButton.disabled = false;
-        }, 3000);
-    });
-
-    const levelTypeObserver = new MutationObserver((mutationsList) => {
-        for (const mutation of mutationsList) {
-            if (mutation.type === 'childList') {
-                console.log("triggered");
-                validatePartDropdown();
-                updatePartnerDropdown();
-                checkIfReady();
-            }
-        }
-    });
-
-    levelTypeObserver.observe(levelTypeSelect, {
-        childList: true, // 监听子节点变化（如 textContent 被替换）
-        subtree: false,  // 不递归监听子元素
-    });
-
-    levelNumberInput.addEventListener("input", () => {
-        validatePartDropdown();
-        checkIfReady();
-    });
-
-    levelPartSelect.addEventListener("change", checkIfReady);
 
     function refreshPartnerAndSetDropdowns() {
         const partnerSelect = document.getElementById("input-搭档");
-        const selectedPartner = partnerSelect.value;
+        const selectedPartner = partnerSelect.innerHTML;
 
         let partnerOptions = constants.DROPDOWN_VALUES["搭档身份"];
         let setOptions = constants.DROPDOWN_VALUES["日卡"];
@@ -468,26 +554,16 @@
         }
 
         const partnerStyleSelect = document.getElementById("input-搭档身份");
-        partnerStyleSelect.innerHTML = `<option value="">--搭档身份--</option>` + partnerOptions.map(v => `<option value="${v}">${v}</option>`).join("");
-
         const setSelect = document.getElementById("input-日卡");
-        setSelect.innerHTML = `<option value="">--日卡--</option>` + setOptions.map(v => `<option value="${v}">${v}</option>`).join("");
+
+        partnerStyleSelect.innerHTML = "--搭档身份--";
+        const partnerStyleOptions = partnerStyleSelect.nextElementSibling;
+        partnerStyleOptions.innerHTML = partnerOptions.map(v => `<li>${v}</li>`).join("");
+
+        setSelect.innerHTML = "--日卡--";
+        const setOptionsList = setSelect.nextElementSibling;
+        setOptionsList.innerHTML = setOptions.map(v => `<li>${v}</li>`).join("");
     }
-
-    const partnerSelect = document.getElementById("input-搭档");
-    partnerSelect.addEventListener("change", () => {
-        refreshPartnerAndSetDropdowns()
-    })
-
-    document.querySelectorAll('.btn-close').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const toast = this.closest('.toast');
-            if (toast) toast.style.display = 'none';
-        });
-    });
 </script>
-<footer class="footer">
-    <div>Contact：小红书：900197975 / 微信: rabbitlink</div>
-</footer>
 </body>
 </html>

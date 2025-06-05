@@ -28,10 +28,12 @@
     flex-direction: column;
     justify-content: center;
     height: 40px;
+    backdrop-filter: blur(20px);
 }
 
 .back-button {
-    margin-top: 5vh;
+    margin-top: 3vh;
+    margin-left: 3vh;
     margin-bottom: 20px;
     background-color: rgba(255, 255, 255, 0.1);
     height: 40px;
@@ -76,12 +78,4 @@
     gap: 16px; /* 可选，增加间距 */
     align-items: center; /* 可选，垂直居中 */
     margin-bottom: 10px;
-}
-
-.row-full-width {
-    width: 100%;
-}
-
-.row-half-width {
-    width: 50%;
 }
