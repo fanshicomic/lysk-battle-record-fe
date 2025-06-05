@@ -70,3 +70,18 @@
 .btn-close {
     filter: invert(1) grayscale(1) brightness(2);
 }
+
+.display-row {
+    display: flex;
+    gap: 16px; /* 可选，增加间距 */
+    align-items: center; /* 可选，垂直居中 */
+    margin-bottom: 10px;
+}
+
+.row-full-width {
+    width: 100%;
+}
+
+.row-half-width {
+    width: 50%;
+}
