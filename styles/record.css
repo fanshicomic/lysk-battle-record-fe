@@ -1,0 +1,44 @@
+.record {
+    padding: 10px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.record-partner {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+}
+
+.record-grid {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.record-level-detail {
+    text-align: left;
+}
+
+.record-matching-detail {
+    text-align: right;
+}
+
+.record-flex-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.record-text-label {
+    text-align: left;
+    /*flex: 1;*/
+}
+.record-number-label {
+    text-align: right;
+    /*flex: 1;*/
+}
