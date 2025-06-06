@@ -56,7 +56,8 @@
 }
 
 .is-matching {
-    color: darkseagreen;
+    color: #6cbf8a;
+    fill: #6cbf8a;
 }
 
 .is-not-matching {
