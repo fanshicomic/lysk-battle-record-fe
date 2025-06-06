@@ -13,6 +13,7 @@ export function initCustomSelects({
 
         // 打开/关闭下拉
         selected.addEventListener('click', () => {
+            if (options.querySelectorAll('li').length === 0) return;
             const isOpen = select.classList.toggle('open');
 
             if (isOpen) {

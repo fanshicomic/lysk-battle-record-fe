@@ -35,7 +35,7 @@
             width: 80vw;
             max-width: 350px;
             min-width: 250px;
-            min-height: 95vh;
+            min-height: 100vh;
             margin: 0 auto
         }
 
@@ -50,12 +50,21 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
+        .page-btn {
+            width: 30px;
+        }
+        .page-btn:hover,
+        .page-btn:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: inherit;
+        }
+
         .form-control::placeholder {
             color: #aaa;
         }
 
         .row {
-            padding: 5px 10px 5px 10px;
+            padding: 5px 20px 5px 20px;
             --bs-gutter-x: 0;
         }
 
@@ -101,6 +110,17 @@
 
         #latest-records .record {
             margin-bottom: 18px;
+        }
+
+        #latest-records .record:last-child {
+            margin-bottom: 100px;
+        }
+
+        #records .record {
+            margin-bottom: 18px;
+        }
+        #records .record:last-child {
+            margin-bottom: 100px;
         }
 
         .footer {
@@ -175,190 +195,7 @@
 
         <!-- 展示最新记录 -->
         <h2 id="latest-records-title" class="mt-5">最新上传面板</h2>
-        <div id="latest-records">
-            <div class="w-100 record">
-                <div class="row">
-                    <div class="col-6 record-matching-detail record-grid">
-                        <label class="record-matching is-matching">顺</label>
-                        <svg class="bi record-matching-circle is-matching" width="15" height="15">
-                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
-                        </svg>
-                        <svg class="bi record-matching-circle is-matching" width="15" height="15">
-                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
-                        </svg>
-                        <svg class="bi record-matching-circle is-matching" width="15" height="15">
-                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
-                        </svg>
-                        <svg class="bi record-matching-circle is-matching" width="15" height="15">
-                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
-                        </svg>
-                        <svg class="bi record-matching-circle is-matching" width="15" height="15">
-                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle"/>
-                        </svg>
-                        <svg class="bi record-matching-circle is-matching" width="15" height="15">
-                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle"/>
-                        </svg>
-                    </div>
-                    <div class="col-6 record-level-detail record-grid">
-                        <label>开放 120 上</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 record-grid record-grid-padding-right">
-                        <div class="record-partner partner-X-02">
-                            终极兵器X-02
-                        </div>
-                    </div>
-                    <div class="col-3 record-grid record-grid-padding-left-right">
-                        <div class="record-set-card set-card-purple">
-                            寂路 IV
-                        </div>
-                    </div>
-                    <div class="col-3 record-grid record-grid-padding-left">
-                        <div class="record-weapon weapon-rare">
-                            专武
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                        <label class="record-text-label">攻击:</label>
-                        <label class="record-number-label">10824</label>
-                    </div>
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                        <label class="record-text-label">生命:</label>
-                        <label class="record-number-label">183824</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                        <label class="record-text-label">防御:</label>
-                        <label class="record-number-label">3824</label>
-                    </div>
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                        <label class="record-text-label">虚弱增伤:</label>
-                        <label class="record-number-label">148.4%</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                        <label class="record-text-label">暴击:</label>
-                        <label class="record-number-label">79.4%</label>
-                    </div>
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                        <label class="record-text-label">暴伤:</label>
-                        <label class="record-number-label">279.4%</label>
-                    </div>
-                    </div>
-                <div class="row">
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                        <label class="record-text-label">誓约增伤:</label>
-                        <label class="record-number-label">24.4%</label>
-                    </div>
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                        <label class="record-text-label">誓约回能:</label>
-                        <label class="record-number-label">17.3%</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                        <label class="record-text-label">加速回能:</label>
-                        <label class="record-number-label">24.4%</label>
-                    </div>
-                </div>
-            </div>
-            <div class="w-100 record">
-                <div class="row">
-                    <div class="col-6 record-matching-detail record-grid">
-                        <label class="record-matching is-matching">顺</label>
-                        <svg class="bi record-matching-circle is-matching" width="15" height="15">
-                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
-                        </svg>
-                        <svg class="bi record-matching-circle is-matching" width="15" height="15">
-                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
-                        </svg>
-                        <svg class="bi record-matching-circle is-matching" width="15" height="15">
-                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
-                        </svg>
-                        <svg class="bi record-matching-circle is-matching" width="15" height="15">
-                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
-                        </svg>
-                        <svg class="bi record-matching-circle is-matching" width="15" height="15">
-                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle"/>
-                        </svg>
-                        <svg class="bi record-matching-circle is-matching" width="15" height="15">
-                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle"/>
-                        </svg>
-                    </div>
-                    <div class="col-6 record-level-detail record-grid">
-                        <label>开放 120 上</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 record-grid record-grid-padding-right">
-                        <div class="record-partner partner-X-02">
-                            终极兵器X-02
-                        </div>
-                    </div>
-                    <div class="col-3 record-grid record-grid-padding-left-right">
-                        <div class="record-set-card set-card-purple">
-                            寂路 IV
-                        </div>
-                    </div>
-                    <div class="col-3 record-grid record-grid-padding-left">
-                        <div class="record-weapon weapon-rare">
-                            专武
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                        <label class="record-text-label">攻击:</label>
-                        <label class="record-number-label">10824</label>
-                    </div>
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                        <label class="record-text-label">生命:</label>
-                        <label class="record-number-label">183824</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                        <label class="record-text-label">防御:</label>
-                        <label class="record-number-label">3824</label>
-                    </div>
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                        <label class="record-text-label">虚弱增伤:</label>
-                        <label class="record-number-label">148.4%</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                        <label class="record-text-label">暴击:</label>
-                        <label class="record-number-label">79.4%</label>
-                    </div>
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                        <label class="record-text-label">暴伤:</label>
-                        <label class="record-number-label">279.4%</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                        <label class="record-text-label">誓约增伤:</label>
-                        <label class="record-number-label">24.4%</label>
-                    </div>
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                        <label class="record-text-label">誓约回能:</label>
-                        <label class="record-number-label">17.3%</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                        <label class="record-text-label">加速回能:</label>
-                        <label class="record-number-label">24.4%</label>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <div id="latest-records"></div>
 
         <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
             <div class="toast-header">
@@ -376,6 +213,7 @@
 <script type="module">
     import { apiGet, apiPost } from './scripts/util.js';
     import { initCustomSelects } from './scripts/custom_select.js';
+    import { generateRecordHtml } from './scripts/record.js';
     import * as constants from './scripts/constants.js';
 
     const levelTypeSelect = document.getElementById("level-type");
@@ -396,15 +234,7 @@
         "生命", "攻击", "防御", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "对谱", "对谱加成", "搭档", "搭档身份", "日卡", "阶数", "武器"
     ];
 
-    const DISPLAY_PANEL_KEYS = [
-        "攻击", "防御", "生命", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "对谱", "对谱加成", "搭档身份", "日卡", "阶数", "武器"
-    ];
-
-    const LATEST_DISPLAY_PANEL_KEYS = [
-        "关卡", "关数", "攻击", "防御", "生命", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "对谱", "对谱加成", "搭档身份", "日卡", "阶数", "武器"
-    ];
-
-    // showLatestRecords();
+    showLatestRecords();
 
     let rowWrappers = [];
     PANEL_KEYS.forEach(function(key, index) {
@@ -460,7 +290,6 @@
     fetchBtn.addEventListener("click", () => {
         if (fetchBtn.disabled) return;
         fetchBtn.disabled = true;
-        console.log("获取记录...");
         hideInputSection();
         hideLatestRecords();
         showRecords();
@@ -642,7 +471,7 @@
     function getLevelNumber() {
         const number = parseInt(levelNumberInput.value);
         if (number % 10 === 0 && !partContainer.classList.contains("d-none")) {
-            return `${number}_${levelPartSelect.value}`;
+            return `${number}_${levelPartSelect.innerHTML}`;
         }
         return number;
     }
@@ -661,15 +490,7 @@
                 let cnt = result.total
                 let list = result.records || [];
 
-                recordsDiv.innerHTML = list.map(r => {
-                    const panelRows = DISPLAY_PANEL_KEYS.map((k, i) => {
-                        const content = `<strong>${k}:</strong> ${r[k] || "-"}`;
-                        const col = `<div class="col-md-3">${content}</div>`;
-                        return (i % 4 === 0 ? '<div class="row mb-1">' : '') + col + (i % 4 === 3 || i === DISPLAY_PANEL_KEYS.length - 1 ? '</div>' : '');
-                    }).join("");
-                    // return `<div class="record">${panelRows}<div class="text-muted small mt-2">${r.时间 || ""}</div></div>`;
-                    return `<div class="record">${panelRows}</div>`;
-                }).join("") || "暂无记录";
+                recordsDiv.innerHTML = list.map(r => generateRecordHtml(r)).join("") || "暂无记录";
 
                 const totalPages = Math.ceil(cnt / PAGE_SIZE);
                 const paginationDiv = document.getElementById("pagination");
@@ -678,7 +499,7 @@
                 if (totalPages > 1) {
                     for (let i = 1; i <= totalPages; i++) {
                         const btn = document.createElement("button");
-                        btn.className = `btn btn-sm mx-1 ${i === page ? "btn-primary" : "btn-outline-primary"}`;
+                        btn.className = `btn btn-sm mx-1 page-btn`;
                         btn.textContent = i;
                         btn.addEventListener("click", () => showRecords(i));
                         paginationDiv.appendChild(btn);
@@ -696,14 +517,7 @@
             .then(result => {
                 let list = result.records || [];
 
-                latestRecordsDiv.innerHTML = list.map(r => {
-                    const panelRows = LATEST_DISPLAY_PANEL_KEYS.map((k, i) => {
-                        const content = `<strong>${k}:</strong> ${r[k] || "-"}`;
-                        const col = `<div class="col-md-3">${content}</div>`;
-                        return (i % 4 === 0 ? '<div class="row mb-1">' : '') + col + (i % 4 === 3 || i === LATEST_DISPLAY_PANEL_KEYS.length - 1 ? '</div>' : '');
-                    }).join("");
-                    return `<div class="record">${panelRows}</div>`;
-                }).join("") || "暂无记录";
+                latestRecordsDiv.innerHTML = list.map(r => generateRecordHtml(r)).join("") || "暂无记录";
             })
             .catch(err => {
                 console.error("获取失败", err);
@@ -728,7 +542,7 @@
         let partnerOptions = constants.DROPDOWN_VALUES["搭档身份"];
         let setOptions = constants.DROPDOWN_VALUES["日卡"];
 
-        if (selectedPartner) {
+        if (selectedPartner && selectedPartner !== "--搭档--") {
             const partnerKey = `${selectedPartner}搭档`;
             partnerOptions = constants.DROPDOWN_VALUES[partnerKey]
 
