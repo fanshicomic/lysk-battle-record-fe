@@ -1,7 +1,7 @@
 export function generateRecordHtml(record) {
     const isMatching = record["对谱"] === "顺";
     const matchingClass = isMatching ? "is-matching" : "is-not-matching";
-    const matchingLabel = isMatching ? "顺" : (record["对谱"] || "-");
+    const matchingLabel = record["对谱"];
 
     const matchingBonus = Number(record["对谱加成"]) || 0;
     const filledCount = Math.round(Math.min(matchingBonus, 30) / 5);
@@ -11,19 +11,26 @@ export function generateRecordHtml(record) {
     </svg>`
     ).join("");
 
+    const hasMatchingInfo = record["对谱"] !== "不确定" && record["对谱加成"] !== "不确定";
+
     const levelLabel = `${record["关卡"] || "-"} ${(record["关数"] || "").replace("_", " ")}`;
     const weaponClass = record["武器"] === "专武" ? "weapon-rare" : "weapon-normal";
     const setCardClass = setCardColorMap(record["日卡"], record["搭档身份"]);
     const partnerClass = partnerColorMap(record["搭档身份"]);
 
+    const championshipsBuffer = record["加成"] ? `<div class="col-6 record-grid record-flex-row record-grid-padding-left">
+                <label class="record-text-label">加成:</label>
+                <label class="record-number-label">${record["加成"]}${record["加成"] ? "%" : ""}</label>
+            </div>` : "";
+
     // 主体内容
     return `
     <div class="w-100 record">
         <div class="row">
-            <div class="col-6 record-matching-detail record-grid">
+            ${hasMatchingInfo ? `<div class="col-6 record-matching-detail record-grid">
                 <label class="record-matching ${matchingClass}">${matchingLabel}</label>
                 ${circles}
-            </div>
+            </div>` : `<div class="col-6 record-matching-detail record-grid">无对谱信息</div>`}
             <div class="col-6 record-level-detail record-grid">
                 <label>${levelLabel}</label>
             </div>
@@ -36,7 +43,7 @@ export function generateRecordHtml(record) {
             </div>
             <div class="col-3 record-grid record-grid-padding-left-right">
                 <div class="record-set-card ${setCardClass}">
-                    ${record["日卡"] || "—"} ${record["阶数"]}
+                    ${record["日卡"] || "—"} ${record["日卡"] === "无套装" ? "" : record["阶数"]}
                 </div>
             </div>
             <div class="col-3 record-grid record-grid-padding-left">
@@ -90,6 +97,7 @@ export function generateRecordHtml(record) {
                 <label class="record-text-label">加速回能:</label>
                 <label class="record-number-label">${record["加速回能"] || "—"}${record["加速回能"] ? "%" : ""}</label>
             </div>
+            ${championshipsBuffer}
         </div>
     </div>
     `;
