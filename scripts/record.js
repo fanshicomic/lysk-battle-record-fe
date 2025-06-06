@@ -18,10 +18,9 @@ export function generateRecordHtml(record) {
     const setCardClass = setCardColorMap(record["日卡"], record["搭档身份"]);
     const partnerClass = partnerColorMap(record["搭档身份"]);
 
-    const championshipsBuffer = record["加成"] ? `<div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                <label class="record-text-label">加成:</label>
-                <label class="record-number-label">${record["加成"]}${record["加成"] ? "%" : ""}</label>
-            </div>` : "";
+    if (record["加成"] === "<nil>") {
+        record["加成"] = "";
+    }
 
     // 主体内容
     return `
@@ -97,7 +96,10 @@ export function generateRecordHtml(record) {
                 <label class="record-text-label">加速回能:</label>
                 <label class="record-number-label">${record["加速回能"] || "—"}${record["加速回能"] ? "%" : ""}</label>
             </div>
-            ${championshipsBuffer}
+            <div class="col-6 record-grid record-flex-row record-grid-padding-left">
+                <label class="record-text-label">${record["加成"] ? "加成:" : ""}</label>
+                <label class="record-number-label">${record["加成"]}${record["加成"] ? "%" : ""}</label>
+            </div>
         </div>
     </div>
     `;
