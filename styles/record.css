@@ -1,5 +1,6 @@
 .record {
-    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
     text-align: center;
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -8,25 +9,59 @@
     -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     color: rgba(255, 255, 255, 0.6);
+    font-size: 15px;
+}
+.record-grid {
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    align-items: center;
 }
 
 .record-partner {
     background: rgba(255, 255, 255, 0.15);
+    /*border: 1px solid rgba(255, 255, 255, 0.2);*/
+    border-radius: 12px;
+    width: 100%;
+    height: 100%;
+}
+
+.record-weapon {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.record-set-card {
+    width: 100%;
+    height: 100%;
     border-radius: 12px;
 }
 
-.record-grid {
-    padding-left: 10px;
-    padding-right: 10px;
+.record-level-detail {
+    text-align: right;
+    justify-content: flex-end;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.record-level-detail {
-    text-align: left;
+.record-matching {
+    font-size: 15px;
+}
+
+.is-matching {
+    color: darkseagreen;
+}
+
+.is-not-matching {
+    color: indianred;
 }
 
 .record-matching-detail {
-    text-align: right;
+    display: block;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .record-flex-row {
@@ -41,4 +76,45 @@
 .record-number-label {
     text-align: right;
     /*flex: 1;*/
+}
+
+.record-attack-icon {
+    width: 17px;
+    opacity: .7;
+    margin-right: 5px;
+}
+
+.record-defence-icon {
+    width: 15px;
+    opacity: .7;
+    margin-right: 5px;
+}
+
+.record-hp-icon {
+    width: 13px;
+    opacity: .7;
+    margin-right: 5px;
+}
+
+.partner-light-hunter {
+    background: linear-gradient(0deg, #fff85c82, #4ecfff87);
+}
+
+.partner-X-02 {
+    background: linear-gradient(0deg, #f8a68d, #8869a6);
+    /*background: linear-gradient(0deg, #eb913f82, #4e367f82);*/
+}
+
+.set-card-purple {
+    background-color: #8869a6;
+}
+
+.weapon-rare {
+    border-color: #f6dd6e;
+    color: #f6dd6e;
+}
+
+.weapon-normal {
+    border-color: #8869a6;
+    color: #8869a6;
 }
