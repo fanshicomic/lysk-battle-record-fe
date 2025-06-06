@@ -1,6 +1,4 @@
 .record {
-    padding-left: 10px;
-    padding-right: 10px;
     text-align: center;
     background: rgba(255, 255, 255, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -12,10 +10,21 @@
     font-size: 15px;
 }
 .record-grid {
-    padding-left: 10px;
-    padding-right: 10px;
     display: flex;
     align-items: center;
+}
+
+.record-grid-padding-left {
+    padding-left: 5px;
+}
+
+.record-grid-padding-left-right {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.record-grid-padding-right {
+    padding-right: 5px;
 }
 
 .record-partner {
@@ -46,10 +55,6 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.record-matching {
-    font-size: 15px;
-}
-
 .is-matching {
     color: darkseagreen;
 }
@@ -59,9 +64,16 @@
 }
 
 .record-matching-detail {
-    display: block;
     padding-bottom: 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.record-matching {
+    margin-right: 5px;
+}
+
+.record-matching-circle {
+    margin-right: 3px;
 }
 
 .record-flex-row {

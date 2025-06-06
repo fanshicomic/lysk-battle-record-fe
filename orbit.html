@@ -55,8 +55,8 @@
         }
 
         .row {
-            padding-top: 5px;
-            padding-bottom: 5px;
+            padding: 5px 10px 5px 10px;
+            --bs-gutter-x: 0;
         }
 
         .form-control:focus {
@@ -176,26 +176,24 @@
                 <div class="row">
                     <div class="col-6 record-matching-detail record-grid">
                         <label class="record-matching is-matching">顺</label>
-                        <label class="record-matching-buffer">
-                            <svg class="bi" width="15" height="15" fill="darkseagreen">
-                                <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
-                            </svg>
-                            <svg class="bi" width="15" height="15" fill="darkseagreen">
-                                <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
-                            </svg>
-                            <svg class="bi" width="15" height="15" fill="darkseagreen">
-                                <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
-                            </svg>
-                            <svg class="bi" width="15" height="15" fill="darkseagreen">
-                                <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
-                            </svg>
-                            <svg class="bi" width="15" height="15" fill="currentColor">
-                                <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle"/>
-                            </svg>
-                            <svg class="bi" width="15" height="15" fill="currentColor">
-                                <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle"/>
-                            </svg>
-                        </label>
+                        <svg class="bi record-matching-circle" width="15" height="15" fill="darkseagreen">
+                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
+                        </svg>
+                        <svg class="bi record-matching-circle" width="15" height="15" fill="darkseagreen">
+                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
+                        </svg>
+                        <svg class="bi record-matching-circle" width="15" height="15" fill="darkseagreen">
+                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
+                        </svg>
+                        <svg class="bi record-matching-circle" width="15" height="15" fill="darkseagreen">
+                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle-fill"/>
+                        </svg>
+                        <svg class="bi record-matching-circle" width="15" height="15" fill="currentColor">
+                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle"/>
+                        </svg>
+                        <svg class="bi record-matching-circle" width="15" height="15" fill="currentColor">
+                            <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#circle"/>
+                        </svg>
                     </div>
                     <div class="col-6 record-level-detail record-grid">
                         <label class="record-level-type">开放</label>
@@ -204,55 +202,66 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6 record-grid">
+                    <div class="col-6 record-grid record-grid-padding-right">
                         <div class="record-partner partner-X-02">
                             终极兵器X-02
                         </div>
                     </div>
-                    <div class="col-3 record-grid">
+                    <div class="col-3 record-grid record-grid-padding-left-right">
                         <div class="record-set-card set-card-purple">
                             寂路 IV
                         </div>
                     </div>
-                    <div class="col-3 record-grid">
+                    <div class="col-3 record-grid record-grid-padding-left">
                         <div class="record-weapon weapon-rare">
                             专武
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-4 record-grid"><img class="record-attack-icon" src="assets/sword.PNG" alt="攻">9988</label>
-                    <label class="col-4 record-grid"><img class="record-defence-icon" src="assets/shield.PNG" alt="防">2345</label>
-                    <label class="col-4 record-grid"><img class="record-hp-icon" src="assets/heart.PNG" alt="生">148934</label>
-                </div>
-                <div class="row">
-                    <div class="col-6 record-grid record-flex-row">
-                        <label class="record-text-label">暴击:</label>
-                        <label class="record-number-label">79.4</label>
+                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
+                        <label class="record-text-label">攻击:</label>
+                        <label class="record-number-label">10824</label>
                     </div>
-                    <div class="col-6 record-grid record-flex-row">
-                        <label class="record-text-label">暴伤:</label>
-                        <label class="record-number-label">279.4</label>
+                    <div class="col-6 record-grid record-flex-row record-grid-padding-left">
+                        <label class="record-text-label">生命:</label>
+                        <label class="record-number-label">183824</label>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6 record-grid record-flex-row">
-                        <label class="record-text-label">誓约增伤:</label>
-                        <label class="record-number-label">4.4</label>
+                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
+                        <label class="record-text-label">防御:</label>
+                        <label class="record-number-label">3824</label>
                     </div>
-                    <div class="col-6 record-grid record-flex-row">
+                    <div class="col-6 record-grid record-flex-row record-grid-padding-left">
                         <label class="record-text-label">虚弱增伤:</label>
-                        <label class="record-number-label">148.4</label>
+                        <label class="record-number-label">148.4%</label>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-6 record-grid record-flex-row">
-                        <label class="record-text-label">誓约回能:</label>
-                        <label class="record-number-label">17</label>
+                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
+                        <label class="record-text-label">暴击:</label>
+                        <label class="record-number-label">79.4%</label>
                     </div>
-                    <div class="col-6 record-grid record-flex-row">
+                    <div class="col-6 record-grid record-flex-row record-grid-padding-left">
+                        <label class="record-text-label">暴伤:</label>
+                        <label class="record-number-label">279.4%</label>
+                    </div>
+                    </div>
+                <div class="row">
+                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
+                        <label class="record-text-label">誓约增伤:</label>
+                        <label class="record-number-label">24.4%</label>
+                    </div>
+                    <div class="col-6 record-grid record-flex-row record-grid-padding-left">
+                        <label class="record-text-label">誓约回能:</label>
+                        <label class="record-number-label">17.3%</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6 record-grid record-flex-row record-grid-padding-right">
                         <label class="record-text-label">加速回能:</label>
-                        <label class="record-number-label">24</label>
+                        <label class="record-number-label">24.4%</label>
                     </div>
                 </div>
             </div>
@@ -269,11 +278,6 @@
     <footer class="footer">
         <div>Contact：小红书：900197975 / 微信: rabbitlink</div>
     </footer>
-    <div class="d-none" id="attribute-icon">
-        <a href="https://www.flaticon.com/free-icons/war" title="war icons">War icons created by afif fudin - Flaticon</a>
-        <a href="https://www.flaticon.com/free-icons/shield" title="shield icons">Shield icons created by Maniprasanth - Flaticon</a>
-        <a href="https://www.flaticon.com/free-icons/heart" title="heart icons">Heart icons created by Freepik - Flaticon</a>
-    </div>
 </div>
 
 <script type="module">
