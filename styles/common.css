@@ -49,6 +49,8 @@
 }
 
 .toast {
+    max-width: 300px;
+    min-width: 250px;
     position: absolute;
     top: 350px;
     left: 50%;
