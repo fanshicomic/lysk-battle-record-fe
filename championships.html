@@ -328,6 +328,13 @@
     subtree: false,
   });
 
+  document.querySelectorAll('.btn-close').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const toast = this.closest('.toast');
+      if (toast) toast.style.display = 'none';
+    });
+  });
+
   function updatePartnerDropdown() {
     const partnerSelect = document.getElementById("input-搭档");
 
