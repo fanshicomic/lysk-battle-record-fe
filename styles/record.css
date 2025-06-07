@@ -1,3 +1,8 @@
+:root {
+    --green-style-color: #40a565;
+    --red-style-color: #bd4e4b;
+}
+
 .record {
     text-align: center;
     background: rgba(255, 255, 255, 0.1);
@@ -56,13 +61,13 @@
 }
 
 .is-matching {
-    color: #6cbf8a;
-    fill: #6cbf8a;
+    color: var(--green-style-color);
+    fill: var(--green-style-color);
 }
 
 .is-not-matching {
-    color: darksalmon;
-    fill: darksalmon;
+    color: var(--red-style-color);
+    fill: var(--red-style-color);
 }
 
 .record-matching-detail {
@@ -133,7 +138,7 @@
 }
 
 .partner-abyss-walker {
-    background: linear-gradient(135deg, #402e47, #6b548e);
+    background: linear-gradient(135deg, #3b2942, #593076);
 }
 
 .partner-god-of-the-tides {
@@ -141,7 +146,7 @@
 }
 
 .partner-relentless-conqueror {
-    background: linear-gradient(135deg, #290d0d, #c28585);
+    background: linear-gradient(135deg, #250c0c, #ab6565);
 }
 
 .partner-abysm-sovereign {
@@ -149,7 +154,7 @@
 }
 
 .partner-farspace-colonel {
-    background: linear-gradient(135deg, #251332, #5b1212);
+    background: linear-gradient(135deg, #251332, #630000);
 }
 
 .partner-ultimate-weapon-X-02 {
@@ -163,7 +168,7 @@
 }
 
 .set-card-pink {
-    background-color: #f6a1a6;
+    background-color: #d78a8e;
 }
 
 .set-card-red {
@@ -175,11 +180,11 @@
 }
 
 .set-card-green {
-    background-color: #6cbf8a;
+    background-color: var(--green-style-color);
 }
 
 .set-card-yellow {
-    background-color: #e6c639;
+    background-color: #d4b83a;
 }
 
 .set-card-none {
