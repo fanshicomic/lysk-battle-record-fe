@@ -1,6 +1,7 @@
 :root {
-    --green-style-color: #40a565;
+    --green-style-color: #42a366;
     --red-style-color: #bd4e4b;
+    --purple-style-color: #785d90;
 }
 
 .record {
@@ -164,7 +165,7 @@
 /* Set card styles */
 
 .set-card-purple {
-    background-color: #8869a6;
+    background-color: var(--purple-style-color);
 }
 
 .set-card-pink {
@@ -199,6 +200,6 @@
 }
 
 .weapon-normal {
-    border-color: #8869a6;
-    color: #8869a6;
+    border-color: var(--purple-style-color);
+    color: var(--purple-style-color);
 }
