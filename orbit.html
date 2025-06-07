@@ -108,6 +108,12 @@
             color: inherit;
         }
 
+        .total-cnt-row {
+            font-size: small;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
         #latest-records .record {
             margin-bottom: 18px;
         }
@@ -195,6 +201,7 @@
 
         <!-- 展示最新记录 -->
         <h2 id="latest-records-title" class="mt-5">最新上传面板</h2>
+        <p class="total-cnt-row">轨道通关数据总量：<label id="total-db-records-cnt">加载中</label>。感谢您的分享！</p>
         <div id="latest-records"></div>
 
         <div id="toast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -224,6 +231,7 @@
     const recordsDiv = document.getElementById("records");
     const latestRecordsDiv = document.getElementById("latest-records");
     const latestRecordsTitle = document.getElementById("latest-records-title")
+    const totalCountRow = document.querySelector(".total-cnt-row");
     const submitButton = document.getElementById("submit");
     const actionButtons = document.getElementById("action-buttons");
     const recordsTitle = document.getElementById("records-title")
@@ -515,8 +523,10 @@
     function showLatestRecords() {
         apiGet('latest-orbit-records', {})
             .then(result => {
+                let cnt = result.total || 0;
                 let list = result.records || [];
 
+                document.getElementById("total-db-records-cnt").innerText = cnt;
                 latestRecordsDiv.innerHTML = list.map(r => generateRecordHtml(r)).join("") || "暂无记录";
             })
             .catch(err => {
@@ -528,6 +538,7 @@
     function hideLatestRecords() {
         latestRecordsTitle.classList.add("d-none");
         latestRecordsDiv.classList.add("d-none");
+        totalCountRow.classList.add("d-none");
     }
 
     function hideInputSection() {
