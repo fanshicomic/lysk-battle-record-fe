@@ -56,12 +56,24 @@
     left: 50%;
     transform: translateX(-50%);
     background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
     color: white;
     width: 60vw;
     border-radius: 20px;
     border: 0;
+}
+
+.toast-body {
+    max-height: 50vh;
+    overflow: scroll;
+    scrollbar-width: none;
+}
+
+.toast.announcement {
+    top: 20vh;
+    width: 80vw;
+    max-width: 350px;
 }
 
 .toast-header {

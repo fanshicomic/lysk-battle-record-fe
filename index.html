@@ -63,17 +63,37 @@
       top: 0;
       opacity: 0.8;
     }
+
+    .announcement-button {
+      position: absolute;
+      top: 2vh;
+      right: 2vh;
+      background-color: rgba(255, 255, 255, 0.1);
+      height: 30px;
+      width: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   </style>
 </head>
 <body>
 <div class="blobs">
 </div>
 <div class="main-content">
+  <label class="announcement-button">
+    <svg class="bi" width="12px" height="12px" fill="rgba(255, 255, 255, 0.5)">
+      <use xlink:href="node_modules/bootstrap-icons/bootstrap-icons.svg#megaphone-fill"/>
+    </svg>
+  </label>
   <div class="content-wrapper">
     <h1 id="title">深空面板助手</h1>
     <div id="hr-section">
       <hr />
-      <p id="sub-title">Deepspace Battle Helper V1.2</p>
+      <p id="sub-title">
+        Deepspace Battle Helper V1.2.1
+      </p>
     </div>
     <a href="orbit.html" style="text-decoration: none; color: inherit;">
       <div class="button-section">
@@ -93,13 +113,27 @@
         </button>
       </div>
     </a>
+    <div id="announcement" class="toast announcement" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header">
+        <strong class="me-auto" id="announcement-header">系统公告</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body" id="announcement-body">
+        <p id="announcement-general-msg">
+        </p>
+        <p id="announcement-latest-updates">
+        </p>
+      </div>
+    </div>
   </div>
 </div>
 
 <script type="module">
   import { apiGet } from './scripts/util.js';
+  import { showAnnouncement, forceDisplayAnnouncement } from './scripts/announcement.js';
   // wake up the server
   apiGet('ping', {})
+  showAnnouncement();
 
   const container = document.querySelector('.blobs');
   const blobCount = 10;
@@ -108,6 +142,17 @@
     b.className = 'blob';
     container.appendChild(b);
   }
+
+  document.querySelectorAll('.btn-close').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const toast = this.closest('.toast');
+      if (toast) toast.style.display = 'none';
+    });
+  });
+
+    document.querySelector('.announcement-button').addEventListener('click', function() {
+      forceDisplayAnnouncement();
+    });
 </script>
 <footer class="footer">
   <div>Contact：小红书：900197975 / 微信: rabbitlink</div>
