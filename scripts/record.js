@@ -97,7 +97,7 @@ export function generateRecordHtml(record) {
                 <label class="record-number-label">${record["加速回能"] || "—"}${record["加速回能"] ? "%" : ""}</label>
             </div>
             <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                <label class="record-text-label">${record["加成"] ? "加成:" : ""}</label>
+                <label class="record-text-label">${record["加成"] ? "赛季加成:" : ""}</label>
                 <label class="record-number-label">${record["加成"]}${record["加成"] ? "%" : ""}</label>
             </div>
         </div>
