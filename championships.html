@@ -198,6 +198,19 @@
       <div class="toast-body" id="toast-body"></div>
     </div>
   </div>
+
+  <div id="announcement" class="toast announcement" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto" id="announcement-header">系统公告</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="announcement-body">
+      <p id="announcement-general-msg">
+      </p>
+      <p id="announcement-latest-updates">
+      </p>
+    </div>
+  </div>
   <footer class="footer">
     <div>Contact：小红书：900197975 / 微信: rabbitlink</div>
   </footer>
@@ -207,6 +220,7 @@
   import { apiGet, apiPost } from './scripts/util.js';
   import { initCustomSelects } from './scripts/custom_select.js';
   import { generateRecordHtml } from './scripts/record.js';
+  import { showAnnouncement } from './scripts/announcement.js';
   import * as constants from './scripts/constants.js';
 
   const levelSelect = document.getElementById("level");
@@ -224,7 +238,10 @@
     "生命", "攻击", "防御", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "对谱", "对谱加成", "搭档", "搭档身份", "日卡", "阶数", "武器", "加成"
   ];
 
-  showLatestRecords();let rowWrappers = [];
+  showAnnouncement();
+  showLatestRecords();
+
+  let rowWrappers = [];
   PANEL_KEYS.forEach(function(key, index) {
     const wrapper = document.createElement("div");
     wrapper.className = "w-50";
