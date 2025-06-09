@@ -249,7 +249,7 @@
       const customSelect = document.createElement("div");
       customSelect.className = "custom-select";
       customSelect.innerHTML = `
-                <div id="input-${key}" class="selected">--${key}--</div>
+                <div id="input-${key}" class="selected">--${key==="加成" ? "赛季加成" : key}--</div>
                 <ul class="options">
                     ${constants.DROPDOWN_VALUES[key].map(v => `<li>${v}</li>`).join("")}
                 </ul>
