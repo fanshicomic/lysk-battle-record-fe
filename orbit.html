@@ -238,8 +238,8 @@
     import { apiGet, apiPost } from './scripts/util.js';
     import { initCustomSelects } from './scripts/custom_select.js';
     import { generateRecordHtml } from './scripts/record.js';
-    import { showAnnouncement } from './scripts/announcement.js?ver=1';
-    import * as constants from './scripts/constants.js';
+    import { showAnnouncement } from './scripts/announcement.js?ver=1.2.2';
+    import * as constants from './scripts/constants.js?ver=1.2.2';
 
     const levelTypeSelect = document.getElementById("level-type");
     const levelNumberInput = document.getElementById("level-number");
@@ -488,6 +488,10 @@
             let val = document.getElementById(`input-${key}`).innerHTML.trim();
             if (val === "") {
                 val = document.getElementById(`input-${key}`).value.trim();
+            }
+
+            if (constants.DROPDOWN_VALUES["阶数"].includes(val)) {
+                val = val.substring(0, 1);
             }
             data[key] = val;
         });
