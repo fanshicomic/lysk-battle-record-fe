@@ -1,6 +1,7 @@
 export function showAnnouncement() {
-    if (sessionStorage.getItem('announcementShown')) return;
-    sessionStorage.setItem('announcementShown', '1');
+    const announcementKey = "1.2.1"
+    if (localStorage.getItem(announcementKey)) return;
+    localStorage.setItem(announcementKey, '1');
 
     prepareAnnouncement();
 
@@ -28,7 +29,8 @@ function getAnnouncementBody() {
     
             欢迎使用深空面板助手 :)
             库中的面板会用于正在开发的数据分析功能，感谢你的每一条记录分享~
-            更多功能如筛选、排序、截图识别也在开发进程中，敬请期待`
+            更多功能如筛选、排序、截图识别也在开发进程中，敬请期待
+            公告可前往本助手首页右上角重新查看`
 }
 
 function getAnnouncementLatestUpdates() {

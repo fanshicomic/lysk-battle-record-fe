@@ -220,7 +220,7 @@
   import { apiGet, apiPost } from './scripts/util.js';
   import { initCustomSelects } from './scripts/custom_select.js';
   import { generateRecordHtml } from './scripts/record.js';
-  import { showAnnouncement } from './scripts/announcement.js';
+  import { showAnnouncement } from './scripts/announcement.js?ver=1';
   import * as constants from './scripts/constants.js';
 
   const levelSelect = document.getElementById("level");
@@ -445,7 +445,7 @@
             })
             .catch(err => {
               console.error("获取失败", err);
-              alert("获取失败：" + err.message);
+              showToast("获取失败", err.message, 5000);
             });
   }
 
@@ -460,7 +460,7 @@
             })
             .catch(err => {
               console.error("获取失败", err);
-              alert("获取失败：" + err.message);
+              showToast("获取失败", err.message, 5000);
             });
   }
 
