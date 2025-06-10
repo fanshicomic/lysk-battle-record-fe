@@ -109,7 +109,6 @@
         <button class="btn hologram">
           <img class="icon" src="assets/orbit.gif" />
           <span data-text="轨道">轨道</span>
-          <!--      <div class="scan-line"></div>-->
         </button>
       </div>
     </a>
@@ -118,7 +117,6 @@
         <button class="btn hologram">
           <img class="icon" style="top: 5px" src="assets/championships.gif" />
           <span data-text="锦标赛">锦标赛</span>
-          <!--      <div class="scan-line"></div>-->
         </button>
       </div>
     </a>
@@ -139,7 +137,7 @@
 
 <script type="module">
   import { apiGet } from './scripts/util.js';
-  import { showAnnouncement, forceDisplayAnnouncement } from './scripts/announcement.js';
+  import { showAnnouncement, forceDisplayAnnouncement } from './scripts/announcement.js?ver=1';
   // wake up the server
   apiGet('ping', {})
   showAnnouncement();
