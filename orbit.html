@@ -490,8 +490,8 @@
                 val = document.getElementById(`input-${key}`).value.trim();
             }
 
-            if (constants.DROPDOWN_VALUES["阶数"].includes(val)) {
-                val = val.substring(0, 1);
+            if (constants.DROPDOWN_VALUES["阶数"].includes(val) && val !== "无套装") {
+                val = val.substring(0, val.length - 5);
             }
             data[key] = val;
         });
