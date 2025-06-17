@@ -126,7 +126,7 @@ function setCardColorMap(card, partner) {
         return "set-card-green";
     }
 
-    const yellowCards = ["末夜", "弦光", "深林"];
+    const yellowCards = ["雾海", "末夜", "弦光", "深林"];
     if (yellowCards.includes(card)) {
         return "set-card-yellow";
     }
@@ -172,6 +172,10 @@ function partnerColorMap(partner) {
 
     if (partner === "九黎司命") {
         return "partner-master-of-fate";
+    }
+
+    if (partner === "利莫里亚海神") {
+        return "partner-lemurian-sea-god";
     }
 
     if (partner === "潮汐之神") {
