@@ -35,7 +35,7 @@ function getAnnouncementBody() {
 
 function getAnnouncementLatestUpdates() {
     return `最新更新
-            - 2025-06-17：支持搭档利莫里亚海神
+            - 2025-06-17：支持搭档利莫里亚海神，开放火轨210
             - 2025-06-10：表单阶数显示优化
             - 2025-06-09：新增系统公告功能+防御/生命搭档上传数据验证
             - 2025-06-07：更具体的上传数据验证`
