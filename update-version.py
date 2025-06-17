@@ -24,8 +24,13 @@ for root, _, files in os.walk(project_root):
             original_content = content
 
             if file.endswith(".html"):
+                def script_sub(match):
+                    tag = match.group(0)
+                    if "googletagmanager.com/gtag/js" in tag:
+                        return tag
+                    return f"{match.group(1)}?v={version}{match.group(3)}"
                 content = html_link_pattern.sub(rf'\1?v={version}\3', content)
-                content = html_script_pattern.sub(rf'\1?v={version}\3', content)
+                content = html_script_pattern.sub(script_sub, content)
                 content = js_import_pattern.sub(rf'\1\2?v={version}\4', content)
             elif file.endswith(".js"):
                 content = js_import_pattern.sub(rf'\1\2?v={version}\4', content)
