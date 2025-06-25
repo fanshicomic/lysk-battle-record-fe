@@ -1,0 +1,17 @@
+{
+  "node_modules/bootstrap-icons/font/bootstrap-icons.css": "1f041c852155e417017372c978871d14",
+  "node_modules/bootstrap-icons/font/bootstrap-icons.min.css": "c88a56421d181b3808a23a69d9ef9560",
+  "styles/hologram.css": "b50dd0f37c13e612be3331279bb0ba67",
+  "styles/background.css": "8e47e165bf9715a8e9a303d8430bea10",
+  "styles/record.css": "9fdcb041ca7513f5eb785d0fadab017a",
+  "styles/custom-select.css": "3ee7585f1d4641fe00490f02acdb2d68",
+  "styles/common.css": "44f9189024900abfd4a6e507edd5fe2a",
+  "styles/ai-background.css": "087647dd69593a3a75ee4ae9a00d6eed",
+  "styles/cloud.css": "7a73fc6ca3980779773d95f808fa52e6",
+  "scripts/constants.js": "0b16b26bb2316ef9b0675ae88921ee65",
+  "scripts/util.js": "636ddca24f9da1e6e982674c849974f8",
+  "scripts/custom_select.js": "ed0322bb0b0e8b4db1f4dae6138f8fca",
+  "scripts/announcement.js": "b1fce615ac006cfc746870622528f24e",
+  "scripts/server_host.js": "1d7c5ea32896f1385bf82573815b5144",
+  "scripts/record.js": "f009ea022aecd4a9f50024d8f8050a43"
+}

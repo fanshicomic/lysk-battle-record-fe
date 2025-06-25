@@ -1,5 +1,5 @@
 export function showAnnouncement() {
-    const announcementKey = "1.2.3"
+    const announcementKey = "1.2.4"
     if (localStorage.getItem(announcementKey)) return;
     localStorage.setItem(announcementKey, '1');
 
@@ -35,6 +35,7 @@ function getAnnouncementBody() {
 
 function getAnnouncementLatestUpdates() {
     return `最新更新
+            - 2025-06-25：增加坠浪四星日卡
             - 2025-06-17：支持搭档利莫里亚海神
             - 2025-06-10：表单阶数显示优化
             - 2025-06-09：新增系统公告功能+防御/生命搭档上传数据验证
