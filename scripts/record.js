@@ -121,7 +121,7 @@ function setCardColorMap(card, partner) {
         return "set-card-red";
     }
 
-    const greenCards = ["逐光", "睱日", "深渊", "离途"];
+    const greenCards = ["逐光", "睱日", "深渊", "离途", "坠浪"];
     if (greenCards.includes(card)) {
         return "set-card-green";
     }
