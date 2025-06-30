@@ -11,7 +11,7 @@
   "scripts/constants.js": "0b16b26bb2316ef9b0675ae88921ee65",
   "scripts/util.js": "636ddca24f9da1e6e982674c849974f8",
   "scripts/custom_select.js": "ed0322bb0b0e8b4db1f4dae6138f8fca",
-  "scripts/announcement.js": "b1fce615ac006cfc746870622528f24e",
+  "scripts/announcement.js": "bddb587c5ee8da629334b2e2dd7836c3",
   "scripts/server_host.js": "1d7c5ea32896f1385bf82573815b5144",
   "scripts/record.js": "f009ea022aecd4a9f50024d8f8050a43"
 }
