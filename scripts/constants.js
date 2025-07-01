@@ -1,11 +1,21 @@
-export const LEVEL_TYPES = [
-    { type: "光", count: 180 },
-    { type: "冰", count: 180 },
-    { type: "火", count: 210 },
-    { type: "能量", count: 150 },
-    { type: "引力", count: 120 },
-    { type: "开放", count: 240 },
-];
+export const LEVEL_TYPES = {
+    "稳定": [
+        { type: "光", count: 180 },
+        { type: "冰", count: 180 },
+        { type: "火", count: 210 },
+        { type: "能量", count: 150 },
+        { type: "引力", count: 120 },
+        { type: "开放", count: 300 },
+    ],
+    "波动": [
+        { type: "光", count: 0 },
+        { type: "冰", count: 0 },
+        { type: "火", count: 0 },
+        { type: "能量", count: 0 },
+        { type: "引力", count: 0 },
+        { type: "开放", count: 60 },
+    ]
+};
 
 export const DROPDOWN_VALUES = {
     搭档: ["沈星回", "黎深", "祁煜", "秦彻", "夏以昼"],

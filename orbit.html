@@ -6,7 +6,7 @@
     <title>深空面板助手 - 轨道</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.jpg?v=1750166732">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css?v=1750166732" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="./styles/common.css?v=1750166732" />
+    <link rel="stylesheet" type="text/css" href="./styles/common.css?v=1751383006" />
     <link rel="stylesheet" type="text/css" href="./styles/custom-select.css?v=1750166732" />
     <link rel="stylesheet" type="text/css" href="./styles/record.css?v=1750850695" />
     <style>
@@ -162,9 +162,9 @@
 
         <!-- 基础输入 -->
         <div class="display-row">
-            <div class="w-50">
+            <div class="w-33">
                 <div class="custom-select">
-                    <div id="level-type" class="selected">--选择关卡--</div>
+                    <div id="level-type" class="selected">--关卡--</div>
                     <ul class="options">
                         <li>光</li>
                         <li>冰</li>
@@ -175,7 +175,16 @@
                     </ul>
                 </div>
             </div>
-            <div class="w-50">
+            <div class="w-33">
+                <div class="custom-select">
+                    <div id="level-mode" class="selected">--模式--</div>
+                    <ul class="options">
+                        <li>稳定</li>
+                        <li>波动</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="w-33">
                 <input id="level-number" type="number" class="form-control" placeholder="关卡编号" min="1">
             </div>
         </div>
@@ -183,7 +192,7 @@
         <!-- 上下段 -->
         <div class="d-none display-row" id="part-container">
             <div class="custom-select w-100">
-                <div id="level-part" class="selected">--选择上下--</div>
+                <div id="level-part" class="selected">--上下--</div>
                 <ul class="options">
                     <li>上</li>
                     <li>下</li>
@@ -244,10 +253,11 @@
 <script type="module">
     import { apiGet, apiPost } from './scripts/util.js?v=1750850695';
     import { initCustomSelects } from './scripts/custom_select.js?v=1750166732';
-    import { generateRecordHtml } from './scripts/record.js?v=1750850695';
-    import { showAnnouncement } from './scripts/announcement.js?v=1751303923';
-    import * as constants from './scripts/constants.js?v=1750850695';
+    import { generateRecordHtml } from './scripts/record.js?v=1751383006';
+    import { showAnnouncement } from './scripts/announcement.js?v=1751383006';
+    import * as constants from './scripts/constants.js?v=1751383006';
 
+    const levelModeSelect = document.getElementById("level-mode");
     const levelTypeSelect = document.getElementById("level-type");
     const levelNumberInput = document.getElementById("level-number");
     const levelPartSelect = document.getElementById("level-part");
@@ -358,18 +368,24 @@
         if (submitButton.disabled) return;
         submitButton.disabled = true;
 
+        const mode = levelModeSelect.innerHTML;
         const type = levelTypeSelect.innerHTML;
         const number = parseInt(levelNumberInput.value);
-        const selected = constants.LEVEL_TYPES.find(l => l.type === type);
+        if (mode === "--模式--") {
+            showToast("请求错误", "请选择模式！", 3000);
+            return;
+        }
 
-        if (!type || !number || !selected || number < 1 || number > selected.count) {
+        const upperBound = constants.LEVEL_TYPES[mode].find(l => l.type === type);
+
+        if (!type || !number || !upperBound || number < 1 || number > upperBound.count) {
             showToast("请求错误", "请正确填写关卡类型和编号！", 3000);
             return;
         }
 
         const levelNumber = getLevelNumber();
         const data = getFormData();
-        const record = { 关卡: type, 关数: levelNumber, ...data };
+        const record = { "模式": mode, "关卡": type, "关数": levelNumber, ...data };
 
         apiPost('orbit-record', record)
             .then(response => {
@@ -389,10 +405,24 @@
         }, 3000);
     });
 
+    const levelModeObserver = new MutationObserver((mutationsList) => {
+        for (const mutation of mutationsList) {
+            if (mutation.type === 'childList') {
+                checkIfReady();
+            }
+        }
+    });
+
+    levelModeObserver.observe(levelModeSelect, {
+        childList: true,
+        subtree: false,
+    });
+
     const levelTypeObserver = new MutationObserver((mutationsList) => {
         for (const mutation of mutationsList) {
             if (mutation.type === 'childList') {
                 validatePartDropdown();
+                updateModeDropdown();
                 updatePartnerDropdown();
                 checkIfReady();
             }
@@ -446,14 +476,25 @@
     });
 
     function validatePartDropdown() {
-        const type = levelTypeSelect.innerHTML;
         const number = parseInt(levelNumberInput.value);
-        const selected = constants.LEVEL_TYPES.find(l => l.type === type);
-        if (selected && number && number % 10 === 0 && number >= 1 && number <= selected.count) {
+
+        if (number && number % 10 === 0) {
             partContainer.classList.remove("d-none");
         } else {
             partContainer.classList.add("d-none");
         }
+    }
+
+    function updateModeDropdown() {
+        const type = levelTypeSelect.innerHTML;
+        if (type !== "开放") {
+            levelModeSelect.innerHTML = "稳定";
+            return;
+        }
+        levelModeSelect.innerHTML = "--模式--";
+        const levelModeOptions = levelModeSelect.nextElementSibling;
+        levelModeOptions.innerHTML = ["稳定", "波动"].map(v => `<li>${v}</li>`).join("");
+
     }
 
     function updatePartnerDropdown() {
@@ -483,9 +524,12 @@
     }
 
     function checkIfReady() {
+        const mode = levelModeSelect.innerHTML;
         const type = levelTypeSelect.innerHTML;
         const number = parseInt(levelNumberInput.value);
-        const selected = constants.LEVEL_TYPES.find(l => l.type === type);
+        if (mode === "--模式--") return;
+
+        const selected = constants.LEVEL_TYPES[mode].find(l => l.type === type);
         const hasValuesAndNumber = type && number && selected
         if (hasValuesAndNumber) {
             const isValidNumber = number >= 1 && number <= selected.count
@@ -534,10 +578,11 @@
 
         const type = levelTypeSelect.innerHTML;
         const level = getLevelNumber();
+        const mode = levelModeSelect.innerHTML;
 
         const offset = (page - 1) * PAGE_SIZE;
 
-        apiGet('orbit-records', { type, level, offset })
+        apiGet('orbit-records', { type, level, mode, offset })
             .then(result => {
                 let cnt = result.total
                 let list = result.records || [];

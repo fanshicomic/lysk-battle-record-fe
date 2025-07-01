@@ -1,5 +1,5 @@
 export function showAnnouncement() {
-    const announcementKey = "1.2.5"
+    const announcementKey = "1.3.0"
     if (localStorage.getItem(announcementKey)) return;
     localStorage.setItem(announcementKey, '1');
 
@@ -36,6 +36,7 @@ function getAnnouncementBody() {
 
 function getAnnouncementLatestUpdates() {
     return `最新更新
+            - 2025-07-01：支持新的关卡模式（预计未来非开放轨道也会增加波动模式，所以调整为所有关卡都支持双模式。）
             - 2025-07-01：增加重置表单按钮
             - 2025-06-25：增加坠浪四星日卡
             - 2025-06-17：支持搭档利莫里亚海神

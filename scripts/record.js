@@ -13,7 +13,7 @@ export function generateRecordHtml(record) {
 
     const hasMatchingInfo = record["对谱"] !== "不确定" && record["对谱加成"] !== "不确定";
 
-    const levelLabel = `${record["关卡"] || "-"} ${(record["关数"] || "").replace("_", " ")}`;
+    const levelLabel = `${record["关卡"]} ${record["关卡"] === "开放" ? record["模式"] : ""} ${(record["关数"] || "").replace("_", " ")}`;
     const weaponClass = record["武器"] === "专武" ? "weapon-rare" : "weapon-normal";
     const setCardClass = setCardColorMap(record["日卡"], record["搭档身份"]);
     const partnerClass = partnerColorMap(record["搭档身份"]);

@@ -71,7 +71,7 @@
 }
 
 .toast.announcement {
-    top: 20vh;
+    top: 15vh;
     width: 80vw;
     max-width: 350px;
 }
@@ -103,4 +103,8 @@
     -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     color: rgba(255, 255, 255, 0.6);
+}
+
+.w-33 {
+    width: 33.3%;
 }
