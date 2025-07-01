@@ -97,10 +97,14 @@
       color: inherit;
     }
 
+    .clear-btn {
+      border: 0;
+      background-color: #dd845b;
+    }
+
     .submit-btn {
       border: 0;
       background-color: darkslateblue;
-      margin-top: 20px;
     }
     .submit-btn:hover,
     .submit-btn:focus {
@@ -178,7 +182,10 @@
     <!-- 动态面板输入 -->
     <hr />
     <div id="panel-inputs" class="d-none"></div>
-    <button id="submit" class="btn submit-btn w-100 d-none">提交记录</button>
+    <div id="submit-actions" class="display-row d-none" style="margin-top: 20px;">
+      <button id="clear-data" class="btn clear-btn w-50">重置表单</button>
+      <button id="submit" class="btn submit-btn w-50">提交记录</button>
+    </div>
 
     <!-- 展示最新记录 -->
     <h2 id="latest-records-title" class="mt-5">最新上传面板</h2>
@@ -230,6 +237,7 @@
   const latestRecordsTitle = document.getElementById("latest-records-title")
   const recordsDiv = document.getElementById("records");
   const submitButton = document.getElementById("submit");
+  const submitActions = document.getElementById("submit-actions");
   const recordsTitle = document.getElementById("records-title")
 
   const PAGE_SIZE = 10;
@@ -299,8 +307,21 @@
   document.getElementById("start-upload").addEventListener("click", () => {
     hideLatestRecords();
     panelInputsDiv.classList.remove("d-none");
-    submitButton.classList.remove("d-none");
+    submitActions.classList.remove("d-none");
     hideLatestRecords();
+  });
+
+  // 清除数据
+  document.getElementById("clear-data").addEventListener("click", () => {
+    PANEL_KEYS.forEach(key => {
+      const element = document.getElementById(`input-${key}`);
+      if (element.tagName === 'INPUT') {
+        element.value = '';
+      } else if (element.tagName === 'DIV') {
+        element.innerHTML = `--${key==="加成" ? "赛季加成" : key}--`;
+      }
+    });
+    showToast("清除成功", "已清空所有输入", 2000);
   });
 
   // 提交记录
@@ -317,7 +338,7 @@
               if (response.status === 'OK') {
                 showToast("上传成功", "Thanks♪(･ω･)ﾉ感谢您的使用！", 3000);
                 panelInputsDiv.classList.add("d-none");
-                submitButton.classList.add("d-none");
+                submitActions.classList.add("d-none");
                 showRecords(); // 可选刷新记录
               } else {
                 showToast("上传失败", response.error, 3000);
@@ -476,7 +497,7 @@
 
   function hideInputSection() {
     panelInputsDiv.classList.add("d-none");
-    submitButton.classList.add("d-none");
+    submitActions.classList.add("d-none");
   }
 
   function showToast(title, message, duration = 3000) {
