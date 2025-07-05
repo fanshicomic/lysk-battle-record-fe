@@ -97,6 +97,16 @@
             color: inherit;
         }
 
+        .ocr-action-btn {
+            border: 0;
+            background-color: cornflowerblue;
+        }
+        .ocr-action-btn:hover,
+        .ocr-action-btn:focus {
+            background-color: cornflowerblue;
+            color: inherit;
+        }
+
         .clear-btn {
             border: 0;
             background-color: #dd845b;
@@ -202,12 +212,14 @@
 
         <!-- 动作按钮 -->
         <div id="action-buttons" class="display-row d-none">
-            <button id="fetch-records" class="btn upload-fetch-btn w-50">获取通关记录</button>
-            <button id="start-upload" class="btn upload-action-btn w-50">上传通关记录</button>
+            <button id="fetch-records" class="btn upload-fetch-btn w-33">获取记录</button>
+            <button id="start-upload" class="btn upload-action-btn w-33">手动上传</button>
+            <button id="start-ocr" class="btn ocr-action-btn w-33">截图上传</button>
         </div>
 
         <!-- 动态面板输入 -->
         <hr />
+        <input type="file" id="file-input" hidden>
         <div id="panel-inputs" class="d-none"></div>
         <div id="submit-actions" class="display-row d-none" style="margin-top: 20px;">
             <button id="clear-data" class="btn clear-btn w-50">重置表单</button>
@@ -343,11 +355,49 @@
         }, 3000);
     });
 
+    const fileInput = document.getElementById('file-input');
+    fileInput.addEventListener('change', async (event) => {
+        const file = event.target.files[0];
+
+        if (!file) {
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('photo', file);
+
+        const response = await fetch('https://ocr-service-426168069563.asia-southeast1.run.app/ocr', {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+            const result = await response.json();
+            for (const [key, value] of Object.entries(result.result)) {
+              document.getElementById(`input-${key}`).value = value;
+            }
+        } else {
+            showToast("失败咯", "biami");
+        }
+      
+        fileInput.value = '';
+        document.getElementById("start-ocr").innerText = "截图上传";
+    });
+
     // 显示上传表单
     document.getElementById("start-upload").addEventListener("click", () => {
         hideLatestRecords();
         panelInputsDiv.classList.remove("d-none");
         submitActions.classList.remove("d-none");
+    });
+
+    // 显示OCR表单
+    document.getElementById("start-ocr").addEventListener("click", () => {
+        fileInput.click();
+        hideLatestRecords();
+        panelInputsDiv.classList.remove("d-none");
+        submitActions.classList.remove("d-none");
+        document.getElementById("start-ocr").innerText = "识图中...";
     });
 
     // 清除数据
