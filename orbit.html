@@ -376,8 +376,9 @@
             for (const [key, value] of Object.entries(result.result)) {
               document.getElementById(`input-${key}`).value = value;
             }
+            showToast("识图成功", "请确认识别数据是否正确", 5000);
         } else {
-            showToast("失败咯", "biami");
+            showToast("失败咯", "biami", 5000);
         }
       
         fileInput.value = '';
@@ -393,6 +394,14 @@
 
     // 显示OCR表单
     document.getElementById("start-ocr").addEventListener("click", () => {
+        PANEL_KEYS.forEach(key => {
+            const element = document.getElementById(`input-${key}`);
+            if (element.tagName === 'INPUT') {
+                element.value = '';
+            } else if (element.tagName === 'DIV') {
+                element.innerHTML = `--${key}--`;
+            }
+        });
         fileInput.click();
         hideLatestRecords();
         panelInputsDiv.classList.remove("d-none");
