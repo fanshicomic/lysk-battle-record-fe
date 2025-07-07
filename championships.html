@@ -239,7 +239,7 @@
   import { apiGet, apiPost } from './scripts/util.js?v=1750850695';
   import { initCustomSelects } from './scripts/custom_select.js?v=1750166440';
   import { generateRecordHtml } from './scripts/record.js?v=1751476760';
-  import { showAnnouncement } from './scripts/announcement.js?v=1751383006';
+  import { showAnnouncement } from './scripts/announcement.js?v=1751879957';
   import * as constants from './scripts/constants.js?v=1751383006';
 
   const levelSelect = document.getElementById("level");
@@ -332,13 +332,14 @@
       });
 
       if (response.ok) {
-          const result = await response.json();
-          for (const [key, value] of Object.entries(result.result)) {
-            document.getElementById(`input-${key}`).value = value;
-          }
-          showToast("识图成功", "请确认识别数据是否正确", 5000);
+        const result = await response.json();
+        for (const [key, value] of Object.entries(result.result)) {
+          document.getElementById(`input-${key}`).value = value;
+        }
+        showToast("识图成功", "识图精度有限，请确认识别数据是否正确!", 5000);
       } else {
-          showToast("失败咯", "biami", 5000);
+        const result = await response.json();
+        showToast("识图失败", result.error + ', ' + result.detail, 5000);
       }
     
       fileInput.value = '';
@@ -380,7 +381,6 @@
         element.innerHTML = `--${key==="加成" ? "赛季加成" : key}--`;
       }
     });
-    showToast("清除成功", "已清空所有输入", 2000);
   });
 
   // 提交记录
