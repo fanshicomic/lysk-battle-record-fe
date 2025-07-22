@@ -1,4 +1,4 @@
-import {DROPDOWN_VALUES} from "./constants.js";
+import {DROPDOWN_VALUES} from "./constants.js?v=1753177333";
 
 export function generateRecordHtml(record) {
     const isMatching = record["对谱"] === "顺";
@@ -118,7 +118,7 @@ function setCardColorMap(card, partner) {
         return "set-card-purple";
     }
 
-    const redCards = ["拥雪", "夜色", "碧海", "远空", "长昼"];
+    const redCards = ["拥雪", "夜色", "碧海", "远空", "长昼", "夜誓"];
     if (redCards.includes(card)) {
         return "set-card-red";
     }
@@ -133,7 +133,7 @@ function setCardColorMap(card, partner) {
         return "set-card-yellow";
     }
 
-    const blueCards = ["永恒", "静谧", "戮夜"];
+    const blueCards = ["永恒", "静谧", "戮夜", "鎏光"];
     if (blueCards.includes(card)) {
         return "set-card-blue";
     }
@@ -166,6 +166,10 @@ function partnerColorMap(partner) {
 
     if (partner === "光猎") {
         return "partner-lumiere";
+    }
+
+    if (partner === "暗蚀国王") {
+        return "partner-king-of-darknight";
     }
 
     if (partner === "永恒先知") {

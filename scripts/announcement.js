@@ -1,5 +1,5 @@
 export function showAnnouncement() {
-    const announcementKey = "2.0.1"
+    const announcementKey = "2.0.6"
     if (localStorage.getItem(announcementKey)) return;
     localStorage.setItem(announcementKey, '1');
 
@@ -38,6 +38,7 @@ function getAnnouncementBody() {
 
 function getAnnouncementLatestUpdates() {
     return `最新更新
+            - 2025-07-22：支持沈星回新搭档身份及日卡
             - 2025-07-07：微信小程序正式上线！搜：深空面板助手
             - 2025-07-07：支持识图功能
             - 2025-07-01：支持新的关卡模式

@@ -122,6 +122,10 @@
     background: dimgray;
 }
 
+.partner-king-of-darknight {
+    background: linear-gradient(135deg, #010000, #ae9b7e);
+}
+
 .partner-lumiere {
     background: linear-gradient(135deg, #e3c939, #7edbff);
 }
