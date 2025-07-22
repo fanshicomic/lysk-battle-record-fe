@@ -1,5 +1,5 @@
 export function showAnnouncement() {
-    const announcementKey = "2.0.6"
+    const announcementKey = "2.1.0"
     if (localStorage.getItem(announcementKey)) return;
     localStorage.setItem(announcementKey, '1');
 
