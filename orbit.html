@@ -371,7 +371,6 @@
         remarkInput.id = "input-备注";
         remarkInput.className = "form-control";
         remarkInput.maxLength = 20;
-        remarkInput.style.textAlign = "left";
         remarkInputWrapper.appendChild(remarkInput);
         remarkRow.appendChild(remarkInputWrapper);
         panelInputsDiv.appendChild(remarkRow);
@@ -667,6 +666,7 @@
             }
             data[key] = val;
         });
+        data["备注"] = document.getElementById(`input-备注`).value.trim();
         data["时间"]= new Date().toISOString();
         return data;
     }
