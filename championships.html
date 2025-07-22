@@ -279,53 +279,69 @@
   const PAGE_SIZE = 10;
 
   const PANEL_KEYS = [
-    "生命", "攻击", "防御", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "对谱", "对谱加成", "搭档", "搭档身份", "日卡", "阶数", "武器", "加成"
+    "生命", "攻击", "防御", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "卡总等级", "对谱", "对谱加成", "搭档", "搭档身份", "日卡", "阶数", "武器", "加成"
   ];
 
   showAnnouncement();
   showLatestRecords();
   initializeFooter();
+  initPanelInputsDiv();
+  initCustomSelects()
 
-  let rowWrappers = [];
-  PANEL_KEYS.forEach(function(key, index) {
-    const wrapper = document.createElement("div");
-    wrapper.className = "w-50";
-    if (constants.DROPDOWN_VALUES[key]) {
-      const customSelect = document.createElement("div");
-      customSelect.className = "custom-select";
-      customSelect.innerHTML = `
+  function initPanelInputsDiv() {
+    let rowWrappers = [];
+    PANEL_KEYS.forEach(function(key, index) {
+      const wrapper = document.createElement("div");
+      wrapper.className = "w-50";
+      if (constants.DROPDOWN_VALUES[key]) {
+        const customSelect = document.createElement("div");
+        customSelect.className = "custom-select";
+        customSelect.innerHTML = `
                 <div id="input-${key}" class="selected">--${key==="加成" ? "赛季加成" : key}--</div>
                 <ul class="options">
                     ${constants.DROPDOWN_VALUES[key].map(v => `<li>${v}</li>`).join("")}
                 </ul>
             `;
-      wrapper.appendChild(customSelect);
-    } else {
-      const input = document.createElement("input");
-      input.placeholder = key;
-      input.type = "number"
-      input.id = `input-${key}`;
-      input.className = "form-control";
-      wrapper.appendChild(input);
-    }
-    rowWrappers.push(wrapper);
-
-    // 每两个包裹进 display-row
-    if (rowWrappers.length === 2 || index === PANEL_KEYS.length - 1) {
-      if (index === PANEL_KEYS.length - 1) {
-        const wrapper = document.createElement("div");
-        wrapper.className = "w-50";
-        rowWrappers.push(wrapper); // 补齐最后一行
+        wrapper.appendChild(customSelect);
+      } else {
+        const input = document.createElement("input");
+        input.placeholder = key;
+        input.type = "number"
+        input.id = `input-${key}`;
+        input.className = "form-control";
+        wrapper.appendChild(input);
       }
-      const rowDiv = document.createElement("div");
-      rowDiv.className = "display-row";
-      rowWrappers.forEach(w => rowDiv.appendChild(w));
-      panelInputsDiv.appendChild(rowDiv);
-      rowWrappers = [];
-    }
-  });
+      rowWrappers.push(wrapper);
 
-  initCustomSelects()
+      // 每两个包裹进 display-row
+      if (rowWrappers.length === 2 || index === PANEL_KEYS.length - 1) {
+        if (rowWrappers.length !== 2) {
+          const wrapper = document.createElement("div");
+          wrapper.className = "w-50";
+          rowWrappers.push(wrapper); // 补齐最后一行
+        }
+        const rowDiv = document.createElement("div");
+        rowDiv.className = "display-row";
+        rowWrappers.forEach(w => rowDiv.appendChild(w));
+        panelInputsDiv.appendChild(rowDiv);
+        rowWrappers = [];
+      }
+    });
+
+    const remarkRow = document.createElement("div");
+    remarkRow.className = "display-row";
+    const remarkInputWrapper = document.createElement("div");
+    remarkInputWrapper.className = "w-100";
+    const remarkInput = document.createElement("input");
+    remarkInput.type = "text";
+    remarkInput.placeholder = "备注，如：剩x秒等。限20字";
+    remarkInput.id = "input-备注";
+    remarkInput.className = "form-control";
+    remarkInput.maxLength = 20;
+    remarkInputWrapper.appendChild(remarkInput);
+    remarkRow.appendChild(remarkInputWrapper);
+    panelInputsDiv.appendChild(remarkRow);
+  }
 
   // 获取记录
   const fetchBtn = document.getElementById("fetch-records");
@@ -518,6 +534,7 @@
       }
       data[key] = val;
     });
+    data["备注"] = document.getElementById(`input-备注`).value.trim();
     data["时间"]= new Date().toISOString();
     return data;
   }

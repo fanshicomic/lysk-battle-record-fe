@@ -317,7 +317,6 @@
     showAnnouncement();
     showLatestRecords();
     initializeFooter();
-
     initPanelInputsDiv();
     initCustomSelects();
 
@@ -348,7 +347,7 @@
 
             // 每两个包裹进 display-row
             if (rowWrappers.length === 2 || index === PANEL_KEYS.length - 1) {
-                if (index === PANEL_KEYS.length - 1) {
+                if (rowWrappers.length !== 2) {
                     const wrapper = document.createElement("div");
                     wrapper.className = "w-50";
                     rowWrappers.push(wrapper); // 补齐最后一行

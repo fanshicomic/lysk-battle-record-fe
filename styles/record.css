@@ -93,7 +93,7 @@
     text-align: left;
     /*flex: 1;*/
 }
-.record-number-label {
+.record-value-label {
     text-align: right;
     /*flex: 1;*/
 }
@@ -114,6 +114,10 @@
     width: 13px;
     opacity: .7;
     margin-right: 5px;
+}
+
+.note {
+    text-align: left;
 }
 
 /* Partner styles */

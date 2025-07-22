@@ -56,53 +56,68 @@ export function generateRecordHtml(record) {
         <div class="row">
             <div class="col-6 record-grid record-flex-row record-grid-padding-right">
                 <label class="record-text-label">攻击:</label>
-                <label class="record-number-label">${record["攻击"] || "—"}</label>
+                <label class="record-value-label">${record["攻击"] || "—"}</label>
             </div>
             <div class="col-6 record-grid record-flex-row record-grid-padding-left">
                 <label class="record-text-label">生命:</label>
-                <label class="record-number-label">${record["生命"] || "—"}</label>
+                <label class="record-value-label">${record["生命"] || "—"}</label>
             </div>
         </div>
         <div class="row">
             <div class="col-6 record-grid record-flex-row record-grid-padding-right">
                 <label class="record-text-label">防御:</label>
-                <label class="record-number-label">${record["防御"] || "—"}</label>
+                <label class="record-value-label">${record["防御"] || "—"}</label>
             </div>
             <div class="col-6 record-grid record-flex-row record-grid-padding-left">
                 <label class="record-text-label">虚弱增伤:</label>
-                <label class="record-number-label">${record["虚弱增伤"] || "—"}${record["虚弱增伤"] ? "%" : ""}</label>
+                <label class="record-value-label">${record["虚弱增伤"] || "—"}${record["虚弱增伤"] ? "%" : ""}</label>
             </div>
         </div>
         <div class="row">
             <div class="col-6 record-grid record-flex-row record-grid-padding-right">
                 <label class="record-text-label">暴击:</label>
-                <label class="record-number-label">${record["暴击"] || "—"}${record["暴击"] ? "%" : ""}</label>
+                <label class="record-value-label">${record["暴击"] || "—"}${record["暴击"] ? "%" : ""}</label>
             </div>
             <div class="col-6 record-grid record-flex-row record-grid-padding-left">
                 <label class="record-text-label">暴伤:</label>
-                <label class="record-number-label">${record["暴伤"] || "—"}${record["暴伤"] ? "%" : ""}</label>
+                <label class="record-value-label">${record["暴伤"] || "—"}${record["暴伤"] ? "%" : ""}</label>
             </div>
         </div>
         <div class="row">
             <div class="col-6 record-grid record-flex-row record-grid-padding-right">
                 <label class="record-text-label">誓约增伤:</label>
-                <label class="record-number-label">${record["誓约增伤"] || "—"}${record["誓约增伤"] ? "%" : ""}</label>
+                <label class="record-value-label">${record["誓约增伤"] || "—"}${record["誓约增伤"] ? "%" : ""}</label>
             </div>
             <div class="col-6 record-grid record-flex-row record-grid-padding-left">
                 <label class="record-text-label">誓约回能:</label>
-                <label class="record-number-label">${record["誓约回能"] || "—"}${record["誓约回能"] ? "%" : ""}</label>
+                <label class="record-value-label">${record["誓约回能"] || "—"}${record["誓约回能"] ? "%" : ""}</label>
             </div>
         </div>
         <div class="row">
             <div class="col-6 record-grid record-flex-row record-grid-padding-right">
                 <label class="record-text-label">加速回能:</label>
-                <label class="record-number-label">${record["加速回能"] || "—"}${record["加速回能"] ? "%" : ""}</label>
+                <label class="record-value-label">${record["加速回能"] || "—"}${record["加速回能"] ? "%" : ""}</label>
             </div>
             <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                <label class="record-text-label">${record["加成"] ? "赛季加成:" : ""}</label>
-                <label class="record-number-label">${record["加成"]}${record["加成"] ? "%" : ""}</label>
+                <label class="record-text-label">卡总等级:</label>
+                <label class="record-value-label">${record["卡总等级"] || "—"}</label>
+            </div>
+        </div> 
+        ${record["加成"] ? `
+        <div class="row">
+            <div class="col-6 record-grid record-flex-row record-grid-padding-right">
+                <label class="record-text-label">赛季加成:</label>
+                <label class="record-value-label">${record["加成"]}%</label>
+            </div>
+            <div class="col-6 record-grid record-flex-row record-grid-padding-left">
             </div>
         </div>
+        ` : ""}
+        ${record["备注"] ? `
+        <div class="row">
+            <label class="note">备注：${record["备注"]}</label>
+        </div>
+        ` : ""}
     </div>
     `;
 }
