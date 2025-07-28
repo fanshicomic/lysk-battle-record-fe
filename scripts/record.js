@@ -1,4 +1,4 @@
-import {DROPDOWN_VALUES} from "./constants.js?v=1753177333";
+import {DROPDOWN_VALUES} from "./constants.js?v=1753688378";
 
 export function generateRecordHtml(record) {
     const isMatching = record["对谱"] === "顺";

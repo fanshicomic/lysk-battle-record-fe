@@ -1,6 +1,6 @@
 export const LEVEL_TYPES = {
     "稳定": [
-        { type: "光", count: 180 },
+        { type: "光", count: 210 },
         { type: "冰", count: 180 },
         { type: "火", count: 210 },
         { type: "能量", count: 150 },
