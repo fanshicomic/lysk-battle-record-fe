@@ -128,18 +128,18 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
-        #latest-records .record {
+        #latest-records .record-container {
             margin-bottom: 18px;
         }
 
-        #latest-records .record:last-child {
+        #latest-records .record-container:last-child {
             margin-bottom: 100px;
         }
 
-        #records .record {
+        #records .record-container {
             margin-bottom: 18px;
         }
-        #records .record:last-child {
+        #records .record-container:last-child {
             margin-bottom: 50px;
         }
 
@@ -311,7 +311,7 @@
     const PAGE_SIZE = 10;
 
     const PANEL_KEYS = [
-        "生命", "攻击", "防御", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "卡总等级", "对谱", "对谱加成", "搭档", "搭档身份", "日卡", "阶数", "武器"
+        "生命", "攻击", "防御", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "卡总等级", "对谱", "对谱加成", "搭档", "搭档身份", "日卡", "阶数", "武器", "星级"
     ];
 
     showAnnouncement();
@@ -435,6 +435,7 @@
     // 显示上传表单
     document.getElementById("start-upload").addEventListener("click", () => {
         hideLatestRecords();
+
         panelInputsDiv.classList.remove("d-none");
         submitActions.classList.remove("d-none");
     });
@@ -514,6 +515,7 @@
         for (const mutation of mutationsList) {
             if (mutation.type === 'childList') {
                 checkIfReady();
+                toggleStarRankInput();
             }
         }
     });
@@ -650,6 +652,19 @@
         }
 
         actionButtons.classList.add("d-none");
+    }
+
+    function toggleStarRankInput() {
+        const mode = levelModeSelect.innerHTML;
+        const starLevelInput = document.getElementById("input-星级");
+
+        if (starLevelInput) {
+            if (mode === "波动") {
+                starLevelInput.style.display = '';
+            } else {
+                starLevelInput.style.display = 'none';
+            }
+        }
     }
 
     function getFormData() {

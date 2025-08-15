@@ -26,100 +26,127 @@ export function generateRecordHtml(record) {
 
     // 主体内容
     return `
-    <div class="w-100 record">
-        <div class="row">
-            ${hasMatchingInfo ? `<div class="col-6 record-matching-detail record-grid">
-                <label class="record-matching ${matchingClass}">${matchingLabel}</label>
-                ${circles}
-            </div>` : `<div class="col-6 record-matching-detail record-grid">无对谱信息</div>`}
-            <div class="col-6 record-level-detail record-grid">
-                <label>${levelLabel}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6 record-grid record-grid-padding-right">
-                <div class="record-partner ${partnerClass}">
-                    ${record["搭档身份"] || "—"}
+    <div class="record-container">
+        ${record['模式'] === '波动' ? generateStarRating(record['星级']) : ''}
+        <div class="w-100 record">
+            <div class="row">
+                ${hasMatchingInfo ? `<div class="col-6 record-matching-detail record-grid">
+                    <label class="record-matching ${matchingClass}">${matchingLabel}</label>
+                    ${circles}
+                </div>` : `<div class="col-6 record-matching-detail record-grid">无对谱信息</div>`}
+                <div class="col-6 record-level-detail record-grid">
+                    <label>${levelLabel}</label>
                 </div>
             </div>
-            <div class="col-3 record-grid record-grid-padding-left-right">
-                <div class="record-set-card ${setCardClass}">
-                    ${record["日卡"] || "—"} ${record["日卡"] === "无套装" ? "" : record["阶数"]}
+            <div class="row">
+                <div class="col-6 record-grid record-grid-padding-right">
+                    <div class="record-partner ${partnerClass}">
+                        ${record["搭档身份"] || "—"}
+                    </div>
+                </div>
+                <div class="col-3 record-grid record-grid-padding-left-right">
+                    <div class="record-set-card ${setCardClass}">
+                        ${record["日卡"] || "—"} ${record["日卡"] === "无套装" ? "" : record["阶数"]}
+                    </div>
+                </div>
+                <div class="col-3 record-grid record-grid-padding-left">
+                    <div class="record-weapon ${weaponClass}">
+                        ${record["武器"] || "—"}
+                    </div>
                 </div>
             </div>
-            <div class="col-3 record-grid record-grid-padding-left">
-                <div class="record-weapon ${weaponClass}">
-                    ${record["武器"] || "—"}
+            <div class="row">
+                <div class="col-6 record-grid record-flex-row record-grid-padding-right">
+                    <label class="record-text-label">攻击:</label>
+                    <label class="record-value-label">${record["攻击"] || "—"}</label>
+                </div>
+                <div class="col-6 record-grid record-flex-row record-grid-padding-left">
+                    <label class="record-text-label">生命:</label>
+                    <label class="record-value-label">${record["生命"] || "—"}</label>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-6 record-grid record-flex-row record-grid-padding-right">
+                    <label class="record-text-label">防御:</label>
+                    <label class="record-value-label">${record["防御"] || "—"}</label>
+                </div>
+                <div class="col-6 record-grid record-flex-row record-grid-padding-left">
+                    <label class="record-text-label">虚弱增伤:</label>
+                    <label class="record-value-label">${record["虚弱增伤"] || "—"}${record["虚弱增伤"] ? "%" : ""}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 record-grid record-flex-row record-grid-padding-right">
+                    <label class="record-text-label">暴击:</label>
+                    <label class="record-value-label">${record["暴击"] || "—"}${record["暴击"] ? "%" : ""}</label>
+                </div>
+                <div class="col-6 record-grid record-flex-row record-grid-padding-left">
+                    <label class="record-text-label">暴伤:</label>
+                    <label class="record-value-label">${record["暴伤"] || "—"}${record["暴伤"] ? "%" : ""}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 record-grid record-flex-row record-grid-padding-right">
+                    <label class="record-text-label">誓约增伤:</label>
+                    <label class="record-value-label">${record["誓约增伤"] || "—"}${record["誓约增伤"] ? "%" : ""}</label>
+                </div>
+                <div class="col-6 record-grid record-flex-row record-grid-padding-left">
+                    <label class="record-text-label">誓约回能:</label>
+                    <label class="record-value-label">${record["誓约回能"] || "—"}${record["誓约回能"] ? "%" : ""}</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6 record-grid record-flex-row record-grid-padding-right">
+                    <label class="record-text-label">加速回能:</label>
+                    <label class="record-value-label">${record["加速回能"] || "—"}${record["加速回能"] ? "%" : ""}</label>
+                </div>
+                <div class="col-6 record-grid record-flex-row record-grid-padding-left">
+                    <label class="record-text-label">卡总等级:</label>
+                    <label class="record-value-label">${record["卡总等级"] || "—"}</label>
+                </div>
+            </div> 
+            ${record["加成"] ? `
+            <div class="row">
+                <div class="col-6 record-grid record-flex-row record-grid-padding-right">
+                    <label class="record-text-label">赛季加成:</label>
+                    <label class="record-value-label">${record["加成"]}%</label>
+                </div>
+                <div class="col-6 record-grid record-flex-row record-grid-padding-left">
+                </div>
+            </div>
+            ` : ""}
+            ${record["备注"] ? `
+            <div class="row">
+                <label class="note">备注：${record["备注"]}</label>
+            </div>
+            ` : ""}
         </div>
-        <div class="row">
-            <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                <label class="record-text-label">攻击:</label>
-                <label class="record-value-label">${record["攻击"] || "—"}</label>
-            </div>
-            <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                <label class="record-text-label">生命:</label>
-                <label class="record-value-label">${record["生命"] || "—"}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                <label class="record-text-label">防御:</label>
-                <label class="record-value-label">${record["防御"] || "—"}</label>
-            </div>
-            <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                <label class="record-text-label">虚弱增伤:</label>
-                <label class="record-value-label">${record["虚弱增伤"] || "—"}${record["虚弱增伤"] ? "%" : ""}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                <label class="record-text-label">暴击:</label>
-                <label class="record-value-label">${record["暴击"] || "—"}${record["暴击"] ? "%" : ""}</label>
-            </div>
-            <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                <label class="record-text-label">暴伤:</label>
-                <label class="record-value-label">${record["暴伤"] || "—"}${record["暴伤"] ? "%" : ""}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                <label class="record-text-label">誓约增伤:</label>
-                <label class="record-value-label">${record["誓约增伤"] || "—"}${record["誓约增伤"] ? "%" : ""}</label>
-            </div>
-            <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                <label class="record-text-label">誓约回能:</label>
-                <label class="record-value-label">${record["誓约回能"] || "—"}${record["誓约回能"] ? "%" : ""}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                <label class="record-text-label">加速回能:</label>
-                <label class="record-value-label">${record["加速回能"] || "—"}${record["加速回能"] ? "%" : ""}</label>
-            </div>
-            <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-                <label class="record-text-label">卡总等级:</label>
-                <label class="record-value-label">${record["卡总等级"] || "—"}</label>
-            </div>
-        </div> 
-        ${record["加成"] ? `
-        <div class="row">
-            <div class="col-6 record-grid record-flex-row record-grid-padding-right">
-                <label class="record-text-label">赛季加成:</label>
-                <label class="record-value-label">${record["加成"]}%</label>
-            </div>
-            <div class="col-6 record-grid record-flex-row record-grid-padding-left">
-            </div>
-        </div>
-        ` : ""}
-        ${record["备注"] ? `
-        <div class="row">
-            <label class="note">备注：${record["备注"]}</label>
-        </div>
-        ` : ""}
     </div>
     `;
+}
+
+function generateStarRating(starLevel) {
+    let starRank = 0;
+    switch (starLevel) {
+        case '三星':
+            starRank = 3;
+            break;
+        case '二星':
+            starRank =  2;
+            break;
+        case '一星':
+            starRank =  1;
+            break;
+        default:
+            starRank =  0;
+    }
+
+    let stars = '';
+    for (let i = 0; i < starRank; i++) {
+        stars += `<img class="star-icon" src="assets/star-fill.svg" width="20" height="20" style="color: #f7b257;" alt="filled star">`;
+    }
+
+    return `<div class="star-rank display-row">${stars}</div>`;
 }
 
 function setCardColorMap(card, partner) {
