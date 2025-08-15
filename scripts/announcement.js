@@ -1,5 +1,5 @@
 export function showAnnouncement() {
-    const announcementKey = "2.1.1"
+    const announcementKey = "2.2.0"
     if (localStorage.getItem(announcementKey)) return;
     localStorage.setItem(announcementKey, '1');
 
@@ -38,6 +38,7 @@ function getAnnouncementBody() {
 
 function getAnnouncementLatestUpdates() {
     return `最新更新
+            - 2025-08-16：支持波动轨道星级
             - 2025-07-23：支持卡总等级及备注
             - 2025-07-22：支持沈星回新搭档身份及日卡，增加光轨上限
             - 2025-07-07：微信小程序正式上线！搜：深空面板助手
