@@ -49,8 +49,9 @@
     padding-right: 5px;
 }
 
-.record-grid-padding-right {
-    padding-right: 10px;
+.record-cp-progress-bar {
+    margin-left: 5px;
+    height: 10px;
 }
 
 .record-partner {
@@ -89,6 +90,11 @@
 .is-not-matching {
     color: var(--red-style-color);
     fill: var(--red-style-color);
+}
+
+.record-cp-detail {
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .record-matching-detail {

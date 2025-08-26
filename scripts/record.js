@@ -20,6 +20,12 @@ export function generateRecordHtml(record) {
     const setCardClass = setCardColorMap(record["日卡"], record["搭档身份"]);
     const partnerClass = partnerColorMap(record["搭档身份"]);
 
+    const combatPowerDetails = record["战力值"];
+    const noBuffedCP = Number(combatPowerDetails["Score"]) || 0;
+    const buffedCP = Number(combatPowerDetails["BuffedScore"]) || 0;
+    const nonWeakenCP = Number(combatPowerDetails["NonWeakenScore"]) || 0;
+    const weakenCP = Number(combatPowerDetails["WeakenScore"]) || 0;
+
     if (record["加成"] === "<nil>") {
         record["加成"] = "";
     }
@@ -30,13 +36,42 @@ export function generateRecordHtml(record) {
         ${record['模式'] === '波动' ? generateStarRating(record['星级']) : ''}
         <div class="w-100 record">
             <div class="row">
-                ${hasMatchingInfo ? `<div class="col-6 record-matching-detail record-grid">
+                <div class="col-6 record-matching-detail record-grid">
+                    ${hasMatchingInfo ? `
                     <label class="record-matching ${matchingClass}">${matchingLabel}</label>
                     ${circles}
-                </div>` : `<div class="col-6 record-matching-detail record-grid">无对谱信息</div>`}
+                    ` : `无对谱信息`}
+                </div>
                 <div class="col-6 record-level-detail record-grid">
                     <label>${levelLabel}</label>
                 </div>
+            </div>
+            <div class="row">
+                ${noBuffedCP !== 0 ? 
+                `<div class="col-6 record-grid record-flex-row record-grid-padding-right">
+                    <label class="record-text-label">CP:</label>
+                    <label class="record-value-label">${(noBuffedCP/100).toFixed(0)}</label>
+                </div>
+                <div class="col-6 record-grid record-flex-row record-grid-padding-left">
+                    <label class="record-text-label">暴击期: ${(nonWeakenCP / (nonWeakenCP + weakenCP) * 100).toFixed(1)}%</label>
+                    
+                    <div class="record-cp-progress-bar record-value-label" style="background: linear-gradient(to right, #f4d266 0%, #f6cd63 100%); width: ${(nonWeakenCP / (nonWeakenCP + weakenCP) * 30).toFixed(1)}%;">
+                    </div>
+                </div>
+                <div class="col-6 record-grid record-flex-row record-grid-padding-right record-cp-detail">
+                    <label class="record-text-label">CP+加成:</label>
+                    <label class="record-value-label">${(buffedCP/100).toFixed(0)}</label>
+                </div>
+                <div class="col-6 record-grid record-flex-row record-grid-padding-left record-cp-detail">
+                    <label class="record-text-label">虚弱期: ${(weakenCP / (nonWeakenCP + weakenCP) * 100).toFixed(1)}%</label>
+                    
+                    <div class="record-cp-progress-bar record-value-label" style="background: linear-gradient(to right, #b0dee9 0%, #87c4d2 100%); width: ${(weakenCP / (nonWeakenCP + weakenCP) * 30).toFixed(1)}%;">
+                    </div>
+                </div>`
+                : 
+                `<div class="col-6 record-grid record-cp-detail">未支持的搭档</div>
+                <div class="col-6 record-grid record-cp-detail"></div>`
+                }
             </div>
             <div class="row">
                 <div class="col-6 record-grid record-grid-padding-right">
