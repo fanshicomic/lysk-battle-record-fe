@@ -678,6 +678,10 @@
             if (constants.DROPDOWN_VALUES["阶数"].includes(val) && val !== "无套装") {
                 val = val.substring(0, val.length - 5);
             }
+
+            if (val === `--星级--`) {
+                val = ``;
+            }
             data[key] = val;
         });
         data["备注"] = document.getElementById(`input-备注`).value.trim();
