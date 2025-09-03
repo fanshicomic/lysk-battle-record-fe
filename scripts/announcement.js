@@ -1,5 +1,5 @@
 export function showAnnouncement() {
-    const announcementKey = "2.2.0"
+    const announcementKey = "2.2.1"
     if (localStorage.getItem(announcementKey)) return;
     localStorage.setItem(announcementKey, '1');
 
@@ -19,20 +19,22 @@ export function forceDisplayAnnouncement() {
 function prepareAnnouncement() {
     const announcementBody = document.getElementById("announcement-general-msg");
     const announcementLatestUpdates = document.getElementById("announcement-latest-updates");
-    announcementBody.innerText = getAnnouncementBody();
+    announcementBody.innerHTML = getAnnouncementBody();
     announcementLatestUpdates.innerText = getAnnouncementLatestUpdates();
 
 }
 
 function getAnnouncementBody() {
     return `猎人小姐你好!
-    
+            <br><br>
             欢迎使用深空面板助手 :)
-            
+            <br><br>
             【微信小程序现已上线：深空面板助手】
+            <br><br>
+            <img src="./assets/miniapp.JPG" alt="微信小程序二维码" style="max-width: 200px; height: auto; display: block; margin: 10px auto;">
+            <br>
+            网页端会稍晚于小程序端更新，小程序额外提供用户相关服务<br>
             
-            库中的面板会用于正在开发的数据分析功能，感谢你的每一条记录分享~
-            更多功能也在开发进程中，敬请期待
             公告可前往本助手首页右上角重新查看`
 }
 
