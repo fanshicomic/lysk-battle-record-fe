@@ -1,5 +1,29 @@
 import {DROPDOWN_VALUES} from "./constants.js?v=1755282627";
 
+function getChampionshipStartDate(dateString) {
+    const startDate = new Date('2025-06-02T00:00:00Z');
+    const givenDate = new Date(dateString);
+
+    // Calculate the difference in milliseconds
+    const diff = givenDate.getTime() - startDate.getTime();
+
+    // Calculate the number of 14-day periods
+    const fourteenDaysInMillis = 14 * 24 * 60 * 60 * 1000;
+    const periods = Math.floor(diff / fourteenDaysInMillis);
+
+    // Calculate the start date of the round
+    const roundStartDate = new Date(
+        startDate.getTime() + periods * fourteenDaysInMillis
+    );
+
+    // Format the date to YYYY-MM-DD
+    const year = roundStartDate.getFullYear();
+    const month = String(roundStartDate.getMonth() + 1).padStart(2, '0');
+    const day = String(roundStartDate.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
+
 export function generateRecordHtml(record) {
     const isMatching = record["对谱"] === "顺";
     const matchingClass = isMatching ? "is-matching" : "is-not-matching";
@@ -15,7 +39,11 @@ export function generateRecordHtml(record) {
 
     const hasMatchingInfo = record["对谱"] !== "不确定" && record["对谱加成"] !== "不确定";
 
-    const levelLabel = `${record["关卡"]} ${record["关卡"] === "开放" ? record["模式"] : ""} ${(record["关数"] || "").replace("_", " ")}`;
+    let levelLabel = `${record["关卡"]} ${record["关卡"] === "开放" ? record["模式"] : ""} ${(record["关数"] || "").replace("_", " ")}`;
+    if (record['加成'] !== '') {
+        let time = getChampionshipStartDate(record['时间']);
+        levelLabel = time + '期 ' + levelLabel;
+    }
     const weaponClass = record["武器"] === "专武" ? "weapon-rare" : "weapon-normal";
     const setCardClass = setCardColorMap(record["日卡"], record["搭档身份"]);
     const partnerClass = partnerColorMap(record["搭档身份"]);
