@@ -4,5 +4,5 @@ if (window.location.hostname === 'localhost' || window.location.hostname === '12
 } else {
     API_BASE = 'https://lysk-battle-record-426168069563.asia-southeast1.run.app/';
 }
-API_BASE = 'https://lysk-battle-record-426168069563.asia-southeast1.run.app/';
+// API_BASE = 'https://lysk-battle-record-426168069563.asia-southeast1.run.app/';
 export { API_BASE };
