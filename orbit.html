@@ -7,8 +7,10 @@
     <link rel="icon" type="image/x-icon" href="assets/favicon.jpg?v=1750166732">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css?v=1750166732" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./styles/common.css?v=1751969641" />
-    <link rel="stylesheet" type="text/css" href="./styles/custom-select.css?v=1750166732" />
-    <link rel="stylesheet" type="text/css" href="./styles/record.css?v=1755282627" />
+    <link rel="stylesheet" type="text/css" href="./components/custom-select/custom-select.css?v=1750166732" />
+    <link rel="stylesheet" type="text/css" href="./components/record/record.css?v=1750166732" />
+    <link rel="stylesheet" type="text/css" href="./components/info/info.css?v=1750166732" />
+    <link rel="stylesheet" type="text/css" href="./components/battle-suggestion/battle-suggestion.css?v=1750166732" />
     <style>
         body {
             height: 100vh;
@@ -128,21 +130,6 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
-        #latest-records .record-container {
-            margin-bottom: 18px;
-        }
-
-        #latest-records .record-container:last-child {
-            margin-bottom: 100px;
-        }
-
-        #records .record-container {
-            margin-bottom: 18px;
-        }
-        #records .record-container:last-child {
-            margin-bottom: 50px;
-        }
-
         #pagination {
             margin-bottom: 100px;
         }
@@ -233,6 +220,7 @@
 
         <!-- 展示记录 -->
         <h2 id="records-title" class="mt-5 d-none">关卡面板记录</h2>
+        <div id="battle-suggestion-container"></div>
         <div id="records" class="d-none"></div>
         <div id="pagination" class="d-flex justify-content-center"></div>
 
@@ -286,10 +274,12 @@
 </div>
 
 <script type="module">
-    import { apiGet, apiPost } from './scripts/util.js?v=1750850695';
-    import { initCustomSelects } from './scripts/custom_select.js?v=1750166732';
-    import { generateRecordHtml } from './scripts/record.js?v=1755282630';
+    import { apiGet, apiPost } from './scripts/util.js?v=1750166732';
+    import { initCustomSelects } from './components/custom-select/custom-select.js?v=1750166732';
+    import { RecordComponent } from './components/record/record.js';
     import { showAnnouncement } from './scripts/announcement.js?v=1755282734';
+    import { BattleSuggestion } from './components/battle-suggestion/battle-suggestion.js';
+    import { CompanionLabel } from './components/companion-label/companion-label.js';
     import * as constants from './scripts/constants.js?v=1755282627';
     import { initializeFooter } from './scripts/footer.js?v=1751969641';
 
@@ -314,6 +304,40 @@
         "生命", "攻击", "防御", "暴击", "暴伤", "誓约增伤", "誓约回能", "加速回能", "虚弱增伤", "卡总等级", "对谱", "对谱加成", "搭档", "搭档身份", "日卡", "阶数", "武器", "星级"
     ];
 
+    document.addEventListener('click', function(event) {
+        if (event.target.closest('.cp-info-icon')) {
+            const title = '战力值说明';
+            const body = `这里的数值是战力值。
+
+            大的数字: 实际战斗战力，由面板战力算上加成（对谱加成与赛季加成）得出。
+            小的数字: 纯面板战力。
+            同关卡战力从高至低排序，前25%战力标为溢出，后25%标为极限，其余为标准。
+            *若该关卡面板<5，则全标为标准。
+            *该排序基于库中面板。
+
+            战力值基于用户面板数值、使用搭档及日卡推算得出，用于评估面板强度。
+            以四次共鸣期（顺谱两虚弱或逆谱一虚弱）为单位，基于该搭档推荐排轴推算各技能施放次数来计算得出以该面板对“单个敌人”进行战斗时的战斗强度。
+
+            暴击期与虚弱期百分比代表该面板在对应时期造成的伤害占比。
+
+            考虑的因素及对应模拟精确度：
+            面板所有基础数值对技能伤害、技能次数的影响（精确）
+            卡面等级带来的等级压制影响（精确）
+            *无数据则以480计算
+            搭档<>日卡<>武器非常规组合（搭档未使用其对应日卡或专武）时的影响（精确）
+
+            搭档非全程的机制buff，如施放特定技能后带来的增益效果（普通）
+            *由于当前计算逻辑并不通过模拟实际技能循环，这类的buff无法精确模拟。
+            计算这类增益的方式通过计算其生效时间权重折算成全时长平均增益。
+
+            聚怪机制，群伤机制（无）
+            *战力值的计算纯基于面板及搭档推荐排轴，不考虑实际战斗场景，因此不会对有聚怪机制、群伤机制的搭档或技能进行额外调参增强。用户可自行根据关卡怪物数量等战斗场景对面板进行进一步调整。
+
+            强化协助（无）
+            *不考虑额外操作`;
+            InfoComponent.show(title, body);
+        }
+    });
     showAnnouncement();
     showLatestRecords();
     initializeFooter();
@@ -707,12 +731,38 @@
 
         const offset = (page - 1) * PAGE_SIZE;
 
+        apiGet('level-suggestion', { type, level, mode })
+            .then(suggestion => {
+                const suggestionContainer = document.getElementById('battle-suggestion-container');
+                suggestionContainer.innerHTML = ''; // Clear previous
+                if (suggestion) {
+                    const suggestionElement = document.createElement('battle-suggestion');
+                    suggestionElement.data = suggestion;
+                    suggestionContainer.appendChild(suggestionElement);
+                }
+            })
+            .catch(err => {
+                console.error("获取建议失败", err);
+                const suggestionContainer = document.getElementById('battle-suggestion-container');
+                suggestionContainer.innerHTML = '';
+            });
+
         apiGet('orbit-records', { type, level, mode, offset })
             .then(result => {
                 let cnt = result.total
                 let list = result.records || [];
 
-                recordsDiv.innerHTML = list.map(r => generateRecordHtml(r)).join("") || "暂无记录";
+                recordsDiv.innerHTML = ""; // Clear previous records
+                if (list.length > 0) {
+                    list.forEach(r => {
+                        const recordElement = document.createElement('record-component');
+                        recordElement.data = r;
+                        recordsDiv.appendChild(recordElement);
+                    });
+                } else {
+                    recordsDiv.innerHTML = "暂无记录";
+                }
+
 
                 const totalPages = Math.ceil(cnt / PAGE_SIZE);
                 const paginationDiv = document.getElementById("pagination");
@@ -741,7 +791,16 @@
                 let list = result.records || [];
 
                 document.getElementById("total-db-records-cnt").innerText = cnt;
-                latestRecordsDiv.innerHTML = list.map(r => generateRecordHtml(r)).join("") || "暂无记录";
+                latestRecordsDiv.innerHTML = ""; // Clear previous records
+                if (list.length > 0) {
+                    list.forEach(r => {
+                        const recordElement = document.createElement('record-component');
+                        recordElement.data = r;
+                        latestRecordsDiv.appendChild(recordElement);
+                    });
+                } else {
+                    latestRecordsDiv.innerHTML = "暂无记录";
+                }
             })
             .catch(err => {
                 console.error("获取失败", err);

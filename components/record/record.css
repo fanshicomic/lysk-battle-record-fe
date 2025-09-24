@@ -4,6 +4,15 @@
     --purple-style-color: #785d90;
 }
 
+:host {
+    display: block;
+    margin-bottom: 18px;
+}
+
+:host(:last-child) {
+    margin-bottom: 50px;
+}
+
 .record-container {
     position: relative;
 }
@@ -91,7 +100,8 @@
     fill: var(--red-style-color);
 }
 
-.record-matching-detail {
+.record-matching-detail,
+.record-cp-detail {
     padding-bottom: 10px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
@@ -138,6 +148,92 @@
 
 .note {
     text-align: left;
+}
+
+.info {
+    color: #ffffff;
+    fill: #ffffff;
+    align-self: center;
+}
+
+.record-cp-progress-bar {
+    margin-left: 5px;
+    height: 10px;
+}
+
+.record-cp-label {
+    /* font-family: monospace; */
+    margin-top: -5px;
+    position: relative;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: left;
+    width: 100%;
+}
+
+.record-raw-cp-label-row {
+    font-size: 12px;
+    text-align: left;
+    width: 100%;
+    display: flex;
+    gap: 5px;
+    align-items: baseline;
+}
+
+.cp-container {
+    align-items: stretch;
+}
+
+.cp-left-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-right: 10px;
+}
+
+.cp-right-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.cp-right-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.cp-right-row:first-child {
+    padding-bottom: 10px;
+}
+
+.cp-evaluation-label {
+    padding: 2px 5px;
+    border-radius: 12px;
+    font-size: 9px;
+    color: white;
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+}
+
+.cp-eval-high {
+    background-color: #42a366;
+}
+
+.cp-eval-mid {
+    background-color: #5e9fca;
+}
+
+.cp-eval-low {
+    background-color: #ad2e3e;
+}
+
+.row {
+    padding: 5px 20px 5px 20px;
+    --bs-gutter-x: 0;
 }
 
 /* Partner styles */

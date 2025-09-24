@@ -1,0 +1,75 @@
+:host {
+    width: 100%;
+    display: inline-block;
+}
+
+.record-companion {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    width: 100%;
+    padding: 2px 4px;
+    font-size: 15px;
+    color: #fff;
+    text-align: center;
+    box-sizing: border-box;
+    display: block;
+}
+
+/* Partner styles */
+
+.companion-normal {
+    background: dimgray;
+}
+
+.companion-king-of-darknight {
+    background: linear-gradient(135deg, #010000, #ae9b7e);
+}
+
+.companion-lumiere {
+    background: linear-gradient(135deg, #e3c939, #7edbff);
+}
+
+.companion-light-seeker {
+    background: linear-gradient(135deg, #5da668, #ddd7c6);
+}
+
+.companion-foreseer {
+    background: linear-gradient(135deg, #2a355d, #4e6c91);
+}
+
+.companion-master-of-fate {
+    background: linear-gradient(135deg, #152444, #3b7e6b);
+}
+
+.companion-abyss-walker {
+    background: linear-gradient(135deg, #3b2942, #593076);
+}
+
+.companion-lemurian-sea-god {
+    background: linear-gradient(135deg, #694b7c, #5b759d);
+}
+
+.companion-god-of-the-tides {
+    background: linear-gradient(135deg, #f1ade0, #6fbde7);
+}
+
+.companion-relentless-conqueror {
+    background: linear-gradient(135deg, #250c0c, #ab6565);
+}
+
+.companion-abysm-sovereign {
+    background: linear-gradient(135deg, #000000, #6f0e0e);
+}
+
+.companion-farspace-colonel {
+    background: linear-gradient(135deg, #251332, #630000);
+}
+
+.companion-ultimate-weapon-X-02 {
+    background: linear-gradient(135deg, #22053b, #97562b);
+}
+
+.companion-god-of-annihilation {
+    background: linear-gradient(135deg, #2b211b, #4d4a58, #8a7e6f, #d1bda6, #f0e5d7);
+}
+
