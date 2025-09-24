@@ -1,4 +1,5 @@
-import { CompanionLabel } from '../companion-label/companion-label.js';
+import { CompanionLabel } from '../companion-label/companion-label.js?v=1758727953';
+import { SetCardLabel } from '../set-card-label/set-card-label.js?v=1758727953';
 
 class BattleSuggestion extends HTMLElement {
     constructor() {
@@ -101,10 +102,10 @@ class BattleSuggestion extends HTMLElement {
         const d = this._data;
         const hasData = d.lowestCP !== 0;
         const styleHref = this.getAttribute('style-href') || './components/battle-suggestion/battle-suggestion.css';
-        const pairsHtml = d.topPairs.slice(0,3).map(p => `
+        const pairsHtml = d.topPairs.sort((a, b) => b.percentage - a.percentage).slice(0,3).map(p => `
             <div class="battle-suggestion-row pair-row">
                 <div class="w-50"><companion-label companion="${p.companion || ''}"></companion-label></div>
-                <div class="w-25"><span class="set-card-label" data-card="${p.set_card || ''}">${p.set_card || '-'}</span></div>
+                <div class="w-25"><set-card-label card="${p.set_card || ''}" companion="${p.companion || ''}"></set-card-label></div>
                 <div class="w-25 percentage-label">${this._formatPercent(p.percentage)}%</div>
             </div>
         `).join('');
@@ -124,7 +125,7 @@ class BattleSuggestion extends HTMLElement {
                     <div class="line">建议猎人小姐调整战力值至：<span class="value-em">${d.suggestedCP}</span> 以上</div>
                     <div class="hr"></div>
                     <div class="battle-suggestion-row w-100 space-between attack-pattern-row">
-                      <div>伤害流派选择多为：<span>${d.attackPattern || '-'}</span></div>
+                      <div>伤害流派选择多为：<span>${d.attackPattern || '-'}流</span></div>
                       <div class="percentage-label">${this._formatPercent(d.attackPatternPercentage)}%</div>
                     </div>
                     <div class="pairs-section">

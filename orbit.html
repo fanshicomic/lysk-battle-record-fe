@@ -8,9 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css?v=1750166732" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./styles/common.css?v=1751969641" />
     <link rel="stylesheet" type="text/css" href="./components/custom-select/custom-select.css?v=1750166732" />
-    <link rel="stylesheet" type="text/css" href="./components/record/record.css?v=1750166732" />
-    <link rel="stylesheet" type="text/css" href="./components/info/info.css?v=1750166732" />
-    <link rel="stylesheet" type="text/css" href="./components/battle-suggestion/battle-suggestion.css?v=1750166732" />
+    <link rel="stylesheet" type="text/css" href="./components/record/record.css?v=1758727953" />
+    <link rel="stylesheet" type="text/css" href="./components/info/info.css?v=1758727953" />
+    <link rel="stylesheet" type="text/css" href="./components/battle-suggestion/battle-suggestion.css?v=1758727953" />
     <style>
         body {
             height: 100vh;
@@ -128,6 +128,10 @@
             font-size: small;
             text-align: center;
             color: rgba(255, 255, 255, 0.6);
+        }
+
+        #battle-suggestion-container {
+            margin-bottom: 20px;
         }
 
         #pagination {
@@ -274,12 +278,12 @@
 </div>
 
 <script type="module">
-    import { apiGet, apiPost } from './scripts/util.js?v=1750166732';
+    import { apiGet, apiPost } from './scripts/util.js?v=1758727955';
     import { initCustomSelects } from './components/custom-select/custom-select.js?v=1750166732';
-    import { RecordComponent } from './components/record/record.js';
-    import { showAnnouncement } from './scripts/announcement.js?v=1755282734';
-    import { BattleSuggestion } from './components/battle-suggestion/battle-suggestion.js';
-    import { CompanionLabel } from './components/companion-label/companion-label.js';
+    import { RecordComponent } from './components/record/record.js?v=1758727955';
+    import { showAnnouncement } from './scripts/announcement.js?v=1758727953';
+    import { BattleSuggestion } from './components/battle-suggestion/battle-suggestion.js?v=1758727955';
+    import { CompanionLabel } from './components/companion-label/companion-label.js?v=1758727953';
     import * as constants from './scripts/constants.js?v=1755282627';
     import { initializeFooter } from './scripts/footer.js?v=1751969641';
 
@@ -608,8 +612,11 @@
 
     function validatePartDropdown() {
         const number = parseInt(levelNumberInput.value);
+        const mode = levelModeSelect.innerHTML;
 
         if (number && number % 10 === 0) {
+            partContainer.classList.remove("d-none");
+        } else if (number && number % 5 === 0 && mode === "波动") {
             partContainer.classList.remove("d-none");
         } else {
             partContainer.classList.add("d-none");
@@ -715,7 +722,7 @@
 
     function getLevelNumber() {
         const number = parseInt(levelNumberInput.value);
-        if (number % 10 === 0 && !partContainer.classList.contains("d-none")) {
+        if (!partContainer.classList.contains("d-none")) {
             return `${number}_${levelPartSelect.innerHTML}`;
         }
         return number;
@@ -759,10 +766,7 @@
                         recordElement.data = r;
                         recordsDiv.appendChild(recordElement);
                     });
-                } else {
-                    recordsDiv.innerHTML = "暂无记录";
                 }
-
 
                 const totalPages = Math.ceil(cnt / PAGE_SIZE);
                 const paginationDiv = document.getElementById("pagination");

@@ -1,4 +1,5 @@
 import {DROPDOWN_VALUES} from "../../scripts/constants.js?v=1755282627";
+import { SetCardLabel } from '../set-card-label/set-card-label.js?v=1758727953';
 
 class RecordComponent extends HTMLElement {
     constructor() {
@@ -58,58 +59,6 @@ class RecordComponent extends HTMLElement {
         return `<div class="star-rank display-row">${stars}</div>`;
     }
 
-    setCardColorMap(card, partner) {
-        const pinkCards = ["匿光", "神殿", "点染", "掠心", "锋尖"];
-        if (pinkCards.includes(card)) {
-            return "set-card-pink";
-        }
-
-        const purpleCards = ["深海", "斑斓", "寂路"];
-        if (purpleCards.includes(card)) {
-            return "set-card-purple";
-        }
-
-        const redCards = ["拥雪", "夜色", "碧海", "远空", "长昼", "夜誓"];
-        if (redCards.includes(card)) {
-            return "set-card-red";
-        }
-
-        const greenCards = ["逐光", "睱日", "深渊", "离途", "坠浪"];
-        if (greenCards.includes(card)) {
-            return "set-card-green";
-        }
-
-        const yellowCards = ["雾海", "末夜", "弦光", "深林"];
-        if (yellowCards.includes(card)) {
-            return "set-card-yellow";
-        }
-
-        const blueCards = ["永恒", "静谧", "戮夜", "鎏光"];
-        if (blueCards.includes(card)) {
-            return "set-card-blue";
-        }
-
-        if (card === "心晴") {
-            const xavier = DROPDOWN_VALUES['沈星回搭档'];
-            const zayne = DROPDOWN_VALUES['黎深搭档'];
-            const rafayel =  DROPDOWN_VALUES['祁煜搭档'];
-
-            if (xavier.includes(partner)) {
-                return "set-card-red";
-            }
-
-            if (zayne.includes(partner)) {
-                return "set-card-pink";
-            }
-
-            if (rafayel.includes(partner)) {
-                return "set-card-yellow";
-            }
-        }
-
-        return "set-card-none";
-    }
-
     render(record) {
         const isMatching = record["对谱"] === "顺";
         const matchingClass = isMatching ? "is-matching" : "is-not-matching";
@@ -131,7 +80,6 @@ class RecordComponent extends HTMLElement {
             levelLabel = time + '期 ' + levelLabel;
         }
         const weaponClass = record["武器"] === "专武" ? "weapon-rare" : "weapon-normal";
-        const setCardClass = this.setCardColorMap(record["日卡"], record["搭档身份"]);
 
         if (record["加成"] === "<nil>") {
             record["加成"] = "";
@@ -215,9 +163,7 @@ class RecordComponent extends HTMLElement {
                             <companion-label companion="${record["搭档身份"] || ""}"></companion-label>
                         </div>
                         <div class="col-3 record-grid record-grid-padding-left-right">
-                            <div class="record-set-card ${setCardClass}">
-                                ${record["日卡"] || "—"} ${record["日卡"] === "无套装" ? "" : record["阶数"]}
-                            </div>
+                            <set-card-label card="${record["日卡"] || ''}" stage="${record["阶数"] || ''}" companion="${record["搭档身份"] || ''}"></set-card-label>
                         </div>
                         <div class="col-3 record-grid record-grid-padding-left">
                             <div class="record-weapon ${weaponClass}">
